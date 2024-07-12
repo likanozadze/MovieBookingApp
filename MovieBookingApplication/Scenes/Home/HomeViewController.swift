@@ -43,8 +43,6 @@ final class HomeViewController: UIViewController {
     }()
     
     private var movies = [Movie]()
-    
-    
     private let viewModel = HomeViewModel()
     
     
@@ -52,6 +50,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupViewModelDelegate()
         viewModel.viewDidLoad()
     }
     
@@ -131,6 +130,14 @@ extension HomeViewController: UICollectionViewDataSource {
     
     
 }
+
+// MARK: - CollectionView Delegate
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectMovie(at: indexPath)
+    }
+}
+
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
@@ -160,6 +167,7 @@ extension HomeViewController: MoviesListViewModelDelegate {
     }
     
     func navigateToMovieDetails(with movieId: Int) {
-     
+        let viewController = MovieDetailsViewController(movieId: movieId)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
