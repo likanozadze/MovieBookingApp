@@ -83,20 +83,13 @@ final class HomeViewController: UIViewController {
    
     private func setupSubviews() {
         view.addSubview(scrollView)
+        
         scrollView.addSubview(scrollStackViewContainer)
+        scrollStackViewContainer.addArrangedSubview(nowInCinemaLabel)
         scrollStackViewContainer.addArrangedSubview(collectionView)
     }
     
     private func setupCollectionView() {
-        view.addSubview(collectionView)
-        
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
         collectionView.register(NowInCinemasCollectionViewCell.self, forCellWithReuseIdentifier: "NowInCinemasCollectionViewCell")
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -109,7 +102,13 @@ final class HomeViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            collectionView.heightAnchor.constraint(equalToConstant: 200),
+            scrollStackViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollStackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollStackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollStackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollStackViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            collectionView.heightAnchor.constraint(equalToConstant: 320),
             
         ])
     }
@@ -135,15 +134,16 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        
+
         let totalSpace = flowLayout.sectionInset.left
         + flowLayout.sectionInset.right
         + flowLayout.minimumInteritemSpacing
-        
+
         let width = Int((collectionView.bounds.width - totalSpace) / 2)
         let height = 278
-        
+
         return CGSize(width: width, height: height)
+
     }
 }
 // MARK: - MoviesListViewModelDelegate

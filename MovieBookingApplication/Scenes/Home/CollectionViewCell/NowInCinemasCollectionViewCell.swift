@@ -24,14 +24,14 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.textColor = .white
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
     private let genreLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.textColor = .white
+        label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
@@ -44,12 +44,30 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    
+    private let voteLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        return label
+    }()
+    
+    private lazy var voteLabelStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [voteLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = UIColor.customAccentColor
+        stackView.layer.cornerRadius = 4
+        stackView.layer.masksToBounds = false
+        return stackView
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview()
         setupConstraints()
-        setupCellAppearance() 
+        setupCellAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -63,13 +81,14 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         movieImageView.image = nil
         genreLabel.text = nil
         titleLabel.text = nil
+        voteLabel.text = nil
         
     }
     
     // MARK: - Private Methods
     private func addSubview() {
         contentView.addSubview(movieImageView)
-     //   contentView.addSubview(topButtonStackView)
+        contentView.addSubview(voteLabelStackView)
         contentView.addSubview(titleGenreStackView)
     }
     
@@ -78,15 +97,18 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
             movieImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             movieImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             movieImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            movieImageView.heightAnchor.constraint(equalToConstant: 230)
+            movieImageView.heightAnchor.constraint(equalToConstant: 220),
+            
+            voteLabelStackView.topAnchor.constraint(equalTo: movieImageView.topAnchor, constant: 10),
+            voteLabelStackView.leadingAnchor.constraint(equalTo: movieImageView.leadingAnchor, constant: 10),
+            voteLabelStackView.widthAnchor.constraint(equalToConstant: 25),
+            voteLabelStackView.heightAnchor.constraint(equalToConstant: 20),
+            
+            titleGenreStackView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 12),
+            titleGenreStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
+            titleGenreStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14)
         ])
-        
-        NSLayoutConstraint.activate([
-            titleGenreStackView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 8),
-            titleGenreStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            titleGenreStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
-        ])
-}
+    }
     
     
     private func setupCellAppearance() {
@@ -103,11 +125,21 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         layer.shadowOpacity = 0.1
         layer.masksToBounds = false
     }
-//
-  // MARK: - Configuration
+    
+    // MARK: - Configuration
     func configure(with movie: Movie) {
         titleLabel.text = movie.title
+        if let firstGenre = movie.genres.first {
+            genreLabel.text = firstGenre.name
+          } else {
+            genreLabel.text = "No Genre"
+          }
+          
         setImage(from: movie.posterPath)
+        let formattedVoteAverage = String(format: "%.1f", movie.voteAverage)
+        voteLabel.text = formattedVoteAverage
+        
+        
     }
     
     private func setImage(from url: String) {
