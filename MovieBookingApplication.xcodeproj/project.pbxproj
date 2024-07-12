@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA062C414FB6009D8996 /* AppDelegate.swift */; };
 		9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA082C414FB6009D8996 /* SceneDelegate.swift */; };
-		9883BA0B2C414FB6009D8996 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA0A2C414FB6009D8996 /* MainViewController.swift */; };
+		9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA0A2C414FB6009D8996 /* HomeViewController.swift */; };
 		9883BA102C414FB8009D8996 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9883BA0F2C414FB8009D8996 /* Assets.xcassets */; };
 		9883BA132C414FB8009D8996 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */; };
 		9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA1B2C4152C8009D8996 /* Color+Extension.swift */; };
+		9883BA202C416680009D8996 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA1F2C416680009D8996 /* TabBarController.swift */; };
+		9883BA252C41673A009D8996 /* TicketsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA242C41673A009D8996 /* TicketsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9883BA032C414FB6009D8996 /* MovieBookingApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBookingApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9883BA062C414FB6009D8996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9883BA082C414FB6009D8996 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9883BA0A2C414FB6009D8996 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9883BA0A2C414FB6009D8996 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9883BA0F2C414FB8009D8996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9883BA122C414FB8009D8996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9883BA142C414FB8009D8996 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9883BA1B2C4152C8009D8996 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		9883BA1F2C416680009D8996 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		9883BA242C41673A009D8996 /* TicketsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +60,9 @@
 		9883BA052C414FB6009D8996 /* MovieBookingApplication */ = {
 			isa = PBXGroup;
 			children = (
-				9883BA062C414FB6009D8996 /* AppDelegate.swift */,
-				9883BA082C414FB6009D8996 /* SceneDelegate.swift */,
-				9883BA0A2C414FB6009D8996 /* MainViewController.swift */,
+				9883BA1D2C4165F9009D8996 /* App */,
 				9883BA1A2C415286009D8996 /* Extensions */,
+				9883BA1E2C416646009D8996 /* Scenes */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
@@ -73,6 +76,49 @@
 				9883BA1B2C4152C8009D8996 /* Color+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9883BA1D2C4165F9009D8996 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA062C414FB6009D8996 /* AppDelegate.swift */,
+				9883BA082C414FB6009D8996 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9883BA1E2C416646009D8996 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA212C416700009D8996 /* Home */,
+				9883BA232C416723009D8996 /* Tickets */,
+				9883BA222C416716009D8996 /* TabBar */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		9883BA212C416700009D8996 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA0A2C414FB6009D8996 /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		9883BA222C416716009D8996 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA1F2C416680009D8996 /* TabBarController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		9883BA232C416723009D8996 /* Tickets */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA242C41673A009D8996 /* TicketsViewController.swift */,
+			);
+			path = Tickets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,9 +191,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9883BA0B2C414FB6009D8996 /* MainViewController.swift in Sources */,
+				9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */,
 				9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */,
 				9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */,
+				9883BA202C416680009D8996 /* TabBarController.swift in Sources */,
+				9883BA252C41673A009D8996 /* TicketsViewController.swift in Sources */,
 				9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
