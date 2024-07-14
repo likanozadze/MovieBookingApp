@@ -12,7 +12,7 @@ struct TimeSlot {
     let date: Date
     let startTime: Date
     let endTime: Date
-    let ticketPrices: [TicketPrice]
+    var ticketPrices: [TicketPrice]
     let movie: Movie
 }
 
