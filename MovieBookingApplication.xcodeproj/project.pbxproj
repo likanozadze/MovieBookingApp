@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */; };
+		987C6E182C4290E800816B14 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E172C4290E800816B14 /* Time.swift */; };
 		9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA062C414FB6009D8996 /* AppDelegate.swift */; };
 		9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA082C414FB6009D8996 /* SceneDelegate.swift */; };
 		9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA0A2C414FB6009D8996 /* HomeViewController.swift */; };
@@ -28,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotCollectionViewCell.swift; sourceTree = "<group>"; };
+		987C6E172C4290E800816B14 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		9883BA032C414FB6009D8996 /* MovieBookingApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBookingApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9883BA062C414FB6009D8996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9883BA082C414FB6009D8996 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				9883BA2A2C417890009D8996 /* Movie.swift */,
 				9883BA302C417A07009D8996 /* MovieDetails.swift */,
 				9883BA352C41AC89009D8996 /* Seat.swift */,
+				987C6E172C4290E800816B14 /* Time.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				9883BA3A2C41AF31009D8996 /* DateCollectionViewCell.swift */,
+				987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -264,8 +270,10 @@
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
 				9883BA342C41AAF0009D8996 /* CalendarViewController.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
+				987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */,
 				9883BA2D2C41790A009D8996 /* HomeViewModel.swift in Sources */,
 				9883BA3B2C41AF31009D8996 /* DateCollectionViewCell.swift in Sources */,
+				987C6E182C4290E800816B14 /* Time.swift in Sources */,
 				9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */,
 				9883BA2F2C417929009D8996 /* NetworkManager.swift in Sources */,
 				9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */,

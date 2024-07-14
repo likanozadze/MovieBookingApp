@@ -22,32 +22,19 @@ final class DateCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        return label
+    private lazy var button: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        return button
     }()
     
-    private let weekdayLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        return label
-    }()
-    
-    private lazy var dateStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dateLabel, weekdayLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 2
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    // MARK: - init
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview()
@@ -58,33 +45,33 @@ final class DateCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - CellLifeCycle
+    // MARK: - Cell Life Cycle
     override func prepareForReuse() {
         super.prepareForReuse()
-        dateLabel.text = nil
-        weekdayLabel.text = nil
+        button.setTitle(nil, for: .normal)
+        resetButtonTitleColor()
     }
     
     // MARK: - Private Methods
-    private func  addSubview() {
+    private func addSubview() {
         contentView.addSubview(cellView)
-        cellView.addSubview(dateStackView)
+        cellView.addSubview(button)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cellView.centerYAnchor.constraint(equalTo: centerYAnchor),
             cellView.heightAnchor.constraint(equalToConstant: 60),
-            dateStackView.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 10),
-            dateStackView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10),
-            dateStackView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -10),
-            dateStackView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10)
+            
+            button.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
+            button.topAnchor.constraint(equalTo: cellView.topAnchor),
+            button.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
         ])
     }
-
+    
     // MARK: - Configuration
     func configure(for date: Date) {
         let components = calendar.dateComponents([.weekday, .day], from: date)
@@ -93,8 +80,24 @@ final class DateCollectionViewCell: UICollectionViewCell {
         dateFormatter.dateFormat = "E"
         let shortWeekday = dateFormatter.string(from: date)
         
-        weekdayLabel.text = "\(shortWeekday)"
-        dateLabel.text = "\(day)"
+        let title = "\(day)\n\(shortWeekday)"
+        button.setTitle(title, for: .normal)
     }
     
+    
+    
+    // MARK: - Actions
+    @objc private func buttonTapped() {
+        toggleButtonTitleColor()
+    }
+    
+    private func toggleButtonTitleColor() {
+        let newColor: UIColor = (button.titleColor(for: .normal) == .white) ? .customAccentColor : .white
+        button.setTitleColor(newColor, for: .normal)
+    }
+    
+    private func resetButtonTitleColor() {
+        button.setTitleColor(.white, for: .normal)
+    }
 }
+
