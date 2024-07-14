@@ -7,22 +7,14 @@
 
 import Foundation
 
-
 struct TimeSlot {
     let date: Date
     let startTime: Date
     let endTime: Date
     var ticketPrices: [TicketPrice]
-    let movie: Movie
-}
-
-enum SeatType: String {
-    case regular
-    case balcony
-    case vip
 }
 
 struct TicketPrice {
-    let seatType: SeatType
     let price: Double
+    let currency: String
 }

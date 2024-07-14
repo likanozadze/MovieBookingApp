@@ -30,15 +30,15 @@ final class TabBarController: UITabBarController {
       viewController: ticketsViewController
     )
 
-      let calendarViewController = CalendarViewController()
+    //  let calendarViewController = CalendarViewController()
         
-      let calendar = createNavigationController(
-        title: "Calendar", image: UIImage(systemName: "calendar"),
-        viewController: calendarViewController
-      )
+//      let calendar = createNavigationController(
+//        title: "Calendar", image: UIImage(systemName: "calendar"),
+//        viewController: calendarViewController
+//      )
 
       
-    setViewControllers([home, ticket, calendar], animated: true)
+    setViewControllers([home, ticket], animated: true)
   }
 
   // MARK: - NavigationController

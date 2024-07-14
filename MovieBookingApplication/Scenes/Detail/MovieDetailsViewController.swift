@@ -9,13 +9,19 @@ import UIKit
 
 final class MovieDetailsViewController: UIViewController {
     
-    // MARK: - UI Components
+    // MARK: - Properties
+    private var movies = [Movie]()
+    private var dates: [Date] = []
+    private var viewModel: MovieDetailsViewModel
+    private var timeSlots: [TimeSlot] = []
+    
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
     private let scrollStackViewContainer: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -23,7 +29,6 @@ final class MovieDetailsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
     
     private let movieImageView: UIImageView = {
         let imageView = UIImageView()
@@ -36,36 +41,40 @@ final class MovieDetailsViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-    
-    private var dates: [Date] = []
-    private var viewModel: MovieDetailsViewModel
-    
+    private let timePriceCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
+    }()
+
     // MARK: - Init
     init(movieId: Int) {
         viewModel = DefaultMovieDetailsViewModel(movieId: movieId)
         super.init(nibName: nil, bundle: nil)
-        
         viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - ViewLifecycle
+    // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         viewModel.viewDidLoad()
         fetchDates()
+        setupTimePriceCollectionView()
+        fetchDates()
     }
-    
+
     // MARK: - Private Methods
     private func setup() {
         setupBackground()
@@ -73,7 +82,8 @@ final class MovieDetailsViewController: UIViewController {
         setupScrollView()
         setupSubviews()
         setupConstraints()
-    
+        setupTimePriceCollectionView()
+        
     }
     private func setupBackground() {
         view.backgroundColor = .customBackgroundColor
@@ -88,14 +98,21 @@ final class MovieDetailsViewController: UIViewController {
         scrollView.addSubview(scrollStackViewContainer)
         scrollStackViewContainer.addArrangedSubview(movieImageView)
         scrollStackViewContainer.addArrangedSubview(collectionView)
-        
-        
+        scrollStackViewContainer.addArrangedSubview(timePriceCollectionView)
     }
     
     private func setupCollectionView() {
         collectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCollectionViewCell")
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    
+    // MARK: - Private Methods
+    private func setupTimePriceCollectionView() {
+        timePriceCollectionView.register(TimeSlotCollectionViewCell.self, forCellWithReuseIdentifier: "TimeSlotCollectionViewCell")
+        timePriceCollectionView.dataSource = self
+        timePriceCollectionView.delegate = self
     }
     
     private func setupConstraints() {
@@ -112,15 +129,22 @@ final class MovieDetailsViewController: UIViewController {
             scrollStackViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             movieImageView.topAnchor.constraint(equalTo: scrollStackViewContainer.topAnchor),
-                movieImageView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
-                movieImageView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
-                movieImageView.heightAnchor.constraint(equalToConstant: 210),
-
-                collectionView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 16),
-                collectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
-                collectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
-                collectionView.heightAnchor.constraint(equalToConstant: 60),
-                collectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count))
+            movieImageView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
+            movieImageView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
+            movieImageView.heightAnchor.constraint(equalToConstant: 210),
+            
+            collectionView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 60),
+            collectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count)),
+            
+            timePriceCollectionView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
+            timePriceCollectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
+            timePriceCollectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
+            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 60),
+            timePriceCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count)),
+            timePriceCollectionView.bottomAnchor.constraint(equalTo: scrollStackViewContainer.bottomAnchor, constant: -16)
         ])
     }
     
@@ -134,9 +158,19 @@ final class MovieDetailsViewController: UIViewController {
         }
         collectionView.reloadData()
     }
+    
+    private func fetchTimeSlots(for selectedDate: Date) {
+        let allTimeSlots = FakeDataGenerator.generateFakeTimeSlots(forDays: 7)
+        
+        let calendar = Calendar.current
+        timeSlots = allTimeSlots.filter { timeSlot in
+            calendar.isDate(timeSlot.date, inSameDayAs: selectedDate)
+        }
+        
+        print("Number of time slots for \(selectedDate): \(timeSlots.count)")
+        timePriceCollectionView.reloadData()
+    }
 }
-
-
 // MARK: - MovieDetailsViewModelDelegate
 extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     func movieDetailsFetched(_ movie: MovieDetails) {
@@ -144,44 +178,92 @@ extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
             navigationItem.title = movie.title
         }
     }
-    
+
     func showError(_ error: Error) {
         print("Error")
     }
-    
+
     func movieDetailsImageFetched(_ image: UIImage) {
         Task {
             movieImageView.image = image
         }
     }
 }
-    extension MovieDetailsViewController: UICollectionViewDataSource {
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - UICollectionViewDataSource
+
+extension MovieDetailsViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.collectionView {
             return dates.count
+        } else if collectionView == timePriceCollectionView {
+            return timeSlots.count
         }
-        
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == self.collectionView {
+            guard indexPath.item < dates.count else {
+                return UICollectionViewCell() 
+            }
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
                 return UICollectionViewCell()
             }
             let date = dates[indexPath.item]
             cell.configure(for: date)
+            cell.delegate = self
+            return cell
+        } else if collectionView == timePriceCollectionView {
+            guard indexPath.item < timeSlots.count else {
+                return UICollectionViewCell()
+            }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let timeSlot = timeSlots[indexPath.item]
+            let formattedTime = formatDate(timeSlot.startTime)
+            let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
+            
+            cell.configure(time: formattedTime, price: priceString)
             return cell
         }
-    }
-    extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            
-            let totalSpace = flowLayout.sectionInset.left
-            + flowLayout.sectionInset.right
-            + flowLayout.minimumInteritemSpacing
-            
-            let width = Int((collectionView.bounds.width - totalSpace) / 6)
-            let height = 60
-            
-            return CGSize(width: width, height: height)
-            
-        }
+        return UICollectionViewCell()
     }
     
+                private func formatPrice(_ price: Double, currency: String) -> String {
+                    return String(format: "%.2f %@", price, currency)
+                }
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: date)
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == collectionView {
+            return CGSize(width: 80, height: 60)
+        } else if collectionView == timePriceCollectionView {
+            return CGSize(width: collectionView.bounds.width, height: 80)
+        }
+        return CGSize.zero
+    }
+}
+
+// MARK: - DateCollectionViewCellDelegate
+extension MovieDetailsViewController: DateCollectionViewCellDelegate {
+    func dateButtonTapped(date: Date) {
+        fetchTimeSlots(for: date)
+    }
+}
+
+extension MovieDetailsViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == self.collectionView {
+            let selectedDate = dates[indexPath.item]
+            fetchTimeSlots(for: selectedDate)
+        }
+    }
+}

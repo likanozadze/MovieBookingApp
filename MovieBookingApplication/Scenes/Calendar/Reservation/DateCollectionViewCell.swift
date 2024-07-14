@@ -5,13 +5,18 @@
 //  Created by Lika Nozadze on 7/12/24.
 //
 
-
 import UIKit
+
+protocol DateCollectionViewCellDelegate: AnyObject {
+    func dateButtonTapped(date: Date)
+}
 
 final class DateCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     private let calendar = Calendar.current
+    weak var delegate: DateCollectionViewCellDelegate?
+    private var date: Date?
     
     private let cellView: UIView = {
         let view = UIView()
@@ -53,14 +58,13 @@ final class DateCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Private Methods
-    private func  addSubview() {
+    private func addSubview() {
         contentView.addSubview(cellView)
         cellView.addSubview(button)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cellView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -72,9 +76,10 @@ final class DateCollectionViewCell: UICollectionViewCell {
             button.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
         ])
     }
-
+    
     // MARK: - Configuration
     func configure(for date: Date) {
+        self.date = date
         let components = calendar.dateComponents([.weekday, .day], from: date)
         guard let weekday = components.weekday, let day = components.day else { return }
         let dateFormatter = DateFormatter()
@@ -85,11 +90,12 @@ final class DateCollectionViewCell: UICollectionViewCell {
         button.setTitle(title, for: .normal)
     }
     
-    
-    
     // MARK: - Actions
     @objc private func buttonTapped() {
         toggleButtonTitleColor()
+        if let date = self.date {
+            delegate?.dateButtonTapped(date: date)
+        }
     }
     
     private func toggleButtonTitleColor() {
