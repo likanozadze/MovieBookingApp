@@ -14,7 +14,8 @@ final class MovieDetailsViewController: UIViewController {
     private var dates: [Date] = []
     private var viewModel: MovieDetailsViewModel
     private var timeSlots: [TimeSlot] = []
-    
+    private var selectedDate: Date?
+    private var isTimeSlotCollectionViewHidden = true
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -46,6 +47,7 @@ final class MovieDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
+
     private let timePriceCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -54,7 +56,6 @@ final class MovieDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-
     // MARK: - Init
     init(movieId: Int) {
         viewModel = DefaultMovieDetailsViewModel(movieId: movieId)
@@ -74,7 +75,7 @@ final class MovieDetailsViewController: UIViewController {
         setupTimePriceCollectionView()
         fetchDates()
     }
-
+  
     // MARK: - Private Methods
     private func setup() {
         setupBackground()
@@ -99,6 +100,7 @@ final class MovieDetailsViewController: UIViewController {
         scrollStackViewContainer.addArrangedSubview(movieImageView)
         scrollStackViewContainer.addArrangedSubview(collectionView)
         scrollStackViewContainer.addArrangedSubview(timePriceCollectionView)
+        timePriceCollectionView.isHidden = true
     }
     
     private func setupCollectionView() {
@@ -147,6 +149,20 @@ final class MovieDetailsViewController: UIViewController {
             timePriceCollectionView.bottomAnchor.constraint(equalTo: scrollStackViewContainer.bottomAnchor, constant: -16)
         ])
     }
+    
+    private func toggleTimeSlotCollectionView(for date: Date) {
+          if selectedDate == date && !isTimeSlotCollectionViewHidden {
+              timePriceCollectionView.isHidden = true
+              isTimeSlotCollectionViewHidden = true
+              selectedDate = nil
+          } else {
+              timePriceCollectionView.isHidden = false
+              isTimeSlotCollectionViewHidden = false
+              selectedDate = date
+              fetchTimeSlots(for: date)
+          }
+      }
+  
     
     private func fetchDates() {
         let calendar = Calendar.current
@@ -204,7 +220,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == self.collectionView {
             guard indexPath.item < dates.count else {
-                return UICollectionViewCell() 
+                return UICollectionViewCell() // Handle gracefully
             }
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
                 return UICollectionViewCell()
@@ -255,7 +271,7 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - DateCollectionViewCellDelegate
 extension MovieDetailsViewController: DateCollectionViewCellDelegate {
     func dateButtonTapped(date: Date) {
-        fetchTimeSlots(for: date)
+        toggleTimeSlotCollectionView(for: date)
     }
 }
 
@@ -263,7 +279,7 @@ extension MovieDetailsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
             let selectedDate = dates[indexPath.item]
-            fetchTimeSlots(for: selectedDate)
+            toggleTimeSlotCollectionView(for: selectedDate)
         }
     }
 }

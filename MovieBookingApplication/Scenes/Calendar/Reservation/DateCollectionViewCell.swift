@@ -88,6 +88,7 @@ final class DateCollectionViewCell: UICollectionViewCell {
         
         let title = "\(day)\n\(shortWeekday)"
         button.setTitle(title, for: .normal)
+        
     }
     
     // MARK: - Actions
