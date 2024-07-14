@@ -11,11 +11,13 @@ protocol MovieDetailsViewModelDelegate: AnyObject {
     func movieDetailsFetched(_ movie: MovieDetails)
     func showError(_ error: Error)
     func movieDetailsImageFetched(_ image: UIImage)
+    func timeSlotsFetched(_ timeSlots: [TimeSlot])
 }
 
 protocol MovieDetailsViewModel {
     var delegate: MovieDetailsViewModelDelegate? { get set }
     func viewDidLoad()
+    func fetchTimeSlots(for date: Date)
 }
 
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
@@ -48,5 +50,25 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
             self?.delegate?.movieDetailsImageFetched(image ?? UIImage())
         }
     }
-}
-
+    
+    func fetchTimeSlots(for date: Date) {
+            let timeSlots = ShowTime.allCases.map { showTime in
+                let ticketPriceCategory: TicketPriceCategory
+                switch showTime {
+                case .afternoon1:
+                    ticketPriceCategory = .afternoon1
+                case .afternoon2:
+                    ticketPriceCategory = .afternoon2
+                case .evening:
+                    ticketPriceCategory = .evening
+                case .night1:
+                    ticketPriceCategory = .night1
+                case .night2:
+                    ticketPriceCategory = .night2
+                }
+                let ticketPrices = [TicketPrice(priceCategory: ticketPriceCategory, currency: "USD")]
+                return TimeSlot(date: date, showTime: showTime, ticketPrices: ticketPrices)
+            }
+            delegate?.timeSlotsFetched(timeSlots)
+        }
+    }

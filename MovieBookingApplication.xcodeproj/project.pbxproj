@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */; };
 		987C6E182C4290E800816B14 /* TimeSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E172C4290E800816B14 /* TimeSlot.swift */; };
-		987C6E202C43FDAF00816B14 /* FakeDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E1F2C43FDAF00816B14 /* FakeDataGenerator.swift */; };
+		987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */; };
 		9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA062C414FB6009D8996 /* AppDelegate.swift */; };
 		9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA082C414FB6009D8996 /* SceneDelegate.swift */; };
 		9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA0A2C414FB6009D8996 /* HomeViewController.swift */; };
@@ -33,7 +33,7 @@
 /* Begin PBXFileReference section */
 		987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotCollectionViewCell.swift; sourceTree = "<group>"; };
 		987C6E172C4290E800816B14 /* TimeSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlot.swift; sourceTree = "<group>"; };
-		987C6E1F2C43FDAF00816B14 /* FakeDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDataGenerator.swift; sourceTree = "<group>"; };
+		987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieShowtimeManager.swift; sourceTree = "<group>"; };
 		9883BA032C414FB6009D8996 /* MovieBookingApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBookingApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9883BA062C414FB6009D8996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9883BA082C414FB6009D8996 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +67,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		987C6E212C4446F600816B14 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA2E2C417929009D8996 /* NetworkManager.swift */,
+				987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		9883B9FA2C414FB6009D8996 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +99,7 @@
 				9883BA1A2C415286009D8996 /* Extensions */,
 				9883BA292C41786E009D8996 /* Models */,
 				9883BA1E2C416646009D8996 /* Scenes */,
+				987C6E212C4446F600816B14 /* Managers */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
@@ -140,7 +150,6 @@
 			isa = PBXGroup;
 			children = (
 				9883BA1F2C416680009D8996 /* TabBarController.swift */,
-				9883BA2E2C417929009D8996 /* NetworkManager.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -177,7 +186,6 @@
 			children = (
 				9883BA392C41AEC4009D8996 /* Reservation */,
 				9883BA332C41AAF0009D8996 /* CalendarViewController.swift */,
-				987C6E1F2C43FDAF00816B14 /* FakeDataGenerator.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -272,8 +280,8 @@
 			files = (
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
 				9883BA342C41AAF0009D8996 /* CalendarViewController.swift in Sources */,
-				987C6E202C43FDAF00816B14 /* FakeDataGenerator.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
+				987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */,
 				987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */,
 				9883BA2D2C41790A009D8996 /* HomeViewModel.swift in Sources */,
 				9883BA3B2C41AF31009D8996 /* DateCollectionViewCell.swift in Sources */,

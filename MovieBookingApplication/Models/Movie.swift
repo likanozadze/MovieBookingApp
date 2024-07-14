@@ -17,6 +17,7 @@ struct Movie: Decodable {
     let posterPath: String
     let voteAverage: Double
     let genres: [Genre]
+    var showtimes: [String: [TimeSlot]]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -38,6 +39,8 @@ struct Movie: Decodable {
         self.genres = genreIds.map { id in
             Genre(name: GenreName.from(id: id))
         }
+        
+        self.showtimes = [:]
     }
     
     struct Genre: Decodable {

@@ -176,17 +176,10 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     private func fetchTimeSlots(for selectedDate: Date) {
-        let allTimeSlots = FakeDataGenerator.generateFakeTimeSlots(forDays: 7)
-        
-        let calendar = Calendar.current
-        timeSlots = allTimeSlots.filter { timeSlot in
-            calendar.isDate(timeSlot.date, inSameDayAs: selectedDate)
-        }
-        
-        print("Number of time slots for \(selectedDate): \(timeSlots.count)")
-        timePriceCollectionView.reloadData()
+        viewModel.fetchTimeSlots(for: selectedDate)
     }
 }
+
 // MARK: - MovieDetailsViewModelDelegate
 extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     func movieDetailsFetched(_ movie: MovieDetails) {
@@ -204,6 +197,10 @@ extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
             movieImageView.image = image
         }
     }
+    func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
+            self.timeSlots = timeSlots
+            timePriceCollectionView.reloadData()
+        }
 }
 // MARK: - UICollectionViewDataSource
 
