@@ -5,6 +5,7 @@
 //  Created by Lika Nozadze on 7/12/24.
 //
 
+
 import UIKit
 
 final class MovieDetailsViewController: UIViewController {
@@ -18,25 +19,21 @@ final class MovieDetailsViewController: UIViewController {
     private var selectedDate: Date?
     private var isTimeSlotCollectionViewHidden = true
     
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
     
-    private let scrollStackViewContainer: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 18
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private let MainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
     }()
     
     private let movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.heightAnchor.constraint(equalToConstant: 210).isActive = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -51,11 +48,17 @@ final class MovieDetailsViewController: UIViewController {
     
     private let timePriceCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
+    }()
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
     }()
     // MARK: - Init
     init(movieId: Int) {
@@ -80,7 +83,6 @@ final class MovieDetailsViewController: UIViewController {
     private func setup() {
         setupBackground()
         setupCollectionView()
-        setupScrollView()
         setupSubviews()
         setupConstraints()
         setupTimePriceCollectionView()
@@ -90,16 +92,13 @@ final class MovieDetailsViewController: UIViewController {
         view.backgroundColor = .customBackgroundColor
     }
     
-    private func setupScrollView() {
-        scrollView.showsVerticalScrollIndicator = false
-    }
-    
     private func setupSubviews(){
         view.addSubview(scrollView)
-        scrollView.addSubview(scrollStackViewContainer)
-        scrollStackViewContainer.addArrangedSubview(movieImageView)
-        scrollStackViewContainer.addArrangedSubview(collectionView)
-        scrollStackViewContainer.addArrangedSubview(timePriceCollectionView)
+        scrollView.addSubview(MainStackView)
+        
+        MainStackView.addArrangedSubview(movieImageView)
+        MainStackView.addArrangedSubview(collectionView)
+        MainStackView.addArrangedSubview(timePriceCollectionView)
         timePriceCollectionView.isHidden = true
     }
     
@@ -110,7 +109,6 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     
-    // MARK: - Private Methods
     private func setupTimePriceCollectionView() {
         timePriceCollectionView.register(TimeSlotCollectionViewCell.self, forCellWithReuseIdentifier: "TimeSlotCollectionViewCell")
         timePriceCollectionView.dataSource = self
@@ -120,33 +118,24 @@ final class MovieDetailsViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            scrollStackViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            scrollStackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            scrollStackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            scrollStackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollStackViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            MainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            MainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            MainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            MainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            MainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             
-            movieImageView.topAnchor.constraint(equalTo: scrollStackViewContainer.topAnchor),
-            movieImageView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
-            movieImageView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
-            movieImageView.heightAnchor.constraint(equalToConstant: 210),
+            movieImageView.topAnchor.constraint(equalTo: MainStackView.topAnchor),
+            movieImageView.leadingAnchor.constraint(equalTo: MainStackView.leadingAnchor),
+            movieImageView.trailingAnchor.constraint(equalTo: MainStackView.trailingAnchor),
+            movieImageView.heightAnchor.constraint(equalToConstant: 240),
             
-            collectionView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 16),
-            collectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
+            
             collectionView.heightAnchor.constraint(equalToConstant: 60),
-            collectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count)),
-            
-            timePriceCollectionView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
-            timePriceCollectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
-            timePriceCollectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
-            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 140),
-            timePriceCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count)),
-            timePriceCollectionView.bottomAnchor.constraint(equalTo: scrollStackViewContainer.bottomAnchor, constant: -16)
+            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 300)
         ])
     }
     
@@ -165,10 +154,10 @@ final class MovieDetailsViewController: UIViewController {
     
     
     private func fetchDates() {
-           dates = dateManager.fetchDates(numberOfDays: 7)
-           collectionView.reloadData()
-       }
-   
+        dates = dateManager.fetchDates(numberOfDays: 7)
+        collectionView.reloadData()
+    }
+    
     private func fetchTimeSlots(for selectedDate: Date) {
         viewModel.fetchTimeSlots(for: selectedDate)
     }
@@ -249,14 +238,15 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == self.collectionView {
             return CGSize(width: 80, height: 60)
         } else if collectionView == timePriceCollectionView {
-          
-            let width: CGFloat = collectionView.bounds.width * 0.45
-            let height: CGFloat = 120 // Increased height
-            return CGSize(width: width, height: height)
+            
+            //   let width: CGFloat = collectionView.bounds.width * 0.5
+            //  let height: CGFloat = 100
+            return CGSize(width: 80, height: 100)
+            //   return CGSize(width: width, height: height)
         }
         return CGSize.zero
     }
-
+    
 }
 
 // MARK: - DateCollectionViewCellDelegate
