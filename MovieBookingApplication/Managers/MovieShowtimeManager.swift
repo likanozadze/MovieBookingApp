@@ -51,12 +51,10 @@ final class MovieShowtimeManager {
     }
     
     private func formatShowtimes(_ showtimes: [TimeSlot]) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return showtimes.map { formatter.string(from: $0.startTime) }.joined(separator: ", ")
+        let formattedShowtimes = showtimes.map { DateFormatter.formattedDate(date: $0.startTime, format: "h:mm a") }
+        return formattedShowtimes.joined(separator: ", ")
     }
     
-
     func setShowtimes(for movie: inout Movie, showtimes: [String: [TimeSlot]]) {
         movie.showtimes = showtimes
     }

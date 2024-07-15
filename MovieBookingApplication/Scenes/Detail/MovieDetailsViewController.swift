@@ -47,7 +47,7 @@ final class MovieDetailsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-
+    
     private let timePriceCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -75,7 +75,7 @@ final class MovieDetailsViewController: UIViewController {
         setupTimePriceCollectionView()
         fetchDates()
     }
-  
+    
     // MARK: - Private Methods
     private func setup() {
         setupBackground()
@@ -151,18 +151,18 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     private func toggleTimeSlotCollectionView(for date: Date) {
-          if selectedDate == date && !isTimeSlotCollectionViewHidden {
-              timePriceCollectionView.isHidden = true
-              isTimeSlotCollectionViewHidden = true
-              selectedDate = nil
-          } else {
-              timePriceCollectionView.isHidden = false
-              isTimeSlotCollectionViewHidden = false
-              selectedDate = date
-              fetchTimeSlots(for: date)
-          }
-      }
-  
+        if selectedDate == date && !isTimeSlotCollectionViewHidden {
+            timePriceCollectionView.isHidden = true
+            isTimeSlotCollectionViewHidden = true
+            selectedDate = nil
+        } else {
+            timePriceCollectionView.isHidden = false
+            isTimeSlotCollectionViewHidden = false
+            selectedDate = date
+            fetchTimeSlots(for: date)
+        }
+    }
+    
     
     private func fetchDates() {
         let calendar = Calendar.current
@@ -187,20 +187,20 @@ extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
             navigationItem.title = movie.title
         }
     }
-
+    
     func showError(_ error: Error) {
         print("Error")
     }
-
+    
     func movieDetailsImageFetched(_ image: UIImage) {
         Task {
             movieImageView.image = image
         }
     }
     func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
-            self.timeSlots = timeSlots
-            timePriceCollectionView.reloadData()
-        }
+        self.timeSlots = timeSlots
+        timePriceCollectionView.reloadData()
+    }
 }
 // MARK: - UICollectionViewDataSource
 
@@ -234,7 +234,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let timeSlot = timeSlots[indexPath.item]
-            let formattedTime = formatDate(timeSlot.startTime)
+            let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
             
             cell.configure(time: formattedTime, price: priceString)
@@ -243,14 +243,10 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
         return UICollectionViewCell()
     }
     
-                private func formatPrice(_ price: Double, currency: String) -> String {
-                    return String(format: "%.2f %@", price, currency)
-                }
-    private func formatDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        return dateFormatter.string(from: date)
+    private func formatPrice(_ price: Double, currency: String) -> String {
+        return String(format: "%.2f %@", price, currency)
     }
+    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
