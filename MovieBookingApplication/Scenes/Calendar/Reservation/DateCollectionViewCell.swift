@@ -80,11 +80,10 @@ final class DateCollectionViewCell: UICollectionViewCell {
     // MARK: - Configuration
     func configure(for date: Date) {
         self.date = date
-        let components = calendar.dateComponents([.weekday, .day], from: date)
-        guard let weekday = components.weekday, let day = components.day else { return }
-        let shortWeekdayString = DateFormatter.shortWeekday(date)
-          let title = "\(day)\n\(shortWeekdayString)"
-          button.setTitle(title, for: .normal)
+        let day = DateManager.shared.dayOfMonth(from: date)
+        let shortWeekdayString = DateManager.shared.shortWeekday(from: date)
+        let title = "\(day)\n\(shortWeekdayString)"
+        button.setTitle(title, for: .normal)
     }
     
     

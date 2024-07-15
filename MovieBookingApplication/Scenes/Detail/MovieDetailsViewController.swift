@@ -12,6 +12,7 @@ final class MovieDetailsViewController: UIViewController {
     // MARK: - Properties
     private var movies = [Movie]()
     private var dates: [Date] = []
+    private let dateManager = DateManager.shared
     private var viewModel: MovieDetailsViewModel
     private var timeSlots: [TimeSlot] = []
     private var selectedDate: Date?
@@ -164,16 +165,10 @@ final class MovieDetailsViewController: UIViewController {
     
     
     private func fetchDates() {
-        let calendar = Calendar.current
-        let today = Date()
-        for i in 0..<7 {
-            if let date = calendar.date(byAdding: .day, value: i, to: today) {
-                dates.append(date)
-            }
-        }
-        collectionView.reloadData()
-    }
-    
+           dates = dateManager.fetchDates(numberOfDays: 7)
+           collectionView.reloadData()
+       }
+   
     private func fetchTimeSlots(for selectedDate: Date) {
         viewModel.fetchTimeSlots(for: selectedDate)
     }
