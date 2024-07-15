@@ -82,14 +82,11 @@ final class DateCollectionViewCell: UICollectionViewCell {
         self.date = date
         let components = calendar.dateComponents([.weekday, .day], from: date)
         guard let weekday = components.weekday, let day = components.day else { return }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E"
-        let shortWeekday = dateFormatter.string(from: date)
-        
-        let title = "\(day)\n\(shortWeekday)"
-        button.setTitle(title, for: .normal)
-        
+        let shortWeekdayString = DateFormatter.shortWeekday(date)
+          let title = "\(day)\n\(shortWeekdayString)"
+          button.setTitle(title, for: .normal)
     }
+    
     
     // MARK: - Actions
     @objc private func buttonTapped() {
