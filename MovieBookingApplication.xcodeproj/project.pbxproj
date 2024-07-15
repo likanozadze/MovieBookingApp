@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849D62C45505600F5924B /* DateFormatter+Extension.swift */; };
 		980849D92C4560FD00F5924B /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849D82C4560FD00F5924B /* DateManager.swift */; };
+		980849DC2C457B9E00F5924B /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849DB2C457B9E00F5924B /* PrimaryButton.swift */; };
 		987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */; };
 		987C6E182C4290E800816B14 /* TimeSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E172C4290E800816B14 /* TimeSlot.swift */; };
 		987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		980849D62C45505600F5924B /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		980849D82C4560FD00F5924B /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
+		980849DB2C457B9E00F5924B /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotCollectionViewCell.swift; sourceTree = "<group>"; };
 		987C6E172C4290E800816B14 /* TimeSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlot.swift; sourceTree = "<group>"; };
 		987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieShowtimeManager.swift; sourceTree = "<group>"; };
@@ -71,6 +73,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		980849DA2C457B6E00F5924B /* ReusableComponents */ = {
+			isa = PBXGroup;
+			children = (
+				980849DB2C457B9E00F5924B /* PrimaryButton.swift */,
+			);
+			path = ReusableComponents;
+			sourceTree = "<group>";
+		};
 		987C6E212C4446F600816B14 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 				9883BA292C41786E009D8996 /* Models */,
 				9883BA1E2C416646009D8996 /* Scenes */,
 				987C6E212C4446F600816B14 /* Managers */,
+				980849DA2C457B6E00F5924B /* ReusableComponents */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
@@ -296,6 +307,7 @@
 				9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */,
 				9883BA2F2C417929009D8996 /* NetworkManager.swift in Sources */,
 				9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */,
+				980849DC2C457B9E00F5924B /* PrimaryButton.swift in Sources */,
 				9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */,
 				9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */,
 				9883BA312C417A07009D8996 /* MovieDetails.swift in Sources */,
