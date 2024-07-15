@@ -22,7 +22,7 @@ protocol MovieDetailsViewModel {
 
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     private var movieId: Int
-    
+    private let showtimeManager = MovieShowtimeManager.shared
     weak var delegate: MovieDetailsViewModelDelegate?
     
     init(movieId: Int) {
@@ -52,23 +52,7 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     }
     
     func fetchTimeSlots(for date: Date) {
-            let timeSlots = ShowTime.allCases.map { showTime in
-                let ticketPriceCategory: TicketPriceCategory
-                switch showTime {
-                case .afternoon1:
-                    ticketPriceCategory = .afternoon1
-                case .afternoon2:
-                    ticketPriceCategory = .afternoon2
-                case .evening:
-                    ticketPriceCategory = .evening
-                case .night1:
-                    ticketPriceCategory = .night1
-                case .night2:
-                    ticketPriceCategory = .night2
-                }
-                let ticketPrices = [TicketPrice(priceCategory: ticketPriceCategory, currency: "USD")]
-                return TimeSlot(date: date, showTime: showTime, ticketPrices: ticketPrices)
-            }
-            delegate?.timeSlotsFetched(timeSlots)
-        }
+        let timeSlots = showtimeManager.fetchTimeSlots(for: date)
+        delegate?.timeSlotsFetched(timeSlots)
     }
+}

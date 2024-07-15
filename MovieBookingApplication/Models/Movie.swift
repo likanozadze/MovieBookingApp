@@ -17,7 +17,7 @@ struct Movie: Decodable {
     let posterPath: String
     let voteAverage: Double
     let genres: [Genre]
-    var showtimes: [String: [TimeSlot]]
+    var showtimes: [String: [TimeSlot]] = [:]
     
     enum CodingKeys: String, CodingKey {
         case id

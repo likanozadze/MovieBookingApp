@@ -55,8 +55,18 @@ final class MovieShowtimeManager {
         return formattedShowtimes.joined(separator: ", ")
     }
     
-    func setShowtimes(for movie: inout Movie, showtimes: [String: [TimeSlot]]) {
-        movie.showtimes = showtimes
+    func fetchTimeSlots(for date: Date) -> [TimeSlot] {
+        return ShowTime.allCases.map { showTime in
+            let ticketPriceCategory: TicketPriceCategory
+            switch showTime {
+            case .afternoon1: ticketPriceCategory = .afternoon1
+            case .afternoon2: ticketPriceCategory = .afternoon2
+            case .evening: ticketPriceCategory = .evening
+            case .night1: ticketPriceCategory = .night1
+            case .night2: ticketPriceCategory = .night2
+            }
+            let ticketPrices = [TicketPrice(priceCategory: ticketPriceCategory, currency: "USD")]
+            return TimeSlot(date: date, showTime: showTime, ticketPrices: ticketPrices)
+        }
     }
 }
-

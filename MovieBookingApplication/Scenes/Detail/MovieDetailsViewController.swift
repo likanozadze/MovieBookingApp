@@ -73,7 +73,6 @@ final class MovieDetailsViewController: UIViewController {
         viewModel.viewDidLoad()
         fetchDates()
         setupTimePriceCollectionView()
-        fetchDates()
     }
     
     // MARK: - Private Methods
