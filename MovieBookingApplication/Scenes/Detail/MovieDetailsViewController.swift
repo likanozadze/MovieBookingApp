@@ -144,7 +144,7 @@ final class MovieDetailsViewController: UIViewController {
             timePriceCollectionView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
             timePriceCollectionView.leadingAnchor.constraint(equalTo: scrollStackViewContainer.leadingAnchor),
             timePriceCollectionView.trailingAnchor.constraint(equalTo: scrollStackViewContainer.trailingAnchor),
-            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 60),
+            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 140),
             timePriceCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: CGFloat(dates.count)),
             timePriceCollectionView.bottomAnchor.constraint(equalTo: scrollStackViewContainer.bottomAnchor, constant: -16)
         ])
@@ -211,7 +211,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == self.collectionView {
             guard indexPath.item < dates.count else {
-                return UICollectionViewCell() // Handle gracefully
+                return UICollectionViewCell()
             }
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
                 return UICollectionViewCell()
@@ -246,13 +246,17 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == collectionView {
+        if collectionView == self.collectionView {
             return CGSize(width: 80, height: 60)
         } else if collectionView == timePriceCollectionView {
-            return CGSize(width: collectionView.bounds.width, height: 80)
+          
+            let width: CGFloat = collectionView.bounds.width * 0.45
+            let height: CGFloat = 120 // Increased height
+            return CGSize(width: width, height: height)
         }
         return CGSize.zero
     }
+
 }
 
 // MARK: - DateCollectionViewCellDelegate
@@ -270,3 +274,4 @@ extension MovieDetailsViewController: UICollectionViewDelegate {
         }
     }
 }
+

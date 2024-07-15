@@ -27,15 +27,9 @@ final class DateCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var button: UIButton = {
-        let button = UIButton(type: .system)
+    private let button: ReusableButton = {
+        let button = ReusableButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.titleLabel?.numberOfLines = 2
-        button.titleLabel?.textAlignment = .center
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -44,6 +38,7 @@ final class DateCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview()
         setupConstraints()
+        configureButton()
     }
     
     required init?(coder: NSCoder) {
@@ -78,6 +73,13 @@ final class DateCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration
+    private func configureButton() {
+        button.setStyle(.primary)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.titleLabel?.numberOfLines = 0
+        
+    }
+    
     func configure(for date: Date) {
         self.date = date
         let day = DateManager.shared.dayOfMonth(from: date)
