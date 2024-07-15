@@ -20,7 +20,7 @@ final class MovieDetailsViewController: UIViewController {
     private var isTimeSlotCollectionViewHidden = true
     
     
-    private let MainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 16
@@ -60,6 +60,14 @@ final class MovieDetailsViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
+    private let selectSeatsButton: ReusableButton = {
+        let button = ReusableButton(title: "Select Seats", hasBackground: false, fontSize: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
     // MARK: - Init
     init(movieId: Int) {
         viewModel = DefaultMovieDetailsViewModel(movieId: movieId)
@@ -94,12 +102,14 @@ final class MovieDetailsViewController: UIViewController {
     
     private func setupSubviews(){
         view.addSubview(scrollView)
-        scrollView.addSubview(MainStackView)
+        view.addSubview(selectSeatsButton)
+        scrollView.addSubview(mainStackView)
         
-        MainStackView.addArrangedSubview(movieImageView)
-        MainStackView.addArrangedSubview(collectionView)
-        MainStackView.addArrangedSubview(timePriceCollectionView)
+        mainStackView.addArrangedSubview(movieImageView)
+        mainStackView.addArrangedSubview(collectionView)
+        mainStackView.addArrangedSubview(timePriceCollectionView)
         timePriceCollectionView.isHidden = true
+        
     }
     
     private func setupCollectionView() {
@@ -120,22 +130,27 @@ final class MovieDetailsViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            MainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            MainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            MainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            MainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            MainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             
-            movieImageView.topAnchor.constraint(equalTo: MainStackView.topAnchor),
-            movieImageView.leadingAnchor.constraint(equalTo: MainStackView.leadingAnchor),
-            movieImageView.trailingAnchor.constraint(equalTo: MainStackView.trailingAnchor),
+            movieImageView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
+            movieImageView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            movieImageView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+          
             movieImageView.heightAnchor.constraint(equalToConstant: 240),
-            
-            
+                   
             collectionView.heightAnchor.constraint(equalToConstant: 60),
-            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 300)
+            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            
+            selectSeatsButton.heightAnchor.constraint(equalToConstant: 60),
+            selectSeatsButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            selectSeatsButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            selectSeatsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     

@@ -98,7 +98,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
           if isColored {
               cellView.backgroundColor = .black
           } else {
-              cellView.backgroundColor = .red
+              cellView.backgroundColor = .customButtonBackgroundColor
           }
           isColored.toggle()
       }

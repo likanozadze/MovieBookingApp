@@ -21,17 +21,18 @@ final class DateCollectionViewCell: UICollectionViewCell {
     private let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .black
+
         view.layer.cornerRadius = 8
         view.layer.masksToBounds = true
         return view
     }()
-    
-    private let button: ReusableButton = {
-        let button = ReusableButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+
+    private let dateButton: ReusableButton = {
+           let button = ReusableButton(title: "", hasBackground: true, fontSize: .small)
+           button.translatesAutoresizingMaskIntoConstraints = false
+           return button
+       }()
+
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -48,14 +49,13 @@ final class DateCollectionViewCell: UICollectionViewCell {
     // MARK: - Cell Life Cycle
     override func prepareForReuse() {
         super.prepareForReuse()
-        button.setTitle(nil, for: .normal)
         resetButtonTitleColor()
     }
     
     // MARK: - Private Methods
     private func addSubview() {
         contentView.addSubview(cellView)
-        cellView.addSubview(button)
+        cellView.addSubview(dateButton)
     }
     
     private func setupConstraints() {
@@ -65,18 +65,17 @@ final class DateCollectionViewCell: UICollectionViewCell {
             cellView.centerYAnchor.constraint(equalTo: centerYAnchor),
             cellView.heightAnchor.constraint(equalToConstant: 60),
             
-            button.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
-            button.topAnchor.constraint(equalTo: cellView.topAnchor),
-            button.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
+            dateButton.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
+            dateButton.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
+            dateButton.topAnchor.constraint(equalTo: cellView.topAnchor),
+            dateButton.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
         ])
     }
     
     // MARK: - Configuration
     private func configureButton() {
-        button.setStyle(.primary)
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.titleLabel?.numberOfLines = 0
+        dateButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        dateButton.titleLabel?.numberOfLines = 0
         
     }
     
@@ -85,7 +84,7 @@ final class DateCollectionViewCell: UICollectionViewCell {
         let day = DateManager.shared.dayOfMonth(from: date)
         let shortWeekdayString = DateManager.shared.shortWeekday(from: date)
         let title = "\(day)\n\(shortWeekdayString)"
-        button.setTitle(title, for: .normal)
+        dateButton.setTitle(title, for: .normal)
     }
     
     
@@ -98,11 +97,11 @@ final class DateCollectionViewCell: UICollectionViewCell {
     }
     
     private func toggleButtonTitleColor() {
-        let newColor: UIColor = (button.titleColor(for: .normal) == .white) ? .customAccentColor : .white
-        button.setTitleColor(newColor, for: .normal)
+        let newColor: UIColor = (dateButton.titleColor(for: .normal) == .white) ? .customAccentColor : .white
+        dateButton.setTitleColor(newColor, for: .normal)
     }
     
     private func resetButtonTitleColor() {
-        button.setTitleColor(.white, for: .normal)
+        dateButton.setTitleColor(.white, for: .normal)
     }
 }

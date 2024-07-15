@@ -7,58 +7,47 @@
 
 import UIKit
 
-
-enum ButtonStyle {
-    case primary
-    case secondary
-}
-
-protocol ReusableButtonDelegate: AnyObject {
-    func buttonTapped(sender: UIButton)
-}
-
-final class ReusableButton: UIButton {
+class ReusableButton: UIButton {
     
-    weak var delegate: ReusableButtonDelegate?
+    // MARK: - Font Size Enumeration
     
-    // MARK: - Init
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
+    enum FontSize {
+        case small
+        case medium
+        case big
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - Initialization
     
-    // MARK: - Configuration
+    init(title: String, hasBackground: Bool = false, fontSize: FontSize) {
+        super.init(frame: .zero)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.textAlignment = .center
+        self.layer.cornerRadius = 12
+        self.layer.masksToBounds = true
+        
+        if hasBackground {
+            self.backgroundColor = .black
+            self.setTitleColor(UIColor.white,for: .normal)
+        } else {
+            self.backgroundColor = .customAccentColor
+            self.setTitleColor(UIColor.white,for: .normal)
+        }
+        
+        switch fontSize {
+        case .small:
+            self.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        case .medium:
+            self.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        case .big:
+            self.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
     
-    private func configure() {
-        translatesAutoresizingMaskIntoConstraints = false
-        addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
-
-    }
-    
-    func setStyle(_ style: ButtonStyle) {
-        switch style {
-        case .primary:
-            backgroundColor = .customSecondaryColor
-            setTitleColor(.white, for: .normal)
-            titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-            titleLabel?.textAlignment = .center
-        case .secondary:
-            backgroundColor = .customSecondaryColor
-            setTitleColor(.white, for: .normal)
-            titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-            titleLabel?.textAlignment = .center
-            
         }
     }
     
-    // MARK: - Actions
+    // MARK: - Required Initializer
     
-    @objc private func handleButtonTap() {
-        delegate?.buttonTapped(sender: self)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
