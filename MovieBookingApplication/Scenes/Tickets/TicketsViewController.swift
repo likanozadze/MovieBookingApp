@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class TicketsViewController: UIViewController {
+final class TicketsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
