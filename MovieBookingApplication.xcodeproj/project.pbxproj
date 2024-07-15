@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849D62C45505600F5924B /* DateFormatter+Extension.swift */; };
 		987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */; };
 		987C6E182C4290E800816B14 /* TimeSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E172C4290E800816B14 /* TimeSlot.swift */; };
 		987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		980849D62C45505600F5924B /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotCollectionViewCell.swift; sourceTree = "<group>"; };
 		987C6E172C4290E800816B14 /* TimeSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlot.swift; sourceTree = "<group>"; };
 		987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieShowtimeManager.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				9883BA1B2C4152C8009D8996 /* Color+Extension.swift */,
+				980849D62C45505600F5924B /* DateFormatter+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				9883BA202C416680009D8996 /* TabBarController.swift in Sources */,
 				9883BA252C41673A009D8996 /* TicketsViewController.swift in Sources */,
 				9883BA2B2C417890009D8996 /* Movie.swift in Sources */,
+				980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */,
 				9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
