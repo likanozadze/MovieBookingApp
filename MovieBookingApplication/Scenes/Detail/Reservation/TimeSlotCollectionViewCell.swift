@@ -38,22 +38,30 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private var isColored = false
-    
+  
+    override var isSelected: Bool  {
+        didSet {
+            updateAppearance()
+        }
+    }
+
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
         setupConstraints()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
-        cellView.addGestureRecognizer(tapGesture)
-        cellView.isUserInteractionEnabled = true
+        updateAppearance()
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    private func updateAppearance() {
+           cellView.backgroundColor = isSelected ? .customButtonBackgroundColor : .black
+       }
+
     
     // MARK: - Cell Life Cycle
     override func prepareForReuse() {
@@ -89,17 +97,10 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration
-    func configure(time: String, price: String) {
-        timeLabel.text = time
-        priceLabel.text = price
-    }
-    
-    @objc private func cellTapped() {
-          if isColored {
-              cellView.backgroundColor = .black
-          } else {
-              cellView.backgroundColor = .customButtonBackgroundColor
-          }
-          isColored.toggle()
-      }
+    func configure(time: String, price: String, isSelected: Bool) {
+           timeLabel.text = time
+           priceLabel.text = price
+           self.isSelected = isSelected
+           updateAppearance()
+       }
   }

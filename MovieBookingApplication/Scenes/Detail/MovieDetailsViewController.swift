@@ -5,7 +5,6 @@
 //  Created by Lika Nozadze on 7/12/24.
 //
 
-
 import UIKit
 
 final class MovieDetailsViewController: UIViewController {
@@ -18,7 +17,7 @@ final class MovieDetailsViewController: UIViewController {
     private var timeSlots: [TimeSlot] = []
     private var selectedDate: Date?
     private var isTimeSlotCollectionViewHidden = true
-    
+    private var selectedTimeSlot: TimeSlot?
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -158,13 +157,14 @@ final class MovieDetailsViewController: UIViewController {
         if selectedDate == date && !isTimeSlotCollectionViewHidden {
             timePriceCollectionView.isHidden = true
             isTimeSlotCollectionViewHidden = true
-            selectedDate = nil
         } else {
             timePriceCollectionView.isHidden = false
             isTimeSlotCollectionViewHidden = false
             selectedDate = date
+            clearTimeSlotSelection()
             fetchTimeSlots(for: date)
         }
+        print("Time slot collection view is \(timePriceCollectionView.isHidden ? "hidden" : "visible")")
     }
     
     
@@ -174,6 +174,9 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     private func fetchTimeSlots(for selectedDate: Date) {
+        self.timeSlots.removeAll()
+        self.selectedTimeSlot = nil
+        
         viewModel.fetchTimeSlots(for: selectedDate)
     }
 }
@@ -197,6 +200,14 @@ extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     }
     func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
         self.timeSlots = timeSlots
+        print("Fetched \(timeSlots.count) time slots")
+        DispatchQueue.main.async {
+            self.timePriceCollectionView.reloadData()
+        }
+    
+    }
+    private func clearTimeSlotSelection() {
+        selectedTimeSlot = nil
         timePriceCollectionView.reloadData()
     }
 }
@@ -224,20 +235,23 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
             cell.configure(for: date)
             cell.delegate = self
             return cell
+
         } else if collectionView == timePriceCollectionView {
-            guard indexPath.item < timeSlots.count else {
-                return UICollectionViewCell()
+                guard indexPath.item < timeSlots.count else {
+                    return UICollectionViewCell()
+                }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                let timeSlot = timeSlots[indexPath.item]
+                let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
+                let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
+                
+                let isSelected = timeSlot == selectedTimeSlot
+                cell.configure(time: formattedTime, price: priceString, isSelected: isSelected)
+                print("Configured cell for time slot: \(formattedTime) at index \(indexPath.item), isSelected: \(isSelected)")
+                return cell
             }
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            let timeSlot = timeSlots[indexPath.item]
-            let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
-            let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
-            
-            cell.configure(time: formattedTime, price: priceString)
-            return cell
-        }
         return UICollectionViewCell()
     }
     
@@ -271,17 +285,41 @@ extension MovieDetailsViewController: DateCollectionViewCellDelegate {
     }
 }
 
+
 extension MovieDetailsViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
-            let selectedDate = dates[indexPath.item]
-            toggleTimeSlotCollectionView(for: selectedDate)
+            self.selectedDate = dates[indexPath.item]
+            print("Date selected: \(self.selectedDate!)")
+            toggleTimeSlotCollectionView(for: self.selectedDate!)
+        } else if collectionView == timePriceCollectionView {
+            guard indexPath.item < timeSlots.count else {
+                print("Invalid index for time slots")
+                return
+            }
+            self.selectedTimeSlot = timeSlots[indexPath.item]
+            print("Time slot selected: \(self.selectedTimeSlot!)")
+            print("Selected time: \(DateFormatter.formattedDate(date: self.selectedTimeSlot!.startTime, format: "HH:mm"))")
+            timePriceCollectionView.reloadData()
         }
     }
     
     @objc func handleSelectSeats() {
-       let seatsViewController = SeatsViewController()
-       navigationController?.pushViewController(seatsViewController, animated: true)
-     }
+        print("Selected Date: \(String(describing: selectedDate))")
+        print("Selected Time Slot: \(String(describing: selectedTimeSlot))")
+        print("Time slots count: \(timeSlots.count)")
+        print("Is time slot collection view hidden: \(timePriceCollectionView.isHidden)")
+        
+        guard let selectedDate = selectedDate, let selectedTimeSlot = selectedTimeSlot else {
+            let alert = UIAlertController(title: "Selection Incomplete", message: "Please select both a date and a time slot.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+    
+            let seatsViewController = SeatsViewController(selectedDate: selectedDate, selectedTimeSlot: selectedTimeSlot, dates: dates, timeSlots: timeSlots)
+            navigationController?.pushViewController(seatsViewController, animated: true)
+       
+    }
 }
-

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ShowTime: Int, CaseIterable {
+enum ShowTime: Int, CaseIterable, Equatable {
     case afternoon1 = 1330
     case afternoon2 = 1630
     case evening = 1900
@@ -34,7 +34,7 @@ enum TicketPriceCategory: Double, CaseIterable {
     case night2 = 25.0
 }
 
-struct TimeSlot {
+struct TimeSlot: Equatable {
     let date: Date
     let showTime: ShowTime
     var ticketPrices: [TicketPrice]
@@ -49,9 +49,13 @@ struct TimeSlot {
         let calendar = Calendar.current
         return calendar.date(byAdding: .hour, value: 2, to: startTime)!
     }
+    
+    static func ==(lhs: TimeSlot, rhs: TimeSlot) -> Bool {
+        return lhs.date == rhs.date
+    }
 }
 
-struct TicketPrice {
+struct TicketPrice: Equatable{
     let priceCategory: TicketPriceCategory
     let currency: String
     
