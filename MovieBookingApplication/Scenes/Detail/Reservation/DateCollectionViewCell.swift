@@ -21,18 +21,18 @@ final class DateCollectionViewCell: UICollectionViewCell {
     private let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        
         view.layer.cornerRadius = 8
         view.layer.masksToBounds = true
         return view
     }()
-
+    
     private let dateButton: ReusableButton = {
-           let button = ReusableButton(title: "", hasBackground: true, fontSize: .small)
-           button.translatesAutoresizingMaskIntoConstraints = false
-           return button
-       }()
-
+        let button = ReusableButton(title: "", hasBackground: true, fontSize: .small)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -78,16 +78,21 @@ final class DateCollectionViewCell: UICollectionViewCell {
         dateButton.titleLabel?.numberOfLines = 0
         
     }
-    
-    func configure(for date: Date) {
+
+    func configure(for date: Date, isSelected: Bool = false) {
         self.date = date
         let day = DateManager.shared.dayOfMonth(from: date)
         let shortWeekdayString = DateManager.shared.shortWeekday(from: date)
         let title = "\(day)\n\(shortWeekdayString)"
         dateButton.setTitle(title, for: .normal)
+        self.isSelected = isSelected
+        
+        if isSelected {
+            dateButton.setTitleColor(.customAccentColor, for: .normal)
+        } else {
+            cellView.backgroundColor = .black
+        }
     }
-    
-    
     // MARK: - Actions
     @objc private func buttonTapped() {
         toggleButtonTitleColor()

@@ -34,7 +34,7 @@ final class SeatsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-        
+    
     private var dateCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -72,6 +72,14 @@ final class SeatsViewController: UIViewController {
         return label
     }()
     
+    private let checkoutButton: ReusableButton = {
+        let button = ReusableButton(title: "Checkout", hasBackground: false, fontSize: .medium)
+        //   button.addTarget(self, action: #selector(handleSelectSeats), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
     private let selectedDate: Date
     private let selectedTimeSlot: TimeSlot
     private let dates: [Date]
@@ -79,13 +87,20 @@ final class SeatsViewController: UIViewController {
     private let seatManager = SeatManager.shared
     private let rowsPerSection = [7, 7, 7, 7, 7, 7]
     
-    // MARK: - Init
+    private var selectedDateIndex: Int?
+    private var selectedTimeSlotIndex: Int?
     
+    // MARK: - Init
     init(selectedDate: Date, selectedTimeSlot: TimeSlot, dates: [Date], timeSlots: [TimeSlot]) {
         self.selectedDate = selectedDate
         self.selectedTimeSlot = selectedTimeSlot
         self.dates = dates
         self.timeSlots = timeSlots
+        
+        
+        self.selectedDateIndex = dates.firstIndex(of: selectedDate)
+        self.selectedTimeSlotIndex = timeSlots.firstIndex(where: { $0.startTime == selectedTimeSlot.startTime })
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -141,41 +156,62 @@ final class SeatsViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(scrollView)
+        view.addSubview(checkoutButton)
         scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(timeAndDateStackView)
         mainStackView.addArrangedSubview(selectSeatsLabel)
         mainStackView.addArrangedSubview(collectionView)
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
+            
             mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
+            
             dateCollectionView.heightAnchor.constraint(equalToConstant: 60),
             timeSlotCollectionView.heightAnchor.constraint(equalToConstant: 100),
-
+            
             timeAndDateStackView.heightAnchor.constraint(equalToConstant: 150),
-
+            
             selectSeatsLabel.centerXAnchor.constraint(equalTo: mainStackView.centerXAnchor),
-                  selectSeatsLabel.heightAnchor.constraint(equalToConstant: 40),
-
-
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            selectSeatsLabel.heightAnchor.constraint(equalToConstant: 40),
+            
+            
+            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            
+            
+            checkoutButton.heightAnchor.constraint(equalToConstant: 60),
+            checkoutButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            checkoutButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            checkoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
-
+    
     func initializeSeats() {
         let numberOfSections = rowsPerSection.count
         seatManager.setSeats(for: numberOfSections, rowsPerSection: rowsPerSection)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let selectedDateIndex = selectedDateIndex {
+            let indexPath = IndexPath(item: selectedDateIndex, section: 0)
+            dateCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        }
+        
+        if let selectedTimeSlotIndex = selectedTimeSlotIndex {
+            let indexPath = IndexPath(item: selectedTimeSlotIndex, section: 0)
+            timeSlotCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        }
     }
 }
 // MARK: - UICollectionViewDataSource
@@ -202,26 +238,21 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == dateCollectionView {
-            print("Configuring date cell at index \(indexPath.item)")
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
                 return UICollectionViewCell()
             }
             let date = dates[indexPath.item]
-            cell.configure(for: date)
-            cell.isSelected = date == selectedDate
+            cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
             return cell
         } else if collectionView == timeSlotCollectionView {
-            print("Configuring time slot cell at index \(indexPath.item)")
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
                 return UICollectionViewCell()
             }
             let timeSlot = timeSlots[indexPath.item]
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
-            let isSelected = timeSlot == selectedTimeSlot
-            cell.configure(time: formattedTime, price: priceString, isSelected: isSelected)
+            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
             return cell
-            
         } else {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
@@ -233,6 +264,18 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             }
             cell.configure(withSeat: seat)
             return cell
+        }
+        
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == dateCollectionView {
+            selectedDateIndex = indexPath.item
+            dateCollectionView.reloadData()
+        } else if collectionView == timeSlotCollectionView {
+            selectedTimeSlotIndex = indexPath.item
+            timeSlotCollectionView.reloadData()
         }
     }
     

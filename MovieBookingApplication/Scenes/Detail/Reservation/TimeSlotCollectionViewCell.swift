@@ -57,7 +57,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         timeLabel.text = nil
         priceLabel.text = nil
-        updateAppearance() // Reset appearance on reuse
+       // updateAppearance() // Reset appearance on reuse
     }
 
     // MARK: - Private Methods
@@ -87,10 +87,17 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(time: String, price: String, isSelected: Bool) {
+    func configure(time: String, price: String, isSelected: Bool = false) {
         timeLabel.text = time
-        priceLabel.text = price
-        self.isSelected = isSelected // Ensure isSelected is updated correctly
+               priceLabel.text = price
+               self.isSelected = isSelected
+           
+        if isSelected {
+            cellView.backgroundColor = .customAccentColor
+
+        } else {
+            cellView.backgroundColor = .black
+        }
     }
 
     private func updateAppearance() {
