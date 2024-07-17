@@ -180,10 +180,11 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             let timeSlot = timeSlots[indexPath.item]
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
-            cell.configure(time: formattedTime, price: priceString, isSelected: timeSlot == selectedTimeSlot)
+            let isSelected = timeSlot == selectedTimeSlot
+            cell.configure(time: formattedTime, price: priceString, isSelected: isSelected)
             return cell
         } else {
-            // Handle seats collection view
+          
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
                 fatalError("Could not dequeue seat cell")
             }
@@ -218,7 +219,6 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView == timeSlotCollectionView {
             return CGSize(width: 80, height: 60)
         } else {
-            // Adjust the size for seat cells as needed
             return CGSize(width: 40, height: 40)
         }
     }

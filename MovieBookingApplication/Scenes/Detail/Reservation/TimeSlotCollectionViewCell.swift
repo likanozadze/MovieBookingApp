@@ -39,11 +39,12 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
     }()
     
   
-    override var isSelected: Bool  {
-        didSet {
-            updateAppearance()
+    override var isSelected: Bool {
+            didSet {
+                cellView.backgroundColor = isSelected ? .red : .black
+            }
         }
-    }
+
 
 
     // MARK: - Init
@@ -100,7 +101,6 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
     func configure(time: String, price: String, isSelected: Bool) {
            timeLabel.text = time
            priceLabel.text = price
-           self.isSelected = isSelected
-           updateAppearance()
+        cellView.backgroundColor = isSelected ? .red : .black
        }
   }
