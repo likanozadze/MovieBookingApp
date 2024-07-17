@@ -62,11 +62,11 @@ final class MovieDetailsViewController: UIViewController {
     }()
     
     private let selectSeatsButton: ReusableButton = {
-        let button = ReusableButton(title: "Select Seats", hasBackground: false, fontSize: .medium)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+      let button = ReusableButton(title: "Select Seats", hasBackground: false, fontSize: .medium)
+      button.addTarget(self, action: #selector(handleSelectSeats), for: .touchUpInside)
+      button.translatesAutoresizingMaskIntoConstraints = false
+      return button
     }()
-    
     
     // MARK: - Init
     init(movieId: Int) {
@@ -278,5 +278,10 @@ extension MovieDetailsViewController: UICollectionViewDelegate {
             toggleTimeSlotCollectionView(for: selectedDate)
         }
     }
+    
+    @objc func handleSelectSeats() {
+       let seatsViewController = SeatsViewController()
+       navigationController?.pushViewController(seatsViewController, animated: true)
+     }
 }
 
