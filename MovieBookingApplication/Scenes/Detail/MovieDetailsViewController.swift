@@ -245,7 +245,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
             }
             let timeSlot = timeSlots[indexPath.item]
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
-            let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
+            let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
             
             let isSelected = timeSlot == selectedTimeSlot
             
@@ -255,10 +255,6 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
             return cell
         }
         return UICollectionViewCell()
-    }
-    
-    private func formatPrice(_ price: Double, currency: String) -> String {
-        return String(format: "%.2f %@", price, currency)
     }
 }
 

@@ -233,38 +233,69 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         }
     }
     
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        if collectionView == dateCollectionView {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
+//                return UICollectionViewCell()
+//            }
+//            let date = dates[indexPath.item]
+//            cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
+//            return cell
+//        } else if collectionView == timeSlotCollectionView {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
+//                return UICollectionViewCell()
+//            }
+//            let timeSlot = timeSlots[indexPath.item]
+//            let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
+//            let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
+//            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
+//            return cell
+//        } else {
+//
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
+//                fatalError("Could not dequeue seat cell")
+//            }
+//            guard let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) else {
+//                print("Seat not found at indexPath: \(indexPath)")
+//                return cell
+//            }
+//            cell.configure(withSeat: seat)
+//            return cell
+//        }
+//
+//
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == dateCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            let date = dates[indexPath.item]
-            cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
-            return cell
-        } else if collectionView == timeSlotCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            let timeSlot = timeSlots[indexPath.item]
-            let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
-            let priceString = formatPrice(timeSlot.ticketPrices.first?.price ?? 0, currency: timeSlot.ticketPrices.first?.currency ?? "USD")
-            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
-            return cell
-        } else {
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
-                fatalError("Could not dequeue seat cell")
-            }
-            guard let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) else {
-                print("Seat not found at indexPath: \(indexPath)")
-                return cell
-            }
-            cell.configure(withSeat: seat)
-            return cell
+      if collectionView == dateCollectionView {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
+          return UICollectionViewCell()
         }
-        
-        
+        let date = dates[indexPath.item]
+        cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
+        return cell
+      } else if collectionView == timeSlotCollectionView {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
+          return UICollectionViewCell()
+        }
+        let timeSlot = timeSlots[indexPath.item]
+        let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
+        let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
+        cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
+        return cell
+      } else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
+          fatalError("Could not dequeue seat cell")
+        }
+        guard let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) else {
+          print("Seat not found at indexPath: \(indexPath)")
+          return cell
+        }
+        cell.configure(withSeat: seat)
+        return cell
+      }
     }
+
     // MARK: - CollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == dateCollectionView {
@@ -273,20 +304,6 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         } else if collectionView == timeSlotCollectionView {
             selectedTimeSlotIndex = indexPath.item
             timeSlotCollectionView.reloadData()
-        }
-    }
-    
-    private func formatPrice(_ price: Double, currency: String) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = currency
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        
-        if let formattedPrice = formatter.string(from: NSNumber(value: price)) {
-            return formattedPrice
-        } else {
-            return String(format: "%.2f %@", price, currency)
         }
     }
 }
