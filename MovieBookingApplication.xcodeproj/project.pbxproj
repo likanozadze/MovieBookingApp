@@ -35,6 +35,7 @@
 		9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3D2C41BEA6009D8996 /* MovieDetailsViewController.swift */; };
 		9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */; };
 		988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */; };
+		988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1122C4AB507005EE898 /* AlertManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		9883BA3D2C41BEA6009D8996 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "formatPrice+Extension.swift"; sourceTree = "<group>"; };
+		988DC1122C4AB507005EE898 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				9883BA2E2C417929009D8996 /* NetworkManager.swift */,
+				988DC1122C4AB507005EE898 /* AlertManager.swift */,
 				980849DD2C45BC0F00F5924B /* SeatManager.swift */,
 				987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */,
 				980849D82C4560FD00F5924B /* DateManager.swift */,
@@ -323,6 +326,7 @@
 				987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */,
 				987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */,
 				9883BA2D2C41790A009D8996 /* HomeViewModel.swift in Sources */,
+				988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */,
 				9883BA3B2C41AF31009D8996 /* DateCollectionViewCell.swift in Sources */,
 				980849D92C4560FD00F5924B /* DateManager.swift in Sources */,
 				98034B4C2C46AA75002FB7B8 /* SeatCell.swift in Sources */,
