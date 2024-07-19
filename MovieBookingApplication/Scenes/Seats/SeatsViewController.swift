@@ -11,7 +11,6 @@ import UIKit
 final class SeatsViewController: UIViewController {
     
     // MARK: - Properties
-    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +58,6 @@ final class SeatsViewController: UIViewController {
         stackView.spacing = 10
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
     }()
     
@@ -86,7 +84,6 @@ final class SeatsViewController: UIViewController {
     private let timeSlots: [TimeSlot]
     private let seatManager = SeatManager.shared
     private let rowsPerSection = [7, 7, 7, 7, 7, 7]
-    
     private var selectedDateIndex: Int?
     private var selectedTimeSlotIndex: Int?
     
@@ -96,11 +93,8 @@ final class SeatsViewController: UIViewController {
         self.selectedTimeSlot = selectedTimeSlot
         self.dates = dates
         self.timeSlots = timeSlots
-        
-        
         self.selectedDateIndex = dates.firstIndex(of: selectedDate)
         self.selectedTimeSlotIndex = timeSlots.firstIndex(where: { $0.startTime == selectedTimeSlot.startTime })
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -117,6 +111,8 @@ final class SeatsViewController: UIViewController {
         initializeSeats()
         setupScrollView()
     }
+    
+    // MARK: - Private Methods
     private func setup() {
         setupBackground()
         setupSubviews()
@@ -126,16 +122,17 @@ final class SeatsViewController: UIViewController {
     private func setupBackground() {
         view.backgroundColor = .customBackgroundColor
     }
+    
+    private func setupScrollView() {
+        scrollView.showsVerticalScrollIndicator = false
+    }
+    
     private func setupCollectionViews() {
         setupDateCollectionView()
         setupTimeSlotCollectionView()
         setupSeatsCollectionView()
     }
-    private func setupScrollView() {
-        scrollView.showsVerticalScrollIndicator = false
-    }
-    
-    
+ 
     private func setupDateCollectionView() {
         dateCollectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCollectionViewCell")
         dateCollectionView.dataSource = self
@@ -214,7 +211,7 @@ final class SeatsViewController: UIViewController {
         }
     }
 }
-// MARK: - UICollectionViewDataSource
+// MARK: - CollectionView DataSource
 
 extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -268,7 +265,7 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         
         
     }
-    
+    // MARK: - CollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == dateCollectionView {
             selectedDateIndex = indexPath.item
@@ -294,6 +291,7 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
 }
 
+// MARK: - CollectionView FlowLayout
 extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == dateCollectionView {

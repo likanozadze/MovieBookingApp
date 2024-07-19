@@ -138,6 +138,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - CollectionView FlowLayout
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout

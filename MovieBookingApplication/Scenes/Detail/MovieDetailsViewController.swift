@@ -77,7 +77,7 @@ final class MovieDetailsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // MARK: - Init
+    // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -89,10 +89,9 @@ final class MovieDetailsViewController: UIViewController {
     // MARK: - Private Methods
     private func setup() {
         setupBackground()
-        setupCollectionView()
         setupSubviews()
+        setupCollectionViews()
         setupConstraints()
-        setupTimePriceCollectionView()
         
     }
     private func setupBackground() {
@@ -110,6 +109,12 @@ final class MovieDetailsViewController: UIViewController {
         timePriceCollectionView.isHidden = true
         
     }
+    
+    private func setupCollectionViews() {
+        setupCollectionView()
+        setupTimePriceCollectionView()
+    }
+    
     
     private func setupCollectionView() {
         collectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCollectionViewCell")
@@ -166,7 +171,6 @@ final class MovieDetailsViewController: UIViewController {
             selectedDate = date
             fetchTimeSlots(for: date)
         }
-        print("Time slot collection view is \(timePriceCollectionView.isHidden ? "hidden" : "visible")")
     }
     
     private func resetTimeSlotSelections() {
@@ -204,14 +208,13 @@ extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     }
     func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
         self.timeSlots = timeSlots
-        print("Fetched \(timeSlots.count) time slots")
         DispatchQueue.main.async {
             self.timePriceCollectionView.reloadData()
         }
         
     }
 }
-// MARK: - UICollectionViewDataSource
+// MARK: - CollectionView DataSource
 
 extension MovieDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -257,24 +260,18 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
     private func formatPrice(_ price: Double, currency: String) -> String {
         return String(format: "%.2f %@", price, currency)
     }
-    
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - CollectionView FlowLayout
 extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == self.collectionView {
             return CGSize(width: 80, height: 60)
         } else if collectionView == timePriceCollectionView {
-            
-            //   let width: CGFloat = collectionView.bounds.width * 0.5
-            //  let height: CGFloat = 100
             return CGSize(width: 80, height: 100)
-            //   return CGSize(width: width, height: height)
         }
         return CGSize.zero
     }
-    
 }
 
 // MARK: - DateCollectionViewCellDelegate
@@ -285,22 +282,17 @@ extension MovieDetailsViewController: DateCollectionViewCellDelegate {
     }
 }
 
-
 extension MovieDetailsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
             self.selectedDate = dates[indexPath.item]
-            print("Date selected: \(self.selectedDate!)")
             toggleTimeSlotCollectionView(for: self.selectedDate!)
         } else if collectionView == timePriceCollectionView {
             guard indexPath.item < timeSlots.count else {
-                print("Invalid index for time slots")
                 return
             }
             selectedTimeSlot = timeSlots[indexPath.item]
-            print("Time slot selected: \(selectedTimeSlot!)")
-            print("Selected time: \(DateFormatter.formattedDate(date: selectedTimeSlot!.startTime, format: "HH:mm"))")
-            
+
             for cell in timePriceCollectionView.visibleCells {
                 cell.isSelected = false
             }
@@ -311,22 +303,10 @@ extension MovieDetailsViewController: UICollectionViewDelegate {
         }
     }
     
- 
     @objc func handleSelectSeats() {
-        print("Selected Date: \(String(describing: selectedDate))")
-        print("Selected Time Slot: \(String(describing: selectedTimeSlot))")
-        print("Time slots count: \(timeSlots.count)")
-        print("Is time slot collection view hidden: \(timePriceCollectionView.isHidden)")
-        
-        if let selectedTimeSlot = selectedTimeSlot {
-            print("Selected time slot details:")
-            print("  Start time: \(selectedTimeSlot.startTime)")
-            print("  End time: \(selectedTimeSlot.endTime)")
-            print("  Ticket prices: \(selectedTimeSlot.ticketPrices)")
+        if selectedTimeSlot != nil {
         } else {
-            print("No time slot selected")
         }
-        
         guard let selectedDate = selectedDate, let selectedTimeSlot = selectedTimeSlot else {
             let alert = UIAlertController(title: "Selection Incomplete", message: "Please select both a date and a time slot.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

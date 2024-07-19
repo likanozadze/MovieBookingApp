@@ -57,7 +57,6 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         timeLabel.text = nil
         priceLabel.text = nil
-       // updateAppearance() // Reset appearance on reuse
     }
 
     // MARK: - Private Methods
