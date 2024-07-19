@@ -218,55 +218,50 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == dateCollectionView {
-            print("Number of dates: \(dates.count)")
+        switch collectionView {
+        case dateCollectionView:
             return dates.count
-        } else if collectionView == timeSlotCollectionView {
-            print("Number of time slots: \(timeSlots.count)")
+        case timeSlotCollectionView:
             return timeSlots.count
-        } else {
+        default:
             return rowsPerSection[section]
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == dateCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
-                return UICollectionViewCell()
-            }
+        switch collectionView {
+        case dateCollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as! DateCollectionViewCell
             let date = dates[indexPath.item]
             cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
             return cell
-        } else if collectionView == timeSlotCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as? TimeSlotCollectionViewCell else {
-                return UICollectionViewCell()
-            }
+        case timeSlotCollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as! TimeSlotCollectionViewCell
             let timeSlot = timeSlots[indexPath.item]
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
             cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
             return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as? SeatCell else {
-                fatalError("Could not dequeue seat cell")
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as! SeatCell
+            if let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) {
+                cell.configure(withSeat: seat)
             }
-            guard let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) else {
-                print("Seat not found at indexPath: \(indexPath)")
-                return cell
-            }
-            cell.configure(withSeat: seat)
             return cell
         }
     }
     
     // MARK: - CollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == dateCollectionView {
+        switch collectionView {
+        case dateCollectionView:
             selectedDateIndex = indexPath.item
             dateCollectionView.reloadData()
-        } else if collectionView == timeSlotCollectionView {
+        case timeSlotCollectionView:
             selectedTimeSlotIndex = indexPath.item
             timeSlotCollectionView.reloadData()
+        default:
+            break
         }
     }
 }
@@ -274,11 +269,12 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
 // MARK: - CollectionView FlowLayout
 extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == dateCollectionView {
+        switch collectionView {
+        case dateCollectionView:
             return CGSize(width: 80, height: 60)
-        } else if collectionView == timeSlotCollectionView {
+        case timeSlotCollectionView:
             return CGSize(width: 80, height: 100)
-        } else {
+        default:
             return CGSize(width: 40, height: 40)
         }
     }
