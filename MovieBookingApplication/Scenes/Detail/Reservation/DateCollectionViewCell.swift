@@ -21,25 +21,34 @@ final class DateCollectionViewCell: UICollectionViewCell {
     private let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         view.layer.cornerRadius = 8
+        view.layer.borderWidth = 2
         view.layer.masksToBounds = true
         return view
     }()
     
-    private let dateButton: ReusableButton = {
-        let button = ReusableButton(title: "", hasBackground: true, fontSize: .small)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
     }()
     
+    override var isSelected: Bool {
+        didSet {
+            updateAppearance()
+        }
+    }
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview()
+        addSubviews()
         setupConstraints()
-        configureButton()
+        setupGestureRecognizer()
     }
     
     required init?(coder: NSCoder) {
@@ -49,64 +58,73 @@ final class DateCollectionViewCell: UICollectionViewCell {
     // MARK: - Cell Life Cycle
     override func prepareForReuse() {
         super.prepareForReuse()
-        resetButtonTitleColor()
+        isSelected = false
+        dateLabel.text = nil
     }
     
     // MARK: - Private Methods
-    private func addSubview() {
+    private func addSubviews() {
         contentView.addSubview(cellView)
-        cellView.addSubview(dateButton)
+        cellView.addSubview(dateLabel)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            cellView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            cellView.heightAnchor.constraint(equalToConstant: 60),
+            cellView.topAnchor.constraint(equalTo: topAnchor),
+            cellView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            dateButton.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
-            dateButton.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
-            dateButton.topAnchor.constraint(equalTo: cellView.topAnchor),
-            dateButton.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
+            dateLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 4),
+            dateLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -4),
+            dateLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 4),
+            dateLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -4)
         ])
     }
     
-    // MARK: - Configuration
-    private func configureButton() {
-        dateButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        dateButton.titleLabel?.numberOfLines = 0
-        
+    private func setupGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        cellView.addGestureRecognizer(tapGesture)
+        cellView.isUserInteractionEnabled = true
     }
-
+    
+    // MARK: - Configuration
     func configure(for date: Date, isSelected: Bool = false) {
         self.date = date
         let day = DateManager.shared.dayOfMonth(from: date)
         let shortWeekdayString = DateManager.shared.shortWeekday(from: date)
         let title = "\(day)\n\(shortWeekdayString)"
-        dateButton.setTitle(title, for: .normal)
+        dateLabel.text = title
         self.isSelected = isSelected
-        
-        if isSelected {
-            dateButton.setTitleColor(.customAccentColor, for: .normal)
-        } else {
-            cellView.backgroundColor = .black
+        updateAppearance()
+    }
+    
+    private func updateAppearance() {
+        UIView.animate(withDuration: 0.2) {
+           self.cellView.backgroundColor = self.isSelected ? .black : .black
+            self.cellView.transform = self.isSelected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+            self.dateLabel.textColor = self.isSelected ? .customAccentColor : .white
+            self.cellView.layer.borderColor = self.isSelected ? UIColor.customAccentColor.cgColor : UIColor.clear.cgColor
+            
         }
     }
+    
     // MARK: - Actions
-    @objc private func buttonTapped() {
-        toggleButtonTitleColor()
+    @objc private func cellTapped() {
+        isSelected.toggle()
         if let date = self.date {
             delegate?.dateButtonTapped(date: date)
         }
-    }
-    
-    private func toggleButtonTitleColor() {
-        let newColor: UIColor = (dateButton.titleColor(for: .normal) == .white) ? .customAccentColor : .white
-        dateButton.setTitleColor(newColor, for: .normal)
-    }
-    
-    private func resetButtonTitleColor() {
-        dateButton.setTitleColor(.white, for: .normal)
+        
+        let impact = UIImpactFeedbackGenerator(style: .light)
+        impact.impactOccurred()
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            self.cellView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.cellView.transform = self.isSelected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+            }
+        }
     }
 }

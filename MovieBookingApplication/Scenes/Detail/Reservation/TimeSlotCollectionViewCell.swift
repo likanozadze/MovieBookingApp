@@ -4,11 +4,18 @@
 //
 //  Created by Lika Nozadze on 7/13/24.
 
+
 import UIKit
+
+protocol TimeSlotCollectionViewCellDelegate: AnyObject {
+    func timeSlotCellTapped(_ cell: TimeSlotCollectionViewCell)
+}
 
 final class TimeSlotCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
+    weak var delegate: TimeSlotCollectionViewCellDelegate?
+    
     private let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +53,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubviews()
         setupConstraints()
+        setupGestureRecognizer()
     }
 
     required init?(coder: NSCoder) {
@@ -57,6 +65,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         timeLabel.text = nil
         priceLabel.text = nil
+        isSelected = false
     }
 
     // MARK: - Private Methods
@@ -85,21 +94,41 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+    private func setupGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        cellView.addGestureRecognizer(tapGesture)
+        cellView.isUserInteractionEnabled = true
+    }
+
     // MARK: - Configuration
     func configure(time: String, price: String, isSelected: Bool = false) {
         timeLabel.text = time
-               priceLabel.text = price
-               self.isSelected = isSelected
-           
-        if isSelected {
-            cellView.backgroundColor = .customAccentColor
-
-        } else {
-            cellView.backgroundColor = .black
-        }
+        priceLabel.text = price
+        self.isSelected = isSelected
+        updateAppearance()
     }
 
     private func updateAppearance() {
-        cellView.backgroundColor = isSelected ? .customButtonBackgroundColor : .black
+        UIView.animate(withDuration: 0.2) {
+            self.cellView.backgroundColor = self.isSelected ? .customAccentColor : .black
+            self.cellView.transform = self.isSelected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+        }
+    }
+    
+    // MARK: - Actions
+    @objc private func cellTapped() {
+        isSelected.toggle()
+        delegate?.timeSlotCellTapped(self)
+        
+        let impact = UIImpactFeedbackGenerator(style: .light)
+        impact.impactOccurred()
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            self.cellView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.cellView.transform = self.isSelected ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+            }
+        }
     }
 }
