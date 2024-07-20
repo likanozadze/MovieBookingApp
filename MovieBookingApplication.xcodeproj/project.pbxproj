@@ -37,6 +37,8 @@
 		988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */; };
 		988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1122C4AB507005EE898 /* AlertManager.swift */; };
 		988DC1152C4BF4C8005EE898 /* ArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1142C4BF4C8005EE898 /* ArcView.swift */; };
+		988DC1192C4C14D2005EE898 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1182C4C14D2005EE898 /* Food.swift */; };
+		988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC11A2C4C1820005EE898 /* FoodItemCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +74,8 @@
 		988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "formatPrice+Extension.swift"; sourceTree = "<group>"; };
 		988DC1122C4AB507005EE898 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		988DC1142C4BF4C8005EE898 /* ArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcView.swift; sourceTree = "<group>"; };
+		988DC1182C4C14D2005EE898 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		988DC11A2C4C1820005EE898 /* FoodItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +173,7 @@
 		9883BA1E2C416646009D8996 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				988DC11C2C4C1910005EE898 /* Food */,
 				980849DF2C45BD3E00F5924B /* Seats */,
 				9883BA322C41AAD5009D8996 /* Calendar */,
 				9883BA212C416700009D8996 /* Home */,
@@ -220,6 +225,7 @@
 				9883BA302C417A07009D8996 /* MovieDetails.swift */,
 				9883BA352C41AC89009D8996 /* Seat.swift */,
 				987C6E172C4290E800816B14 /* TimeSlot.swift */,
+				988DC1182C4C14D2005EE898 /* Food.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -249,6 +255,22 @@
 				9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		988DC11C2C4C1910005EE898 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				988DC11D2C4C192D005EE898 /* TableViewCell */,
+			);
+			path = Food;
+			sourceTree = "<group>";
+		};
+		988DC11D2C4C192D005EE898 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				988DC11A2C4C1820005EE898 /* FoodItemCell.swift */,
+			);
+			path = TableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,6 +360,7 @@
 				9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */,
 				9883BA2F2C417929009D8996 /* NetworkManager.swift in Sources */,
 				9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */,
+				988DC1192C4C14D2005EE898 /* Food.swift in Sources */,
 				980849DC2C457B9E00F5924B /* PrimaryButton.swift in Sources */,
 				9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */,
 				9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */,
@@ -347,6 +370,7 @@
 				980849E12C45BD4F00F5924B /* SeatsViewController.swift in Sources */,
 				9883BA252C41673A009D8996 /* TicketsViewController.swift in Sources */,
 				9883BA2B2C417890009D8996 /* Movie.swift in Sources */,
+				988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */,
 				980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */,
 				9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */,
 			);
