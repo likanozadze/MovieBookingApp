@@ -93,9 +93,8 @@ final class SeatsViewController: UIViewController {
         return stackView
     }()
     
-    private let checkoutButton: ReusableButton = {
-        let button = ReusableButton(title: "Checkout", hasBackground: false, fontSize: .medium)
-        //   button.addTarget(self, action: #selector(handleSelectSeats), for: .touchUpInside)
+    private let nextButton: ReusableButton = {
+        let button = ReusableButton(title: "Next", hasBackground: false, fontSize: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -132,6 +131,7 @@ final class SeatsViewController: UIViewController {
         setupCollectionViews()
         initializeSeats()
         setupScrollView()
+        nextButton.addTarget(self, action: #selector(navigateToFoodViewController), for: .touchUpInside)
     }
     
     // MARK: - Private Methods
@@ -175,7 +175,7 @@ final class SeatsViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(scrollView)
-        view.addSubview(checkoutButton)
+        view.addSubview(nextButton)
         scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(timeAndDateStackView)
         mainStackView.addArrangedSubview(selectSeatsStackView)
@@ -203,10 +203,10 @@ final class SeatsViewController: UIViewController {
             
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
             
-            checkoutButton.heightAnchor.constraint(equalToConstant: 60),
-            checkoutButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            checkoutButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            checkoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            nextButton.heightAnchor.constraint(equalToConstant: 60),
+            nextButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            nextButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
@@ -302,4 +302,10 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 40, height: 40)
         }
     }
+
+
+@objc private func navigateToFoodViewController() {
+       let foodViewController = FoodViewController()
+       navigationController?.pushViewController(foodViewController, animated: true)
+   }
 }
