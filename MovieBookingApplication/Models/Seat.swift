@@ -15,14 +15,14 @@ struct Seat {
   var type: String?
 
   var seatCode: String {
-    get { "\(["A", "B", "C", "D", "E", "F", "G", "H", "J"][row])\(seat + 1)" }
+    get { "\(["A", "B", "C", "D", "E", "F", "G", "H", "J"][row])\(seat)" }
   }
   
   func isIdentical(_ otherSeat: Seat) -> Bool { seatCode == otherSeat.seatCode }
 
-  init(_ section: Int, _ row: Int, selected: Bool = false, sold: Bool = false, type: String? = nil) {
-    self.row = section
-    self.seat = row
+  init(_ row: Int, _ seat: Int, selected: Bool = false, sold: Bool = false, type: String? = nil) {
+    self.row = row
+    self.seat = seat
     self.selected = selected
     self.sold = sold
     self.type = type

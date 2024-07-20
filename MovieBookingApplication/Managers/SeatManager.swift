@@ -16,22 +16,19 @@ final class SeatManager {
     
     // MARK: - Properties
     private var seats: [[Seat]] = []
-    private var rowsPerSection: [Int] = []
     
     // MARK: - Methods
-    
-    
     func setSeats(for sections: Int, rowsPerSection: [Int]) {
-        seats = (0..<sections).map { section in
-            (0..<rowsPerSection[section]).map { row in
-                Seat(section, row)
+        seats = (0..<sections).map { row in
+            (1...rowsPerSection[row]).map { seat in
+                Seat(row, seat)
             }
         }
     }
     
-    func getSeat(by section: Int, row: Int) -> Seat? {
-        guard section < seats.count, row < seats[section].count else { return nil }
-        return seats[section][row]
+    func getSeat(by row: Int, seat: Int) -> Seat? {
+        guard row < seats.count, seat <= seats[row].count else { return nil }
+        return seats[row][seat - 1]
     }
     
     func selectSeat(_ seat: Seat) {
@@ -45,9 +42,14 @@ final class SeatManager {
             seats[seat.row][index].selected = false
         }
     }
+    
     func updateSeat(_ seat: Seat) {
         if let index = seats[seat.row].firstIndex(where: { $0.seat == seat.seat }) {
             seats[seat.row][index] = seat
         }
+    }
+    
+    func getAllSeats() -> [[Seat]] {
+        return seats
     }
 }

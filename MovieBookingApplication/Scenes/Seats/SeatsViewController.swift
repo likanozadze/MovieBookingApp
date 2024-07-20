@@ -245,7 +245,7 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as! SeatCell
-            if let seat = seatManager.getSeat(by: indexPath.section, row: indexPath.row) {
+            if let seat = seatManager.getSeat(by: indexPath.section, seat: indexPath.row + 1) {
                 cell.configure(withSeat: seat)
             }
             return cell
