@@ -36,6 +36,7 @@
 		9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */; };
 		988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */; };
 		988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1122C4AB507005EE898 /* AlertManager.swift */; };
+		988DC1152C4BF4C8005EE898 /* ArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1142C4BF4C8005EE898 /* ArcView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "formatPrice+Extension.swift"; sourceTree = "<group>"; };
 		988DC1122C4AB507005EE898 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		988DC1142C4BF4C8005EE898 /* ArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				980849DB2C457B9E00F5924B /* PrimaryButton.swift */,
+				988DC1142C4BF4C8005EE898 /* ArcView.swift */,
 			);
 			path = ReusableComponents;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				9883BA342C41AAF0009D8996 /* CalendarViewController.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
 				988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */,
+				988DC1152C4BF4C8005EE898 /* ArcView.swift in Sources */,
 				987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */,
 				987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */,
 				9883BA2D2C41790A009D8996 /* HomeViewModel.swift in Sources */,

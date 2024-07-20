@@ -61,13 +61,36 @@ final class SeatsViewController: UIViewController {
         return stackView
     }()
     
-    
     private let selectSeatsLabel: UILabel = {
         let label = UILabel()
         label.text = "Select seats"
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         label.textColor = .white
+        label.textAlignment = .center
         return label
+    }()
+    
+    private let screenLabel: UILabel = {
+        let label = UILabel()
+        label.text = "screen"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let arcView: ArcView = {
+        let view = ArcView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var selectSeatsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [selectSeatsLabel, arcView, screenLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     private let checkoutButton: ReusableButton = {
@@ -76,7 +99,6 @@ final class SeatsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
     
     private let selectedDate: Date
     private let selectedTimeSlot: TimeSlot
@@ -156,7 +178,7 @@ final class SeatsViewController: UIViewController {
         view.addSubview(checkoutButton)
         scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(timeAndDateStackView)
-        mainStackView.addArrangedSubview(selectSeatsLabel)
+        mainStackView.addArrangedSubview(selectSeatsStackView)
         mainStackView.addArrangedSubview(collectionView)
     }
     
@@ -173,11 +195,11 @@ final class SeatsViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            dateCollectionView.heightAnchor.constraint(equalToConstant: 100),
+            dateCollectionView.heightAnchor.constraint(equalToConstant: 80),
             timeSlotCollectionView.heightAnchor.constraint(equalToConstant: 100),
             
-            selectSeatsLabel.centerXAnchor.constraint(equalTo: mainStackView.centerXAnchor),
-            selectSeatsLabel.heightAnchor.constraint(equalToConstant: 40),
+            selectSeatsStackView.centerXAnchor.constraint(equalTo: mainStackView.centerXAnchor),
+            selectSeatsStackView.heightAnchor.constraint(equalToConstant: 80),
             
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
             
