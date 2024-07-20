@@ -9,23 +9,16 @@ import UIKit
 
 final class TicketsViewController: UIViewController {
     
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
+    // MARK: - Properties
+    private let mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
     }()
-    
-    private let scrollStackViewContainer: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = 18
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private var foodSections: [(food: Food, sizes: [FoodSize])] = []
-    private var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
-    
+
     private lazy var contentSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Drinks", "Popcorn", "Food"])
         segmentedControl.selectedSegmentIndex = 0
@@ -61,32 +54,34 @@ final class TicketsViewController: UIViewController {
     }()
     
     private let foodItems: [Food] = FoodData.generateFakeData()
-
+    private var foodSections: [(food: Food, sizes: [FoodSize])] = []
+    private var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
+    
+    // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareFoodSections()
         setup()
         tableView.reloadData()
-        view.backgroundColor = UIColor(red: 26/255.0, green: 34/255.0, blue: 50/255.0, alpha: 1)
+    
     }
     
     // MARK: - Private Methods
     private func setup() {
-        setupScrollView()
+        setupBackground()
         setupSubviews()
+        prepareFoodSections()
         setupTableView()
         setupConstraints()
     }
     
-    private func setupScrollView() {
-        scrollView.showsVerticalScrollIndicator = false
+    private func setupBackground() {
+        view.backgroundColor = .customBackgroundColor
     }
     
     private func setupSubviews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(scrollStackViewContainer)
-        scrollStackViewContainer.addArrangedSubview(contentSegmentedControl)
-        scrollStackViewContainer.addArrangedSubview(tableView)
+        view.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(contentSegmentedControl)
+        mainStackView.addArrangedSubview(tableView)
     }
     
     private func prepareFoodSections() {
@@ -124,16 +119,10 @@ final class TicketsViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            scrollStackViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            scrollStackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            scrollStackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            scrollStackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollStackViewContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             contentSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
             
@@ -162,10 +151,6 @@ extension TicketsViewController: UITableViewDataSource {
         cell.configure(with: foodItem, size: size)
         
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return filteredFoodSections[section].food.name
     }
 }
 // MARK: - UITableViewDelegate

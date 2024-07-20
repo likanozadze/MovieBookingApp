@@ -7,7 +7,7 @@
 import UIKit
 
 final class FoodItemCell: UITableViewCell {
-    
+    // MARK: - Properties
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -35,7 +35,7 @@ final class FoodItemCell: UITableViewCell {
     private let productTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor = .black
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,9 +59,43 @@ final class FoodItemCell: UITableViewCell {
     private let productPriceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.textColor = .black
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    
+    private lazy var selectProductStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [subtractButton, selectedQuantityLabel, addButton])
+        stackView.alignment = .center
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+
+    private let subtractButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("-", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = .customSecondaryColor
+        return button
+    }()
+    
+    private let selectedQuantityLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        return label
+    }()
+    private let addButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("+", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = .customSecondaryColor
+        return button
     }()
     
     // MARK: - Init
@@ -69,6 +103,8 @@ final class FoodItemCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setupConstraints()
+        configureAppearance()
+        selectionStyle = .none 
     }
     
     required init?(coder: NSCoder) {
@@ -82,8 +118,10 @@ final class FoodItemCell: UITableViewCell {
         productTitleLabel.text = nil
         productSizeLabel.text = nil
         productPriceLabel.text = nil
+        selectedQuantityLabel.text = nil
     }
     
+    // MARK: - Private Methods
     private func addSubviews() {
         contentView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(foodImageView)
@@ -94,6 +132,8 @@ final class FoodItemCell: UITableViewCell {
         infoStackView.addArrangedSubview(productSizeLabel)
         
         infoStackView.addArrangedSubview(productPriceLabel)
+        infoStackView.addArrangedSubview(selectProductStackView)
+        
     }
     
     private func setupConstraints() {
@@ -109,7 +149,12 @@ final class FoodItemCell: UITableViewCell {
             infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
-    
+    private func configureAppearance() {
+           contentView.backgroundColor = .clear
+           backgroundColor = .clear 
+       }
+
+    // MARK: - Configuration
     func configure(with foodItem: Food, size: FoodSize) {
         foodImageView.image = UIImage(named: foodItem.imageName)
         productTitleLabel.text = foodItem.name
