@@ -6,8 +6,17 @@
 //
 import UIKit
 
+protocol FoodCollectionViewCellDelegate: AnyObject {
+    func addProduct(for cell: FoodItemCell?)
+    func removeProduct(for cell: FoodItemCell?)
+}
+
+
 final class FoodItemCell: UITableViewCell {
     // MARK: - Properties
+    
+    weak var delegate: FoodCollectionViewCellDelegate?
+    
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -48,13 +57,6 @@ final class FoodItemCell: UITableViewCell {
         return label
     }()
     
-    private let sizesStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
     
     private let productPriceLabel: UILabel = {
         let label = UILabel()
@@ -68,19 +70,13 @@ final class FoodItemCell: UITableViewCell {
     private lazy var selectProductStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [subtractButton, selectedQuantityLabel, addButton])
         stackView.alignment = .center
-        stackView.spacing = 8
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-
-    private let subtractButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("-", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.backgroundColor = .customSecondaryColor
-        return button
-    }()
     
     private let selectedQuantityLabel: UILabel = {
         let label = UILabel()
@@ -89,22 +85,38 @@ final class FoodItemCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         return label
     }()
+    
+    private let buttonSize: CGFloat = 10
+    
+    private let subtractButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("-", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.backgroundColor = .customSecondaryColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let addButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.backgroundColor = .customSecondaryColor
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
+    var viewModel: FoodViewModel?
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setupConstraints()
         configureAppearance()
-        selectionStyle = .none 
+        addActions()
+        selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {
@@ -128,7 +140,6 @@ final class FoodItemCell: UITableViewCell {
         
         mainStackView.addArrangedSubview(infoStackView)
         infoStackView.addArrangedSubview(productTitleLabel)
-        infoStackView.addArrangedSubview(sizesStackView)
         infoStackView.addArrangedSubview(productSizeLabel)
         
         infoStackView.addArrangedSubview(productPriceLabel)
@@ -146,21 +157,39 @@ final class FoodItemCell: UITableViewCell {
             foodImageView.widthAnchor.constraint(equalToConstant: 120),
             foodImageView.heightAnchor.constraint(equalToConstant: 120),
             
-            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            selectProductStackView.centerXAnchor.constraint(equalTo: infoStackView.centerXAnchor),
+            selectProductStackView.bottomAnchor.constraint(equalTo: infoStackView.bottomAnchor)
         ])
     }
+    
     private func configureAppearance() {
-           contentView.backgroundColor = .clear
-           backgroundColor = .clear 
-       }
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
+        subtractButton.layer.cornerRadius = buttonSize / 2
+        addButton.layer.cornerRadius = buttonSize / 2
 
+    }
+    
     // MARK: - Configuration
-    func configure(with foodItem: Food, size: FoodSize) {
-        foodImageView.image = UIImage(named: foodItem.imageName)
-        productTitleLabel.text = foodItem.name
+    
+    func configure(with food: Food, size: FoodSize, quantity: Int) {
+        foodImageView.image = UIImage(named: food.imageName)
+        productTitleLabel.text = food.name
+        productSizeLabel.text = size.name
+        productPriceLabel.text = "$\(food.price + size.priceModifier)"
+        selectedQuantityLabel.text = "\(quantity)"
+    }
+    
+    
+    private func addActions() {
+        addButton.addAction(UIAction(title: "", handler: { [weak self] _ in
+            self?.delegate?.addProduct(for: self)
+        }), for: .touchUpInside)
         
-        let totalPrice = foodItem.price + size.priceModifier
-        productSizeLabel.text = "Size: \(size.name)"
-        productPriceLabel.text = String(format: "$%.2f", totalPrice)
+        subtractButton.addAction(UIAction(title: "", handler: { [weak self] _ in
+            self?.delegate?.removeProduct(for: self)
+        }), for: .touchUpInside)
     }
 }

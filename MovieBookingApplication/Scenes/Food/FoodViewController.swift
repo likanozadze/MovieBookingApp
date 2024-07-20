@@ -7,9 +7,11 @@
 
 import UIKit
 
-final class TicketsViewController: UIViewController {
+final class FoodViewController: UIViewController, UITableViewDelegate {
     
     // MARK: - Properties
+    
+    private let viewModel: FoodViewModel
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -41,9 +43,9 @@ final class TicketsViewController: UIViewController {
     }()
     
     @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        filterFoodItems(for: sender.selectedSegmentIndex)
-    }
-    
+           viewModel.filterFoodItems(for: sender.selectedSegmentIndex)
+           tableView.reloadData()
+       }
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -53,10 +55,17 @@ final class TicketsViewController: UIViewController {
         return tableView
     }()
     
-    private let foodItems: [Food] = FoodData.generateFakeData()
-    private var foodSections: [(food: Food, sizes: [FoodSize])] = []
-    private var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
     
+    
+    init() {
+           let foodItems = FoodData.generateFakeData()
+           self.viewModel = FoodViewModel(foodItems: foodItems)
+           super.init(nibName: nil, bundle: nil)
+       }
+       
+       required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +78,6 @@ final class TicketsViewController: UIViewController {
     private func setup() {
         setupBackground()
         setupSubviews()
-        prepareFoodSections()
         setupTableView()
         setupConstraints()
     }
@@ -83,35 +91,7 @@ final class TicketsViewController: UIViewController {
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
     }
-    
-    private func prepareFoodSections() {
-        foodSections = foodItems.map { food in
-            let standardSizes = ["Small", "Medium", "Large"]
-            let allSizes = standardSizes.map { sizeName -> FoodSize in
-                if let existingSize = food.sizes.first(where: { $0.name == sizeName }) {
-                    return existingSize
-                } else {
-                    return FoodSize(name: sizeName, priceModifier: 0.0)
-                }
-            }
-            return (food: food, sizes: allSizes)
-        }
-        filterFoodItems(for: 0)
-    }
-    
-    private func filterFoodItems(for segmentIndex: Int) {
-        switch segmentIndex {
-        case 0:
-            filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("cola") }
-        case 1:
-            filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("popcorn") }
-        case 2: 
-            filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("nachos") }
-        default:
-            filteredFoodSections = foodSections
-        }
-        tableView.reloadData()
-    }
+
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -132,29 +112,42 @@ final class TicketsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension TicketsViewController: UITableViewDataSource {
+extension FoodViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filteredFoodSections.count
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredFoodSections[section].sizes.count
+        return viewModel.numberOfSections
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfRows(in: section)
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FoodItemCell", for: indexPath) as? FoodItemCell else {
             fatalError("Unable to dequeue FoodItemCell")
         }
         
-        let foodItem = filteredFoodSections[indexPath.section].food
-        let size = filteredFoodSections[indexPath.section].sizes[indexPath.row]
-        cell.configure(with: foodItem, size: size)
+        let foodSection = viewModel.filteredFoodSections[indexPath.section]
+        let food = foodSection.food
+        let size = foodSection.sizes[indexPath.row]
         
+        cell.configure(with: food, size: size, quantity: food.selectedAmount)
+        
+        cell.delegate = self
         return cell
     }
 }
 // MARK: - UITableViewDelegate
 
-extension TicketsViewController: UITableViewDelegate {
-  
+extension FoodViewController: FoodCollectionViewCellDelegate {
+    func addProduct(for cell: FoodItemCell?) {
+        guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
+        viewModel.increaseQuantity(at: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
+    
+    func removeProduct(for cell: FoodItemCell?) {
+        guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
+        viewModel.decreaseQuantity(at: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
 }

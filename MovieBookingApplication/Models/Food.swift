@@ -54,7 +54,6 @@ class FoodData {
         name: "Nachos",
         sizes: [
           FoodSize(name: "Regular", priceModifier: 0.0),
-          FoodSize(name: "Large", priceModifier: 1.0)
         ],
         price: 4.50,
         imageName: "nachos",

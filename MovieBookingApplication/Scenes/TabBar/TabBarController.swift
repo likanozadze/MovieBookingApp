@@ -23,7 +23,7 @@ final class TabBarController: UITabBarController {
       viewController: HomeViewController()
     )
 
-    let ticketsViewController = TicketsViewController()
+    let ticketsViewController = FoodViewController()
       
     let ticket = createNavigationController(
       title: "Ticket", image: UIImage(systemName: "ticket"),
