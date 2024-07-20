@@ -23,6 +23,7 @@ final class SeatCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview()
         setupConstraints()
+        setupTapGesture()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -36,18 +37,27 @@ final class SeatCell: UICollectionViewCell {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-          
-                seatImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-                seatImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-                seatImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-                seatImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-        
+            seatImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            seatImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            seatImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            seatImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
         ])
     }
-    
-    // MARK: - Configuration
-     func configure(withSeat seat: Seat) {
-        self.seat = seat 
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        contentView.addGestureRecognizer(tapGesture)
+        contentView.isUserInteractionEnabled = true
+    }
+     
+    @objc func handleTap() {
+        guard !seat.sold else { return }
+        seat.selected.toggle()
+        SeatManager.shared.updateSeat(seat)
+        configure(withSeat: seat)
+    }
+
+    func configure(withSeat seat: Seat) {
+        self.seat = seat
         
         let configuration = UIImage.SymbolConfiguration(scale: .small)
         
@@ -56,15 +66,10 @@ final class SeatCell: UICollectionViewCell {
             seatImageView.tintColor = .red
             isUserInteractionEnabled = false
         } else {
-            if seat.selected {
-                seatImageView.image = UIImage(systemName: "chair.lounge.fill", withConfiguration: configuration)
-                seatImageView.tintColor = .customAccentColor
-            } else {
-                seatImageView.image = UIImage(systemName: "chair.lounge", withConfiguration: configuration)
-                seatImageView.tintColor = .customAccentColor
-            }
+            seatImageView.image = UIImage(systemName: seat.selected ? "chair.lounge.fill" : "chair.lounge", withConfiguration: configuration)
+            seatImageView.tintColor = .customAccentColor
             isUserInteractionEnabled = true
-            
         }
+        print("Seat configured: \(seat)")
     }
 }

@@ -191,6 +191,7 @@ final class SeatsViewController: UIViewController {
     func initializeSeats() {
         let numberOfSections = rowsPerSection.count
         seatManager.setSeats(for: numberOfSections, rowsPerSection: rowsPerSection)
+        collectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -261,11 +262,12 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             selectedTimeSlotIndex = indexPath.item
             timeSlotCollectionView.reloadData()
         default:
-            break
+            guard let cell = collectionView.cellForItem(at: indexPath) as? SeatCell else { return }
+            cell.handleTap()
+            collectionView.reloadItems(at: [indexPath])
         }
     }
 }
-
 // MARK: - CollectionView FlowLayout
 extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
