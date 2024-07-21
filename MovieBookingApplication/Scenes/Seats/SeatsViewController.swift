@@ -99,7 +99,7 @@ final class SeatsViewController: UIViewController {
         return button
     }()
     
-    private let selectedDate: Date
+    private let selectedDate: Date?
     private let selectedTimeSlot: TimeSlot
     private let dates: [Date]
     private let timeSlots: [TimeSlot]
@@ -302,27 +302,22 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 40, height: 40)
         }
     }
-
-
-//@objc private func navigateToFoodViewController() {
-//       let foodViewController = FoodViewController()
-//       navigationController?.pushViewController(foodViewController, animated: true)
-//   }
-//}
-
+    
     @objc private func navigateToFoodViewController() {
-           guard let selectedDateIndex = selectedDateIndex, let selectedTimeSlotIndex = selectedTimeSlotIndex else {
-               AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-               return
-           }
-
-           let selectedSeats = seatManager.getSelectedSeats()
-           if selectedSeats.isEmpty {
-               AlertManager.shared.showAlert(from: self, type: .selectSeats)
-               return
-           }
-
-           let foodViewController = FoodViewController()
-           navigationController?.pushViewController(foodViewController, animated: true)
-       }
-   }
+   
+        guard let _ = selectedTimeSlotIndex else {
+            AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
+            return
+        }
+        
+        let selectedSeats = seatManager.getSelectedSeats()
+        if selectedSeats.isEmpty {
+            AlertManager.shared.showAlert(from: self, type: .selectSeats)
+            return
+        }
+        
+        let foodViewController = FoodViewController()
+        navigationController?.pushViewController(foodViewController, animated: true)
+    }
+    
+}
