@@ -118,8 +118,7 @@
 			children = (
 				980849E02C45BD4F00F5924B /* SeatsViewController.swift */,
 				98D323B92C4D34D3008DF8CF /* SeatsViewModel.swift */,
-				98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */,
-				98034B4B2C46AA75002FB7B8 /* SeatCell.swift */,
+				98D323BB2C4D3CF6008DF8CF /* CollectionViewCell */,
 			);
 			path = Seats;
 			sourceTree = "<group>";
@@ -256,19 +255,19 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
-		9883BA392C41AEC4009D8996 /* Reservation */ = {
+		9883BA392C41AEC4009D8996 /* CollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
 				9883BA3A2C41AF31009D8996 /* DateCollectionViewCell.swift */,
 				987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */,
 			);
-			path = Reservation;
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		9883BA3C2C41BE79009D8996 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				9883BA392C41AEC4009D8996 /* Reservation */,
+				9883BA392C41AEC4009D8996 /* CollectionViewCell */,
 				9883BA3D2C41BEA6009D8996 /* MovieDetailsViewController.swift */,
 				9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */,
 			);
@@ -280,6 +279,7 @@
 			children = (
 				9883BA242C41673A009D8996 /* FoodViewController.swift */,
 				988DC11E2C4C406F005EE898 /* FoodViewModel.swift */,
+				98D323BC2C4D3CFE008DF8CF /* Sheet */,
 				988DC11D2C4C192D005EE898 /* TableViewCell */,
 			);
 			path = Food;
@@ -291,6 +291,22 @@
 				988DC11A2C4C1820005EE898 /* FoodItemCell.swift */,
 			);
 			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		98D323BB2C4D3CF6008DF8CF /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				98034B4B2C46AA75002FB7B8 /* SeatCell.swift */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		98D323BC2C4D3CFE008DF8CF /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */,
+			);
+			path = Sheet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
