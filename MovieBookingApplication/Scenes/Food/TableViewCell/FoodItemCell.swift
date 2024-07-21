@@ -3,7 +3,8 @@
 //  MovieBookingApplication
 //
 //  Created by Lika Nozadze on 7/20/24.
-//
+
+
 import UIKit
 
 protocol FoodCollectionViewCellDelegate: AnyObject {
@@ -20,8 +21,8 @@ final class FoodItemCell: UITableViewCell {
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 12
         stackView.alignment = .top
+       stackView.spacing = 25
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -30,15 +31,8 @@ final class FoodItemCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+       imageView.clipsToBounds = true
         return imageView
-    }()
-    
-    private let infoStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
     }()
     
     private let productTitleLabel: UILabel = {
@@ -57,7 +51,6 @@ final class FoodItemCell: UITableViewCell {
         return label
     }()
     
-    
     private let productPriceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -66,33 +59,30 @@ final class FoodItemCell: UITableViewCell {
         return label
     }()
     
-    
-    private lazy var selectProductStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [subtractButton, selectedQuantityLabel, addButton])
-        stackView.alignment = .center
-        stackView.axis = .horizontal
+    private lazy var infoStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [productTitleLabel, productSizeLabel, productPriceLabel])
+        stackView.axis = .vertical
         stackView.spacing = 4
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    
     private let selectedQuantityLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
     }()
     
-    private let buttonSize: CGFloat = 10
+   private let buttonSize: CGFloat = 10
     
     private let subtractButton: UIButton = {
         let button = UIButton()
         button.setTitle("-", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.backgroundColor = .customSecondaryColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -102,10 +92,31 @@ final class FoodItemCell: UITableViewCell {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.backgroundColor = .customSecondaryColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    
+    private lazy var selectProductStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [subtractButton, selectedQuantityLabel, addButton])
+     stackView.alignment = .center
+        stackView.axis = .horizontal
+      stackView.spacing = 4
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    
+    private lazy var snackStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [infoStackView, selectProductStackView])
+       stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     var viewModel: FoodViewModel?
@@ -137,14 +148,7 @@ final class FoodItemCell: UITableViewCell {
     private func addSubviews() {
         contentView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(foodImageView)
-        
-        mainStackView.addArrangedSubview(infoStackView)
-        infoStackView.addArrangedSubview(productTitleLabel)
-        infoStackView.addArrangedSubview(productSizeLabel)
-        
-        infoStackView.addArrangedSubview(productPriceLabel)
-        infoStackView.addArrangedSubview(selectProductStackView)
-        
+        mainStackView.addArrangedSubview(snackStackView)
     }
     
     private func setupConstraints() {
@@ -154,13 +158,9 @@ final class FoodItemCell: UITableViewCell {
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             
-            foodImageView.widthAnchor.constraint(equalToConstant: 120),
-            foodImageView.heightAnchor.constraint(equalToConstant: 120),
-            
-            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            selectProductStackView.centerXAnchor.constraint(equalTo: infoStackView.centerXAnchor),
-            selectProductStackView.bottomAnchor.constraint(equalTo: infoStackView.bottomAnchor)
+            foodImageView.widthAnchor.constraint(equalToConstant: 80),
+                  foodImageView.heightAnchor.constraint(equalToConstant: 80),
+
         ])
     }
     

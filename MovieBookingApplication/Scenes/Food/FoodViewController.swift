@@ -47,7 +47,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         tableView.reloadData()
     }
     private let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -55,8 +55,14 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         return tableView
     }()
     
+    private let chooseSnacksButton: ReusableButton = {
+        let button = ReusableButton(title: "Choose snacks", hasBackground: false, fontSize: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     
+    // MARK: - Init
     init() {
         let foodItems = FoodData.generateFakeData()
         self.viewModel = FoodViewModel(foodItems: foodItems)
@@ -88,6 +94,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     private func setupSubviews() {
         view.addSubview(mainStackView)
+        view.addSubview(chooseSnacksButton)
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
     }
@@ -106,7 +113,12 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
             
             contentSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
             
-            tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300)
+            tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
+            
+            chooseSnacksButton.heightAnchor.constraint(equalToConstant: 60),
+            chooseSnacksButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            chooseSnacksButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            chooseSnacksButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
@@ -136,6 +148,7 @@ extension FoodViewController: UITableViewDataSource {
         cell.delegate = self
         return cell
     }
+ 
 }
 // MARK: - UITableViewDelegate
 
