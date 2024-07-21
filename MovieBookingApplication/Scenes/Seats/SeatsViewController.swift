@@ -5,13 +5,15 @@
 //  Created by Lika Nozadze on 7/16/24.
 //
 
-
 import UIKit
 import SwiftUI
 
 final class SeatsViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     // MARK: - Properties
+    
+    private let viewModel: SeatsViewModel
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -100,23 +102,9 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
         return button
     }()
     
-    private let selectedDate: Date?
-    private let selectedTimeSlot: TimeSlot
-    private let dates: [Date]
-    private let timeSlots: [TimeSlot]
-    private let seatManager = SeatManager.shared
-    private let rowsPerSection = [7, 7, 7, 7, 7, 7]
-    private var selectedDateIndex: Int?
-    private var selectedTimeSlotIndex: Int?
-    
     // MARK: - Init
-    init(selectedDate: Date, selectedTimeSlot: TimeSlot, dates: [Date], timeSlots: [TimeSlot]) {
-        self.selectedDate = selectedDate
-        self.selectedTimeSlot = selectedTimeSlot
-        self.dates = dates
-        self.timeSlots = timeSlots
-        self.selectedDateIndex = dates.firstIndex(of: selectedDate)
-        self.selectedTimeSlotIndex = timeSlots.firstIndex(where: { $0.startTime == selectedTimeSlot.startTime })
+    init(viewModel: SeatsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -130,7 +118,7 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
         super.viewDidLoad()
         setup()
         setupCollectionViews()
-        initializeSeats()
+        viewModel.initializeSeats()
         setupScrollView()
         nextButton.addTarget(self, action: #selector(navigateToFoodViewController), for: .touchUpInside)
     }
@@ -211,32 +199,26 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
         ])
     }
     
-    func initializeSeats() {
-        let numberOfSections = rowsPerSection.count
-        seatManager.setSeats(for: numberOfSections, rowsPerSection: rowsPerSection)
-        collectionView.reloadData()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let selectedDateIndex = selectedDateIndex {
+        if let selectedDateIndex = viewModel.selectedDateIndex {
             let indexPath = IndexPath(item: selectedDateIndex, section: 0)
             dateCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
         }
         
-        if let selectedTimeSlotIndex = selectedTimeSlotIndex {
+        if let selectedTimeSlotIndex = viewModel.selectedTimeSlotIndex {
             let indexPath = IndexPath(item: selectedTimeSlotIndex, section: 0)
             timeSlotCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
         }
     }
 }
-// MARK: - CollectionView DataSource
 
+// MARK: - CollectionView DataSource
 extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView == self.collectionView {
-            return rowsPerSection.count
+            return viewModel.rowsPerSection.count
         }
         return 1
     }
@@ -244,11 +226,11 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case dateCollectionView:
-            return dates.count
+            return viewModel.dates.count
         case timeSlotCollectionView:
-            return timeSlots.count
+            return viewModel.timeSlots.count
         default:
-            return rowsPerSection[section]
+            return viewModel.rowsPerSection[section]
         }
     }
     
@@ -256,19 +238,19 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         switch collectionView {
         case dateCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as! DateCollectionViewCell
-            let date = dates[indexPath.item]
-            cell.configure(for: date, isSelected: indexPath.item == selectedDateIndex)
+            let date = viewModel.dates[indexPath.item]
+            cell.configure(for: date, isSelected: indexPath.item == viewModel.selectedDateIndex)
             return cell
         case timeSlotCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as! TimeSlotCollectionViewCell
-            let timeSlot = timeSlots[indexPath.item]
+            let timeSlot = viewModel.timeSlots[indexPath.item]
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
-            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == selectedTimeSlotIndex)
+            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == viewModel.selectedTimeSlotIndex)
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as! SeatCell
-            if let seat = seatManager.getSeat(by: indexPath.section, seat: indexPath.row + 1) {
+            if let seat = viewModel.getSeat(for: indexPath) {
                 cell.configure(withSeat: seat)
             }
             return cell
@@ -279,10 +261,10 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case dateCollectionView:
-            selectedDateIndex = indexPath.item
+            viewModel.selectDate(at: indexPath.item)
             dateCollectionView.reloadData()
         case timeSlotCollectionView:
-            selectedTimeSlotIndex = indexPath.item
+            viewModel.selectTimeSlot(at: indexPath.item)
             timeSlotCollectionView.reloadData()
         default:
             guard let cell = collectionView.cellForItem(at: indexPath) as? SeatCell else { return }
@@ -291,6 +273,7 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         }
     }
 }
+
 // MARK: - CollectionView FlowLayout
 extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -305,13 +288,8 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     @objc private func navigateToFoodViewController() {
-        guard let _ = selectedTimeSlotIndex else {
+        if !viewModel.canProceedToFoodSelection() {
             AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-            return
-        }
-        let selectedSeats = seatManager.getSelectedSeats()
-        if selectedSeats.isEmpty {
-            AlertManager.shared.showAlert(from: self, type: .selectSeats)
             return
         }
         let foodSelectionSheet = FoodSelectionSheet(presentingViewController: self)
