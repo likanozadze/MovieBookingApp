@@ -9,7 +9,7 @@
 import UIKit
 import SwiftUI
 
-final class SeatsViewController: UIViewController, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
+final class SeatsViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     // MARK: - Properties
     private let scrollView: UIScrollView = {
@@ -304,91 +304,6 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    //    @objc private func navigateToFoodViewController() {
-    //
-    //        guard let _ = selectedTimeSlotIndex else {
-    //            AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-    //            return
-    //        }
-    //
-    //        let selectedSeats = seatManager.getSelectedSeats()
-    //        if selectedSeats.isEmpty {
-    //            AlertManager.shared.showAlert(from: self, type: .selectSeats)
-    //            return
-    //        }
-    //
-    //        let foodViewController = FoodViewController()
-    //        navigationController?.pushViewController(foodViewController, animated: true)
-    //    }
-    //
-    //}
-    
-    //    @objc private func navigateToFoodViewController() {
-    //
-    //        guard let _ = selectedTimeSlotIndex else {
-    //            AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-    //            return
-    //        }
-    //
-    //        let selectedSeats = seatManager.getSelectedSeats()
-    //        if selectedSeats.isEmpty {
-    //            AlertManager.shared.showAlert(from: self, type: .selectSeats)
-    //            return
-    //        }
-    //
-    //        let bottomSheetVC = BottomSheetViewController()
-    //        bottomSheetVC.modalPresentationStyle = .custom
-    //        bottomSheetVC.transitioningDelegate = self
-    //        bottomSheetVC.onYes = { [weak self] in
-    //            guard let self = self else { return }
-    //            let foodViewController = FoodViewController()
-    //            self.navigationController?.pushViewController(foodViewController, animated: true)
-    //        }
-    //        bottomSheetVC.onSkip = { [weak self] in
-    //            // Handle skip action if needed
-    //        }
-    //
-    //        present(bottomSheetVC, animated: true, completion: nil)
-    //    }
-    //}
-    //
-    //    @objc private func navigateToFoodViewController() {
-    //        guard let _ = selectedTimeSlotIndex else {
-    //            AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-    //            return
-    //        }
-    //        let selectedSeats = seatManager.getSelectedSeats()
-    //        if selectedSeats.isEmpty {
-    //            AlertManager.shared.showAlert(from: self, type: .selectSeats)
-    //            return
-    //        }
-    //
-    //        let hostingController = UIHostingController(rootView: FoodSelectionSheet())
-    //         hostingController.presentationMode = .custom
-    //         hostingController.preferredPresentationStyle = .sheet
-    //         present(hostingController, animated: true, completion: nil)
-    //
-    //    }
-    //}
-    
-    //    @objc private func navigateToFoodViewController() {
-    //            guard let _ = selectedTimeSlotIndex else {
-    //                AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
-    //                return
-    //            }
-    //            let selectedSeats = seatManager.getSelectedSeats()
-    //            if selectedSeats.isEmpty {
-    //                AlertManager.shared.showAlert(from: self, type: .selectSeats)
-    //                return
-    //            }
-    //            let foodSelectionSheet = FoodSelectionSheet()
-    //            let hostingController = UIHostingController(rootView: foodSelectionSheet)
-    //            hostingController.modalPresentationStyle = .pageSheet
-    //            hostingController.presentationController?.delegate = self
-    //            present(hostingController, animated: true, completion: nil)
-    //        }
-    //    }
-    
     @objc private func navigateToFoodViewController() {
         guard let _ = selectedTimeSlotIndex else {
             AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
@@ -399,14 +314,13 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
             AlertManager.shared.showAlert(from: self, type: .selectSeats)
             return
         }
-        let foodSelectionSheet = FoodSelectionSheet()
+        let foodSelectionSheet = FoodSelectionSheet(presentingViewController: self)
         let hostingController = UIHostingController(rootView: foodSelectionSheet)
         hostingController.modalPresentationStyle = .pageSheet
         if let sheet = hostingController.sheetPresentationController {
             sheet.detents = [.medium()]
             sheet.prefersGrabberVisible = true
         }
-        hostingController.presentationController?.delegate = self
         present(hostingController, animated: true, completion: nil)
     }
 }
