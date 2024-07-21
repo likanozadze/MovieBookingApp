@@ -304,8 +304,25 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
     }
 
 
-@objc private func navigateToFoodViewController() {
-       let foodViewController = FoodViewController()
-       navigationController?.pushViewController(foodViewController, animated: true)
+//@objc private func navigateToFoodViewController() {
+//       let foodViewController = FoodViewController()
+//       navigationController?.pushViewController(foodViewController, animated: true)
+//   }
+//}
+
+    @objc private func navigateToFoodViewController() {
+           guard let selectedDateIndex = selectedDateIndex, let selectedTimeSlotIndex = selectedTimeSlotIndex else {
+               AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
+               return
+           }
+
+           let selectedSeats = seatManager.getSelectedSeats()
+           if selectedSeats.isEmpty {
+               AlertManager.shared.showAlert(from: self, type: .selectSeats)
+               return
+           }
+
+           let foodViewController = FoodViewController()
+           navigationController?.pushViewController(foodViewController, animated: true)
+       }
    }
-}

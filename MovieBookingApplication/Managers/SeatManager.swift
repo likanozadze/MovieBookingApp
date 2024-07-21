@@ -52,4 +52,8 @@ final class SeatManager {
     func getAllSeats() -> [[Seat]] {
         return seats
     }
+    
+    func getSelectedSeats() -> [Seat] {
+           return seats.flatMap { $0.filter { $0.selected } }
+       }
 }
