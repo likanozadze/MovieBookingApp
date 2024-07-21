@@ -13,7 +13,7 @@ struct Food {
   let sizes: [FoodSize]
   let price: Double
   let imageName: String
-  var selectedAmount: Int
+    var quantityPerSize: [String: Int]
 }
 
 struct FoodSize {
@@ -35,7 +35,7 @@ class FoodData {
         ],
         price: 3.50,
         imageName: "coca",
-        selectedAmount: 0
+        quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0]
       ),
       Food(
         id: UUID(),
@@ -47,7 +47,7 @@ class FoodData {
         ],
         price: 5.00, 
         imageName: "popcorn",
-        selectedAmount: 0
+        quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0]
       ),
       Food(
         id: UUID(),
@@ -57,7 +57,7 @@ class FoodData {
         ],
         price: 4.50,
         imageName: "nachos",
-        selectedAmount: 0
+        quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0]
       )
     ]
   }

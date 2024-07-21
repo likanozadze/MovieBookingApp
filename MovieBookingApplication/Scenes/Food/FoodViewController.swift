@@ -20,7 +20,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
-
+    
     private lazy var contentSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Drinks", "Popcorn", "Food"])
         segmentedControl.selectedSegmentIndex = 0
@@ -43,9 +43,9 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     }()
     
     @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-           viewModel.filterFoodItems(for: sender.selectedSegmentIndex)
-           tableView.reloadData()
-       }
+        viewModel.filterFoodItems(for: sender.selectedSegmentIndex)
+        tableView.reloadData()
+    }
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,12 +58,12 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     
     init() {
-           let foodItems = FoodData.generateFakeData()
-           self.viewModel = FoodViewModel(foodItems: foodItems)
-           super.init(nibName: nil, bundle: nil)
-       }
-       
-       required init?(coder: NSCoder) {
+        let foodItems = FoodData.generateFakeData()
+        self.viewModel = FoodViewModel(foodItems: foodItems)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: - ViewLifeCycles
@@ -71,7 +71,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         setup()
         tableView.reloadData()
-    
+        
     }
     
     // MARK: - Private Methods
@@ -91,7 +91,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
     }
-
+    
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -120,7 +120,7 @@ extension FoodViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(in: section)
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FoodItemCell", for: indexPath) as? FoodItemCell else {
             fatalError("Unable to dequeue FoodItemCell")
@@ -129,8 +129,9 @@ extension FoodViewController: UITableViewDataSource {
         let foodSection = viewModel.filteredFoodSections[indexPath.section]
         let food = foodSection.food
         let size = foodSection.sizes[indexPath.row]
+        let quantity = viewModel.quantity(for: food, size: size)
         
-        cell.configure(with: food, size: size, quantity: food.selectedAmount)
+        cell.configure(with: food, size: size, quantity: quantity)
         
         cell.delegate = self
         return cell

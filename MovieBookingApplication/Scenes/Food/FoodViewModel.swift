@@ -8,60 +8,54 @@
 import Foundation
 
 final class FoodViewModel {
-  private let foodItems: [Food]
-  private var foodSections: [(food: Food, sizes: [FoodSize])] = []
-  private(set) var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
+    private var allFoodItems: [Food]
+    private(set) var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
 
-  init(foodItems: [Food]) {
-    self.foodItems = foodItems
-    prepareFoodSections()
-  }
-
-  var numberOfSections: Int {
-    return filteredFoodSections.count
-  }
-
-  func numberOfRows(in section: Int) -> Int {
-    return filteredFoodSections[section].sizes.count
-  }
-
-  func food(at indexPath: IndexPath) -> Food {
-    return filteredFoodSections[indexPath.section].food
-  }
-
-  func size(at indexPath: IndexPath) -> FoodSize {
-    return filteredFoodSections[indexPath.section].sizes[indexPath.row]
-  }
-
-  func filterFoodItems(for segmentIndex: Int) {
-    switch segmentIndex {
-    case 0:
-      filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("cola") }
-    case 1:
-      filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("popcorn") }
-    case 2:
-      filteredFoodSections = foodSections.filter { $0.food.name.lowercased().contains("nachos") }
-    default:
-      filteredFoodSections = foodSections
+    init(foodItems: [Food]) {
+        self.allFoodItems = foodItems
+        filterFoodItems(for: 0)
     }
-  }
 
-  private func prepareFoodSections() {
-    foodSections = foodItems.map { food in
-        return (food: food, sizes: food.sizes)
+    var numberOfSections: Int {
+        return filteredFoodSections.count
     }
-    filterFoodItems(for: 0)
-  }
 
-  func increaseQuantity(at indexPath: IndexPath) {
-    var food = filteredFoodSections[indexPath.section].food
-    food.selectedAmount = max(food.selectedAmount + 1, 0)
-    filteredFoodSections[indexPath.section].food = food
-  }
+    func numberOfRows(in section: Int) -> Int {
+        return filteredFoodSections[section].sizes.count
+    }
 
-  func decreaseQuantity(at indexPath: IndexPath) {
-    var food = filteredFoodSections[indexPath.section].food
-    food.selectedAmount = max(food.selectedAmount - 1, 0)
-    filteredFoodSections[indexPath.section].food = food
-  }
+    func filterFoodItems(for segmentIndex: Int) {
+        switch segmentIndex {
+        case 0:
+            filteredFoodSections = allFoodItems.filter { $0.name.lowercased().contains("cola") }.map { (food: $0, sizes: $0.sizes) }
+        case 1:
+            filteredFoodSections = allFoodItems.filter { $0.name.lowercased().contains("popcorn") }.map { (food: $0, sizes: $0.sizes) }
+        case 2:
+            filteredFoodSections = allFoodItems.filter { $0.name.lowercased().contains("nachos") }.map { (food: $0, sizes: $0.sizes) }
+        default:
+            filteredFoodSections = allFoodItems.map { (food: $0, sizes: $0.sizes) }
+        }
+    }
+
+    func increaseQuantity(at indexPath: IndexPath) {
+        let food = filteredFoodSections[indexPath.section].food
+        let size = filteredFoodSections[indexPath.section].sizes[indexPath.row]
+        if let index = allFoodItems.firstIndex(where: { $0.id == food.id }) {
+            allFoodItems[index].quantityPerSize[size.name, default: 0] += 1
+        }
+        filteredFoodSections[indexPath.section].food.quantityPerSize[size.name, default: 0] += 1
+    }
+
+    func decreaseQuantity(at indexPath: IndexPath) {
+        let food = filteredFoodSections[indexPath.section].food
+        let size = filteredFoodSections[indexPath.section].sizes[indexPath.row]
+        if let index = allFoodItems.firstIndex(where: { $0.id == food.id }) {
+            allFoodItems[index].quantityPerSize[size.name, default: 0] = max(0, allFoodItems[index].quantityPerSize[size.name, default: 0] - 1)
+        }
+        filteredFoodSections[indexPath.section].food.quantityPerSize[size.name, default: 0] = max(0, filteredFoodSections[indexPath.section].food.quantityPerSize[size.name, default: 0] - 1)
+    }
+
+    func quantity(for food: Food, size: FoodSize) -> Int {
+        return food.quantityPerSize[size.name, default: 0]
+    }
 }

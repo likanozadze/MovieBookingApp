@@ -175,12 +175,12 @@ final class FoodItemCell: UITableViewCell {
     // MARK: - Configuration
     
     func configure(with food: Food, size: FoodSize, quantity: Int) {
-        foodImageView.image = UIImage(named: food.imageName)
-        productTitleLabel.text = food.name
-        productSizeLabel.text = size.name
-        productPriceLabel.text = "$\(food.price + size.priceModifier)"
-        selectedQuantityLabel.text = "\(quantity)"
-    }
+            foodImageView.image = UIImage(named: food.imageName)
+            productTitleLabel.text = food.name
+            productSizeLabel.text = size.name
+            productPriceLabel.text = "$\(food.price + size.priceModifier)"
+            selectedQuantityLabel.text = "\(quantity)"
+        }
     
     
     private func addActions() {
