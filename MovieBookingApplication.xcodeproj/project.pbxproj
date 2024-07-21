@@ -40,6 +40,10 @@
 		988DC1192C4C14D2005EE898 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1182C4C14D2005EE898 /* Food.swift */; };
 		988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC11A2C4C1820005EE898 /* FoodItemCell.swift */; };
 		988DC11F2C4C406F005EE898 /* FoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC11E2C4C406F005EE898 /* FoodViewModel.swift */; };
+		98D323AF2C4D255E008DF8CF /* FoodSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */; };
+		98D323B22C4D2B8C008DF8CF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 98D323B12C4D2B8C008DF8CF /* Lottie */; };
+		98D323B42C4D2BBD008DF8CF /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323B32C4D2BBD008DF8CF /* LottieView.swift */; };
+		98D323B62C4D2BFC008DF8CF /* popCorn.json in Resources */ = {isa = PBXBuildFile; fileRef = 98D323B52C4D2BFC008DF8CF /* popCorn.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +82,9 @@
 		988DC1182C4C14D2005EE898 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		988DC11A2C4C1820005EE898 /* FoodItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemCell.swift; sourceTree = "<group>"; };
 		988DC11E2C4C406F005EE898 /* FoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewModel.swift; sourceTree = "<group>"; };
+		98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSelectionSheet.swift; sourceTree = "<group>"; };
+		98D323B32C4D2BBD008DF8CF /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		98D323B52C4D2BFC008DF8CF /* popCorn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popCorn.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98D323B22C4D2B8C008DF8CF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				980849DB2C457B9E00F5924B /* PrimaryButton.swift */,
+				98D323B32C4D2BBD008DF8CF /* LottieView.swift */,
 				988DC1142C4BF4C8005EE898 /* ArcView.swift */,
 			);
 			path = ReusableComponents;
@@ -104,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				980849E02C45BD4F00F5924B /* SeatsViewController.swift */,
+				98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */,
 				98034B4B2C46AA75002FB7B8 /* SeatCell.swift */,
 			);
 			path = Seats;
@@ -146,6 +156,7 @@
 				9883BA1E2C416646009D8996 /* Scenes */,
 				987C6E212C4446F600816B14 /* Managers */,
 				980849DA2C457B6E00F5924B /* ReusableComponents */,
+				98D323B52C4D2BFC008DF8CF /* popCorn.json */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
@@ -292,6 +303,9 @@
 			dependencies = (
 			);
 			name = MovieBookingApplication;
+			packageProductDependencies = (
+				98D323B12C4D2B8C008DF8CF /* Lottie */,
+			);
 			productName = MovieBookingApplication;
 			productReference = 9883BA032C414FB6009D8996 /* MovieBookingApplication.app */;
 			productType = "com.apple.product-type.application";
@@ -320,6 +334,9 @@
 				Base,
 			);
 			mainGroup = 9883B9FA2C414FB6009D8996;
+			packageReferences = (
+				98D323B02C4D2B8C008DF8CF /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 9883BA042C414FB6009D8996 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -334,6 +351,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98D323B62C4D2BFC008DF8CF /* popCorn.json in Resources */,
 				9883BA132C414FB8009D8996 /* LaunchScreen.storyboard in Resources */,
 				9883BA102C414FB8009D8996 /* Assets.xcassets in Resources */,
 			);
@@ -347,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				980849DE2C45BC0F00F5924B /* SeatManager.swift in Sources */,
+				98D323B42C4D2BBD008DF8CF /* LottieView.swift in Sources */,
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
 				9883BA342C41AAF0009D8996 /* CalendarViewController.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
@@ -368,6 +387,7 @@
 				9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */,
 				988DC11F2C4C406F005EE898 /* FoodViewModel.swift in Sources */,
 				9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */,
+				98D323AF2C4D255E008DF8CF /* FoodSelectionSheet.swift in Sources */,
 				9883BA312C417A07009D8996 /* MovieDetails.swift in Sources */,
 				9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */,
 				9883BA202C416680009D8996 /* TabBarController.swift in Sources */,
@@ -589,6 +609,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		98D323B02C4D2B8C008DF8CF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		98D323B12C4D2B8C008DF8CF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98D323B02C4D2B8C008DF8CF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9883B9FB2C414FB6009D8996 /* Project object */;
 }
