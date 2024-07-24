@@ -8,9 +8,12 @@
 import UIKit
 
 class SnackTableViewCell: UITableViewCell {
+    // MARK: - Properties
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,24 +34,40 @@ class SnackTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    // MARK: - Init
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(stackView)
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(priceLabel)
+        addSubviews()
+        setupConstraints()
+        configureAppearance()
+    }
         
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+        // MARK: - Private Methods
+        private func addSubviews() {
+            contentView.addSubview(stackView)
+            stackView.addArrangedSubview(nameLabel)
+            stackView.addArrangedSubview(priceLabel)
+        }
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func configureAppearance() {
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
     }
     
+
     func configure(with snack: Food, size: FoodSize, price: Double, quantity: Int) {
         nameLabel.text = "\(snack.name) (\(size.name))"
         priceLabel.text = String(format: "$%.2f X %d", price, quantity)

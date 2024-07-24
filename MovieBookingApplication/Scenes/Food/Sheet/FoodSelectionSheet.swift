@@ -34,6 +34,7 @@ struct FoodSelectionSheet: View {
                 .frame(maxWidth: .infinity)
                 .padding()
                 .foregroundColor(.white)
+                .bold()
                 .background(Color.customAccentColor)
                 .cornerRadius(10)
                 

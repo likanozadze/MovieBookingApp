@@ -10,6 +10,7 @@ import UIKit
 final class OrderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: - Properties
     private let viewModel: OrderViewModel
+    
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -19,22 +20,58 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return stackView
     }()
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private let seatsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Seats"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .white
+    return label
+    }()
+    
     private let seatsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
-        tableView.showsVerticalScrollIndicator = false
         tableView.register(SeatTableViewCell.self, forCellReuseIdentifier: "SeatTableViewCell")
         return tableView
+    }()
+    
+    private lazy var seatsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [seatsLabel, seatsTableView])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private let snacksLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Snacks"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .white
+        return label
     }()
     
     private let snacksTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
-        tableView.showsVerticalScrollIndicator = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SnackTableViewCell")
         return tableView
+    }()
+    
+    private lazy var snackStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [snacksLabel, snacksTableView])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     // MARK: - Init
@@ -64,23 +101,29 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func setupSubviews() {
-        view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(seatsTableView)
-        mainStackView.addArrangedSubview(snacksTableView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(seatsStackView)
+        mainStackView.addArrangedSubview(snackStackView)
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            seatsTableView.heightAnchor.constraint(equalToConstant: 150),
-            snacksTableView.heightAnchor.constraint(equalToConstant: 150),
+            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            
+            seatsStackView.heightAnchor.constraint(equalToConstant: 150),
+            snackStackView.heightAnchor.constraint(equalToConstant: 150),
         ])
     }
-    
     
     private func setupTableView() {
         seatsTableView.dataSource = self

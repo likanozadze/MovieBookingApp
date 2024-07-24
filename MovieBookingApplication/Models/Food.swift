@@ -90,7 +90,7 @@ class FoodData {
         sizes: [
           FoodSize(name: "Regular", priceModifier: 0.0),
         ],
-        price: 4.50,
+        price: 5.50,
         imageName: "nachos",
         quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0],
         category: "Food"
@@ -101,7 +101,7 @@ class FoodData {
         sizes: [
           FoodSize(name: "Regular", priceModifier: 0.0),
         ],
-        price: 4.50,
+        price: 3.50,
         imageName: "fries",
         quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0],
         category: "Food"
@@ -112,7 +112,7 @@ class FoodData {
         sizes: [
           FoodSize(name: "Regular", priceModifier: 0.0),
         ],
-        price: 4.50,
+        price: 2.50,
         imageName: "hotdog",
         quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0],
         category: "Food"
@@ -123,7 +123,7 @@ class FoodData {
         sizes: [
           FoodSize(name: "Regular", priceModifier: 0.0),
         ],
-        price: 4.50,
+        price: 3.50,
         imageName: "onion",
         quantityPerSize: ["Small": 0, "Medium": 0, "Large": 0],
         category: "Food"
