@@ -263,13 +263,17 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
         case dateCollectionView:
             viewModel.selectDate(at: indexPath.item)
             dateCollectionView.reloadData()
+            print("Selected date index: \(indexPath.item)")
         case timeSlotCollectionView:
             viewModel.selectTimeSlot(at: indexPath.item)
             timeSlotCollectionView.reloadData()
+            print("Selected time slot index: \(indexPath.item)")
         default:
             guard let cell = collectionView.cellForItem(at: indexPath) as? SeatCell else { return }
             cell.handleTap()
             collectionView.reloadItems(at: [indexPath])
+            
+            
         }
     }
 }

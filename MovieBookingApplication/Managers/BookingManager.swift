@@ -15,22 +15,64 @@ final class BookingManager {
     var selectedMovie: Movie?
     var selectedDate: Date?
     var selectedTimeSlot: TimeSlot?
-    var selectedSeats: [Seat] = []
     var selectedFood: [Food] = []
     var totalPrice: Double = 0.0
+    
+    private let seatManager = SeatManager.shared
+    private let foodManager = FoodManager.shared
     
     func resetBooking() {
         selectedMovie = nil
         selectedDate = nil
         selectedTimeSlot = nil
-        selectedSeats.removeAll()
         selectedFood.removeAll()
         totalPrice = 0.0
+        seatManager.setSeats(for: 0, rowsPerSection: [])
+        foodManager.resetQuantities()
     }
     
     func calculateTotalPrice() {
-        let ticketPrice = Double(selectedSeats.count) * (selectedTimeSlot?.ticketPrices.first?.price ?? 0)
-        let foodPrice = selectedFood.reduce(0) { $0 + $1.price }
-        totalPrice = ticketPrice + foodPrice
+        let ticketPrice = Double(getSelectedSeats().count) * (selectedTimeSlot?.ticketPrices.first?.price ?? 0)
+           let foodPrice = foodManager.allFoodItems.reduce(0) { total, food in
+               total + food.sizes.reduce(0) { sizeTotal, size in
+                   sizeTotal + Double(food.quantityPerSize[size.name, default: 0]) * (food.price + size.priceModifier)
+               }
+           }
+           totalPrice = ticketPrice + foodPrice
+       }
+    func getSelectedFood() -> [Food] {
+        return foodManager.allFoodItems.filter { food in
+            food.sizes.contains { size in
+                food.quantityPerSize[size.name, default: 0] > 0
+            }
+        }
+    }
+
+    func setSeats(for sections: Int, rowsPerSection: [Int]) {
+        seatManager.setSeats(for: sections, rowsPerSection: rowsPerSection)
+    }
+    
+    func getSeat(by row: Int, seat: Int) -> Seat? {
+        return seatManager.getSeat(by: row, seat: seat)
+    }
+    
+    func selectSeat(_ seat: Seat) {
+        seatManager.selectSeat(seat)
+    }
+    
+    func deselectSeat(_ seat: Seat) {
+        seatManager.deselectSeat(seat)
+    }
+    
+    func updateSeat(_ seat: Seat) {
+        seatManager.updateSeat(seat)
+    }
+    
+    func getAllSeats() -> [[Seat]] {
+        return seatManager.getAllSeats()
+    }
+    
+    func getSelectedSeats() -> [Seat] {
+        return seatManager.getSelectedSeats()
     }
 }

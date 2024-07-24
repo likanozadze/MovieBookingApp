@@ -64,8 +64,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     // MARK: - Init
     init() {
-        let foodItems = FoodData.generateFakeData()
-        self.viewModel = FoodViewModel(foodItems: foodItems)
+        self.viewModel = FoodViewModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -76,6 +75,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        viewModel.filterFoodItems(for: contentSegmentedControl.selectedSegmentIndex)
         tableView.reloadData()
         
     }
@@ -137,11 +137,11 @@ extension FoodViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FoodItemCell", for: indexPath) as? FoodItemCell else {
             fatalError("Unable to dequeue FoodItemCell")
         }
-        
-        let foodSection = viewModel.filteredFoodSections[indexPath.section]
-        let food = foodSection.food
-        let size = foodSection.sizes[indexPath.row]
-        let quantity = viewModel.quantity(for: food, size: size)
+        let foodManager = FoodManager.shared
+               let foodSection = foodManager.filteredFoodSections[indexPath.section]
+               let food = foodSection.food
+               let size = foodSection.sizes[indexPath.row]
+               let quantity = viewModel.quantity(for: food, size: size)
         
         cell.configure(with: food, size: size, quantity: quantity)
         
@@ -156,12 +156,12 @@ extension FoodViewController: FoodCollectionViewCellDelegate {
     func addProduct(for cell: FoodItemCell?) {
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.increaseQuantity(at: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadData()
     }
     
     func removeProduct(for cell: FoodItemCell?) {
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.decreaseQuantity(at: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadData()
     }
 }
