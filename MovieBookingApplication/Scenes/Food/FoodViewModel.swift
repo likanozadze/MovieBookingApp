@@ -38,4 +38,13 @@ final class FoodViewModel {
     func quantity(for food: Food, size: FoodSize) -> Int {
         return foodManager.quantity(for: food, size: size)
     }
+    func totalSelectedItems() -> Int {
+            var total = 0
+            for section in foodManager.filteredFoodSections {
+                for size in section.sizes {
+                    total += foodManager.quantity(for: section.food, size: size)
+                }
+            }
+            return total
+        }
 }

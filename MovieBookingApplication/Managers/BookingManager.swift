@@ -40,13 +40,7 @@ final class BookingManager {
            }
            totalPrice = ticketPrice + foodPrice
        }
-//    func getSelectedFood() -> [Food] {
-//        return foodManager.allFoodItems.filter { food in
-//            food.sizes.contains { size in
-//                food.quantityPerSize[size.name, default: 0] > 0
-//            }
-//        }
-//    }
+
     func getSelectedOrderedFood() -> [OrderedFood] {
         return FoodManager.shared.allFoodItems.flatMap { food in
             food.sizes.compactMap { size in

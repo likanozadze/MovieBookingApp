@@ -61,6 +61,19 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         return button
     }()
     
+    private let badgeLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .customAccentColor
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     
     // MARK: - Init
     init() {
@@ -77,6 +90,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         setup()
         viewModel.filterFoodItems(for: contentSegmentedControl.selectedSegmentIndex)
         tableView.reloadData()
+        updateBadge()
         
     }
     
@@ -94,11 +108,10 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     private func setupSubviews() {
         view.addSubview(mainStackView)
-        //view.addSubview(chooseSnacksButton)
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(chooseSnacksButton)
-        
+        view.addSubview(badgeLabel)
         chooseSnacksButton.addTarget(self, action: #selector(navigateToOrder), for: .touchUpInside)
     }
     
@@ -106,22 +119,41 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         tableView.dataSource = self
         tableView.delegate = self
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-    
+            
             contentSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
-    
+            
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
-        
+            
             chooseSnacksButton.heightAnchor.constraint(equalToConstant: 60),
             chooseSnacksButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             chooseSnacksButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            chooseSnacksButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            chooseSnacksButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            badgeLabel.topAnchor.constraint(equalTo: contentSegmentedControl.topAnchor, constant: -5),
+            badgeLabel.trailingAnchor.constraint(equalTo: contentSegmentedControl.trailingAnchor, constant: 5),
+            badgeLabel.widthAnchor.constraint(equalToConstant: 20),
+            badgeLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
+    }
+    
+    private func updateBadge() {
+        let count = viewModel.totalSelectedItems()
+        badgeLabel.isHidden = count == 0
+        badgeLabel.text = "\(count)"
+        
+        if count > 0 {
+            contentSegmentedControl.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+        } else {
+            contentSegmentedControl.layoutMargins = .zero
+        }
+        contentSegmentedControl.setNeedsLayout()
+        
     }
 }
 // MARK: - UITableViewDataSource
@@ -139,17 +171,17 @@ extension FoodViewController: UITableViewDataSource {
             fatalError("Unable to dequeue FoodItemCell")
         }
         let foodManager = FoodManager.shared
-               let foodSection = foodManager.filteredFoodSections[indexPath.section]
-               let food = foodSection.food
-               let size = foodSection.sizes[indexPath.row]
-               let quantity = viewModel.quantity(for: food, size: size)
+        let foodSection = foodManager.filteredFoodSections[indexPath.section]
+        let food = foodSection.food
+        let size = foodSection.sizes[indexPath.row]
+        let quantity = viewModel.quantity(for: food, size: size)
         
         cell.configure(with: food, size: size, quantity: quantity)
         
         cell.delegate = self
         return cell
     }
- 
+    
 }
 // MARK: - UITableViewDelegate
 
@@ -159,18 +191,20 @@ extension FoodViewController: FoodCollectionViewCellDelegate {
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.increaseQuantity(at: indexPath)
         tableView.reloadData()
+        updateBadge()
     }
     
     func removeProduct(for cell: FoodItemCell?) {
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.decreaseQuantity(at: indexPath)
         tableView.reloadData()
+        updateBadge()
     }
     
     // MARK: - Actions
     @objc private func navigateToOrder() {
-           let orderViewModel = OrderViewModel()
-           let orderViewController = OrderViewController(viewModel: orderViewModel)
-           NavigationManager.shared.navigateToOrderViewController(from: self, with: orderViewController)
-       }
-   }
+        let orderViewModel = OrderViewModel()
+        let orderViewController = OrderViewController(viewModel: orderViewModel)
+        NavigationManager.shared.navigateToOrderViewController(from: self, with: orderViewController)
+    }
+}
