@@ -49,8 +49,8 @@ class SnackTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with snack: Food, price: Double) {
+    func configure(with snack: Food, price: Double, quantity: Int) {
         nameLabel.text = snack.name
-        priceLabel.text = String(format: "$%.2f", price)
+        priceLabel.text = String(format: "$%.2f X %d", price, quantity)
     }
 }

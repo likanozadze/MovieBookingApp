@@ -114,7 +114,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             let cell = tableView.dequeueReusableCell(withIdentifier: "SnackTableViewCell", for: indexPath) as? SnackTableViewCell ?? SnackTableViewCell(style: .default, reuseIdentifier: "SnackTableViewCell")
             let snack = viewModel.selectedFood[indexPath.row]
             let price = snack.price
-            cell.configure(with: snack, price: price)
+            let quantity = FoodManager.shared.quantity(for: snack, size: snack.sizes.first!)
+            cell.configure(with: snack, price: price, quantity: quantity)
             return cell
         }
         return UITableViewCell()
