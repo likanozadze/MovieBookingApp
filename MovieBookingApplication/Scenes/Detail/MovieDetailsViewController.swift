@@ -15,9 +15,8 @@ final class MovieDetailsViewController: UIViewController {
     private let dateManager = DateManager.shared
     private var viewModel: MovieDetailsViewModel
     private var timeSlots: [TimeSlot] = []
-    private var selectedDate: Date?
     private var isTimeSlotCollectionViewHidden = true
-    private var selectedTimeSlot: TimeSlot?
+    private let bookingManager = BookingManager.shared
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -62,7 +61,6 @@ final class MovieDetailsViewController: UIViewController {
     
     private let selectSeatsButton: ReusableButton = {
         let button = ReusableButton(title: "Select Seats", hasBackground: false, fontSize: .medium)
-      //  button.addTarget(self, action: #selector(handleSelectSeats), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -84,6 +82,7 @@ final class MovieDetailsViewController: UIViewController {
         viewModel.viewDidLoad()
         fetchDates()
         setupButtonAction()
+        bookingManager.resetBooking()
     }
     
     // MARK: - Private Methods
@@ -159,16 +158,16 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     private func toggleTimeSlotCollectionView(for date: Date) {
-        if selectedDate == date && !isTimeSlotCollectionViewHidden {
+        if bookingManager.selectedDate == date && !isTimeSlotCollectionViewHidden {
             timePriceCollectionView.isHidden = true
             isTimeSlotCollectionViewHidden = true
-            selectedDate = nil
-            selectedTimeSlot = nil
+            bookingManager.selectedDate = nil
+            bookingManager.selectedTimeSlot = nil
             resetTimeSlotSelections()
         } else {
             timePriceCollectionView.isHidden = false
             isTimeSlotCollectionViewHidden = false
-            selectedDate = date
+            bookingManager.selectedDate = date
             fetchTimeSlots(for: date)
         }
     }
@@ -177,7 +176,7 @@ final class MovieDetailsViewController: UIViewController {
         for cell in timePriceCollectionView.visibleCells {
             cell.isSelected = false
         }
-        selectedTimeSlot = nil
+        bookingManager.selectedTimeSlot = nil
     }
     private func fetchDates() {
         dates = dateManager.fetchDates(numberOfDays: 7)
@@ -243,7 +242,7 @@ extension MovieDetailsViewController: UICollectionViewDataSource {
             let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
             let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
             
-            cell.configure(time: formattedTime, price: priceString, isSelected: timeSlot == selectedTimeSlot)
+            cell.configure(time: formattedTime, price: priceString, isSelected: timeSlot == bookingManager.selectedTimeSlot)
             cell.delegate = self
             return cell
         }
@@ -267,8 +266,9 @@ extension MovieDetailsViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - DateCollectionViewCellDelegate
 extension MovieDetailsViewController: DateCollectionViewCellDelegate {
     func dateButtonTapped(date: Date) {
-        selectedDate = date
+        bookingManager.selectedDate = date
         toggleTimeSlotCollectionView(for: date)
+        print("Date cell selected: \(DateFormatter.formattedDate(date: date, format: "yyyy-MM-dd"))")
     }
 }
 
@@ -277,10 +277,12 @@ extension MovieDetailsViewController: UICollectionViewDelegate {
         if collectionView == self.collectionView {
             let selectedDate = dates[indexPath.item]
             toggleTimeSlotCollectionView(for: selectedDate)
+            print("Date cell selected: \(DateFormatter.formattedDate(date: selectedDate, format: "yyyy-MM-dd"))")
         } else if collectionView == timePriceCollectionView {
             let selectedTimeSlot = timeSlots[indexPath.item]
-            self.selectedTimeSlot = selectedTimeSlot
+            bookingManager.selectedTimeSlot = selectedTimeSlot
             timePriceCollectionView.reloadData()
+            print("Time slot cell selected: \(DateFormatter.formattedDate(date: selectedTimeSlot.startTime, format: "HH:mm"))")
         }
     }
 }
@@ -288,22 +290,26 @@ extension MovieDetailsViewController: TimeSlotCollectionViewCellDelegate {
     func timeSlotCellTapped(_ cell: TimeSlotCollectionViewCell) {
         if let indexPath = timePriceCollectionView.indexPath(for: cell) {
             let selectedTimeSlot = timeSlots[indexPath.item]
-            self.selectedTimeSlot = selectedTimeSlot
+            bookingManager.selectedTimeSlot = selectedTimeSlot
+            print("Time slot cell tapped: \(DateFormatter.formattedDate(date: selectedTimeSlot.startTime, format: "HH:mm"))")
         }
     }
-    
     
     // MARK: - Actions
     
     private func setupButtonAction() {
         selectSeatsButton.addTarget(self, action: #selector(handleSelectSeats), for: .touchUpInside)
     }
-
+    
     @objc func handleSelectSeats() {
-        guard let selectedDate = selectedDate, let selectedTimeSlot = selectedTimeSlot else {
+        guard let selectedDate = bookingManager.selectedDate, let selectedTimeSlot = bookingManager.selectedTimeSlot else {
             AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
+            print("Selection incomplete: Date or Time Slot not selected")
             return
         }
+        
+        print("Selected Date: \(DateFormatter.formattedDate(date: selectedDate, format: "yyyy-MM-dd"))")
+        print("Selected Time Slot: \(DateFormatter.formattedDate(date: selectedTimeSlot.startTime, format: "HH:mm"))")
         
         let seatsViewModel = SeatsViewModel(selectedDate: selectedDate, selectedTimeSlot: selectedTimeSlot, dates: dates, timeSlots: timeSlots)
         let seatsViewController = SeatsViewController(viewModel: seatsViewModel)
