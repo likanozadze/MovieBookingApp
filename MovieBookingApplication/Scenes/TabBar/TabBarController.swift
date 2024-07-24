@@ -23,22 +23,14 @@ final class TabBarController: UITabBarController {
       viewController: HomeViewController()
     )
 
-    let ticketsViewController = FoodViewController()
+    let foodViewController = FoodViewController()
       
-    let ticket = createNavigationController(
+    let food = createNavigationController(
       title: "Ticket", image: UIImage(systemName: "ticket"),
-      viewController: ticketsViewController
+      viewController: foodViewController
     )
-
-//      let calendarViewController = CalendarViewController()
-//        
-//      let calendar = createNavigationController(
-//        title: "Calendar", image: UIImage(systemName: "calendar"),
-//        viewController: calendarViewController
-//      )
-
-      
-    setViewControllers([home, ticket], animated: true)
+ 
+    setViewControllers([home, food], animated: true)
   }
 
   // MARK: - NavigationController
