@@ -75,7 +75,7 @@ final class FoodItemCell: UITableViewCell {
         return label
     }()
     
-    private let buttonSize: CGFloat = 20
+   private let buttonSize: CGFloat = 30
     
     private let subtractButton: UIButton = {
         let button = UIButton()
@@ -159,8 +159,7 @@ final class FoodItemCell: UITableViewCell {
             
             foodImageView.widthAnchor.constraint(equalToConstant: 80),
             foodImageView.heightAnchor.constraint(equalToConstant: 80),
-            snackStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80),
-            
+          
         ])
     }
     
@@ -169,7 +168,7 @@ final class FoodItemCell: UITableViewCell {
         backgroundColor = .clear
         subtractButton.layer.cornerRadius = buttonSize / 2
         addButton.layer.cornerRadius = buttonSize / 2
-        
+
         productTitleLabel.numberOfLines = 0
         productSizeLabel.numberOfLines = 1
         productPriceLabel.numberOfLines = 1
@@ -182,6 +181,7 @@ final class FoodItemCell: UITableViewCell {
         productTitleLabel.text = food.name
         productSizeLabel.text = size.name
         productPriceLabel.text = "$\(food.price + size.priceModifier)"
+        
         selectedQuantityLabel.text = "\(quantity)"
     }
     

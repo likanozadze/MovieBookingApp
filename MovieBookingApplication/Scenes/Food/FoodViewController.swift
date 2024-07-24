@@ -106,26 +106,24 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
+    
             contentSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
-            
+    
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
-            
+        
             chooseSnacksButton.heightAnchor.constraint(equalToConstant: 60),
-            chooseSnacksButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            chooseSnacksButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            chooseSnacksButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            chooseSnacksButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             chooseSnacksButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
-
 // MARK: - UITableViewDataSource
 extension FoodViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -157,6 +155,7 @@ extension FoodViewController: UITableViewDataSource {
 
 extension FoodViewController: FoodCollectionViewCellDelegate {
     func addProduct(for cell: FoodItemCell?) {
+        print("Add product button tapped")
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.increaseQuantity(at: indexPath)
         tableView.reloadData()

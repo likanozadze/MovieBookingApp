@@ -26,6 +26,7 @@ final class FoodViewModel {
         let food = foodManager.filteredFoodSections[indexPath.section].food
         let size = foodManager.filteredFoodSections[indexPath.section].sizes[indexPath.row]
         foodManager.increaseQuantity(for: food, size: size)
+        
     }
 
     func decreaseQuantity(at indexPath: IndexPath) {
