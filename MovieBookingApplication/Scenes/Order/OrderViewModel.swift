@@ -16,6 +16,9 @@ final class OrderViewModel {
     var selectedTimeSlot: TimeSlot? { bookingManager.selectedTimeSlot }
     var selectedSeats: [Seat] { bookingManager.getSelectedSeats() }
     var totalPrice: Double { bookingManager.totalPrice }
+    func recalculateTotalPrice() {
+          bookingManager.calculateTotalPrice()
+      }
     
     
 }

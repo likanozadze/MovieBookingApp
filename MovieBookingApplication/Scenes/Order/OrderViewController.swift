@@ -25,13 +25,13 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-
+    
     private let seatsLabel: UILabel = {
         let label = UILabel()
         label.text = "Seats"
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = .white
-    return label
+        return label
     }()
     
     private let seatsTableView: UITableView = {
@@ -74,6 +74,31 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return stackView
     }()
     
+    private let totalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Total"
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .white
+        return label
+    }()
+    
+    private let priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .white
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private lazy var totalPriceStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalLabel, priceLabel])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     // MARK: - Init
     init(viewModel: OrderViewModel) {
         self.viewModel = viewModel
@@ -89,6 +114,14 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         setup()
         setupTableView()
+        updateTotalPrice()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateTotalPrice()
+        seatsTableView.reloadData()
+        snacksTableView.reloadData()
     }
     
     private func setup() {
@@ -105,8 +138,9 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(seatsStackView)
         mainStackView.addArrangedSubview(snackStackView)
+        mainStackView.addArrangedSubview(totalPriceStackView)
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -122,6 +156,11 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             
             seatsStackView.heightAnchor.constraint(equalToConstant: 150),
             snackStackView.heightAnchor.constraint(equalToConstant: 150),
+            
+            totalPriceStackView.topAnchor.constraint(equalTo: snackStackView.bottomAnchor, constant: 16),
+            totalPriceStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            totalPriceStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            totalPriceStackView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
@@ -132,6 +171,12 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         snacksTableView.delegate = self
     }
     
+    private func updateTotalPrice() {
+        viewModel.recalculateTotalPrice()
+        let totalPrice = viewModel.totalPrice
+        priceLabel.text = "$\(String(format: "%.2f", totalPrice))"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == seatsTableView {
             return viewModel.selectedSeats.count
@@ -140,7 +185,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         }
         return 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == seatsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SeatTableViewCell", for: indexPath) as? SeatTableViewCell ?? SeatTableViewCell(style: .default, reuseIdentifier: "SeatTableViewCell")
@@ -156,9 +201,9 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         } else if tableView == snacksTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SnackTableViewCell", for: indexPath) as? SnackTableViewCell ?? SnackTableViewCell(style: .default, reuseIdentifier: "SnackTableViewCell")
             let orderedFood = viewModel.selectedOrderedFood[indexPath.row]
-                       let price = orderedFood.food.price + orderedFood.size.priceModifier
-                       cell.configure(with: orderedFood.food, size: orderedFood.size, price: price, quantity: orderedFood.quantity)
-                       return cell
+            let price = orderedFood.food.price + orderedFood.size.priceModifier
+            cell.configure(with: orderedFood.food, size: orderedFood.size, price: price, quantity: orderedFood.quantity)
+            return cell
         }
         return UITableViewCell()
     }
