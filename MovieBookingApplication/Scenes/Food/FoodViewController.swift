@@ -94,9 +94,11 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     private func setupSubviews() {
         view.addSubview(mainStackView)
-        view.addSubview(chooseSnacksButton)
+        //view.addSubview(chooseSnacksButton)
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
+        mainStackView.addArrangedSubview(chooseSnacksButton)
+        
         chooseSnacksButton.addTarget(self, action: #selector(navigateToOrder), for: .touchUpInside)
     }
     

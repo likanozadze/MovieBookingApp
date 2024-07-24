@@ -12,7 +12,6 @@ protocol FoodCollectionViewCellDelegate: AnyObject {
     func removeProduct(for cell: FoodItemCell?)
 }
 
-
 final class FoodItemCell: UITableViewCell {
     // MARK: - Properties
     
@@ -22,7 +21,7 @@ final class FoodItemCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .top
-       stackView.spacing = 25
+        stackView.spacing = 25
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -31,7 +30,7 @@ final class FoodItemCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-       imageView.clipsToBounds = true
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -63,7 +62,7 @@ final class FoodItemCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [productTitleLabel, productSizeLabel, productPriceLabel])
         stackView.axis = .vertical
         stackView.spacing = 4
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -76,7 +75,7 @@ final class FoodItemCell: UITableViewCell {
         return label
     }()
     
-   private let buttonSize: CGFloat = 10
+    private let buttonSize: CGFloat = 20
     
     private let subtractButton: UIButton = {
         let button = UIButton()
@@ -101,10 +100,10 @@ final class FoodItemCell: UITableViewCell {
     
     private lazy var selectProductStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [subtractButton, selectedQuantityLabel, addButton])
-     stackView.alignment = .center
+        stackView.alignment = .center
         stackView.axis = .horizontal
-      stackView.spacing = 4
-        stackView.distribution = .fillEqually
+        stackView.spacing = 4
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -112,7 +111,7 @@ final class FoodItemCell: UITableViewCell {
     
     private lazy var snackStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [infoStackView, selectProductStackView])
-       stackView.alignment = .center
+        stackView.alignment = .center
         stackView.axis = .horizontal
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,8 +158,9 @@ final class FoodItemCell: UITableViewCell {
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             
             foodImageView.widthAnchor.constraint(equalToConstant: 80),
-                  foodImageView.heightAnchor.constraint(equalToConstant: 80),
-
+            foodImageView.heightAnchor.constraint(equalToConstant: 80),
+            snackStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80),
+            
         ])
     }
     
@@ -169,18 +169,21 @@ final class FoodItemCell: UITableViewCell {
         backgroundColor = .clear
         subtractButton.layer.cornerRadius = buttonSize / 2
         addButton.layer.cornerRadius = buttonSize / 2
-
+        
+        productTitleLabel.numberOfLines = 0
+        productSizeLabel.numberOfLines = 1
+        productPriceLabel.numberOfLines = 1
     }
     
     // MARK: - Configuration
     
     func configure(with food: Food, size: FoodSize, quantity: Int) {
-            foodImageView.image = UIImage(named: food.imageName)
-            productTitleLabel.text = food.name
-            productSizeLabel.text = size.name
-            productPriceLabel.text = "$\(food.price + size.priceModifier)"
-            selectedQuantityLabel.text = "\(quantity)"
-        }
+        foodImageView.image = UIImage(named: food.imageName)
+        productTitleLabel.text = food.name
+        productSizeLabel.text = size.name
+        productPriceLabel.text = "$\(food.price + size.priceModifier)"
+        selectedQuantityLabel.text = "\(quantity)"
+    }
     
     
     private func addActions() {
