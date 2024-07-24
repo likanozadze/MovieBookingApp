@@ -36,6 +36,10 @@
 		9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */; };
 		9886BC642C510873000A95BC /* BookingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC632C510873000A95BC /* BookingManager.swift */; };
 		9886BC662C510D5B000A95BC /* FoodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC652C510D5B000A95BC /* FoodManager.swift */; };
+		9886BC692C511506000A95BC /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC682C511506000A95BC /* OrderViewController.swift */; };
+		9886BC6B2C511597000A95BC /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC6A2C511597000A95BC /* OrderViewModel.swift */; };
+		9886BC6D2C511861000A95BC /* SeatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC6C2C511861000A95BC /* SeatTableViewCell.swift */; };
+		9886BC6F2C511877000A95BC /* SnackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC6E2C511877000A95BC /* SnackTableViewCell.swift */; };
 		988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */; };
 		988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1122C4AB507005EE898 /* AlertManager.swift */; };
 		988DC1152C4BF4C8005EE898 /* ArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1142C4BF4C8005EE898 /* ArcView.swift */; };
@@ -82,6 +86,10 @@
 		9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		9886BC632C510873000A95BC /* BookingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingManager.swift; sourceTree = "<group>"; };
 		9886BC652C510D5B000A95BC /* FoodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodManager.swift; sourceTree = "<group>"; };
+		9886BC682C511506000A95BC /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		9886BC6A2C511597000A95BC /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
+		9886BC6C2C511861000A95BC /* SeatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatTableViewCell.swift; sourceTree = "<group>"; };
+		9886BC6E2C511877000A95BC /* SnackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackTableViewCell.swift; sourceTree = "<group>"; };
 		988DC1102C4AA859005EE898 /* formatPrice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "formatPrice+Extension.swift"; sourceTree = "<group>"; };
 		988DC1122C4AB507005EE898 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		988DC1142C4BF4C8005EE898 /* ArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcView.swift; sourceTree = "<group>"; };
@@ -197,6 +205,7 @@
 		9883BA1E2C416646009D8996 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				9886BC672C5114EF000A95BC /* Order */,
 				988DC11C2C4C1910005EE898 /* Food */,
 				980849DF2C45BD3E00F5924B /* Seats */,
 				9883BA322C41AAD5009D8996 /* Calendar */,
@@ -278,6 +287,25 @@
 				9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		9886BC672C5114EF000A95BC /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				9886BC682C511506000A95BC /* OrderViewController.swift */,
+				9886BC6A2C511597000A95BC /* OrderViewModel.swift */,
+				9886BC702C511BBF000A95BC /* TableViewCell */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		9886BC702C511BBF000A95BC /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				9886BC6C2C511861000A95BC /* SeatTableViewCell.swift */,
+				9886BC6E2C511877000A95BC /* SnackTableViewCell.swift */,
+			);
+			path = TableViewCell;
 			sourceTree = "<group>";
 		};
 		988DC11C2C4C1910005EE898 /* Food */ = {
@@ -402,6 +430,8 @@
 				987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */,
 				987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */,
 				9883BA2D2C41790A009D8996 /* HomeViewModel.swift in Sources */,
+				9886BC6F2C511877000A95BC /* SnackTableViewCell.swift in Sources */,
+				9886BC6D2C511861000A95BC /* SeatTableViewCell.swift in Sources */,
 				988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */,
 				9886BC642C510873000A95BC /* BookingManager.swift in Sources */,
 				98D323B82C4D31B6008DF8CF /* NavigationManager.swift in Sources */,
@@ -421,12 +451,14 @@
 				98D323AF2C4D255E008DF8CF /* FoodSelectionSheet.swift in Sources */,
 				9883BA312C417A07009D8996 /* MovieDetails.swift in Sources */,
 				9883BA092C414FB6009D8996 /* SceneDelegate.swift in Sources */,
+				9886BC692C511506000A95BC /* OrderViewController.swift in Sources */,
 				9883BA202C416680009D8996 /* TabBarController.swift in Sources */,
 				980849E12C45BD4F00F5924B /* SeatsViewController.swift in Sources */,
 				9883BA252C41673A009D8996 /* FoodViewController.swift in Sources */,
 				9883BA2B2C417890009D8996 /* Movie.swift in Sources */,
 				9886BC662C510D5B000A95BC /* FoodManager.swift in Sources */,
 				988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */,
+				9886BC6B2C511597000A95BC /* OrderViewModel.swift in Sources */,
 				980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */,
 				9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */,
 			);

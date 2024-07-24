@@ -97,6 +97,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         view.addSubview(chooseSnacksButton)
         mainStackView.addArrangedSubview(contentSegmentedControl)
         mainStackView.addArrangedSubview(tableView)
+        chooseSnacksButton.addTarget(self, action: #selector(navigateToOrder), for: .touchUpInside)
     }
     
     private func setupTableView() {
@@ -164,4 +165,11 @@ extension FoodViewController: FoodCollectionViewCellDelegate {
         viewModel.decreaseQuantity(at: indexPath)
         tableView.reloadData()
     }
-}
+    
+    // MARK: - Actions
+    @objc private func navigateToOrder() {
+           let orderViewModel = OrderViewModel()
+           let orderViewController = OrderViewController(viewModel: orderViewModel)
+           NavigationManager.shared.navigateToOrderViewController(from: self, with: orderViewController)
+       }
+   }
