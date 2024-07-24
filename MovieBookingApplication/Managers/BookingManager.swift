@@ -40,10 +40,18 @@ final class BookingManager {
            }
            totalPrice = ticketPrice + foodPrice
        }
-    func getSelectedFood() -> [Food] {
-        return foodManager.allFoodItems.filter { food in
-            food.sizes.contains { size in
-                food.quantityPerSize[size.name, default: 0] > 0
+//    func getSelectedFood() -> [Food] {
+//        return foodManager.allFoodItems.filter { food in
+//            food.sizes.contains { size in
+//                food.quantityPerSize[size.name, default: 0] > 0
+//            }
+//        }
+//    }
+    func getSelectedOrderedFood() -> [OrderedFood] {
+        return FoodManager.shared.allFoodItems.flatMap { food in
+            food.sizes.compactMap { size in
+                let quantity = FoodManager.shared.quantity(for: food, size: size)
+                return quantity > 0 ? OrderedFood(food: food, size: size, quantity: quantity) : nil
             }
         }
     }

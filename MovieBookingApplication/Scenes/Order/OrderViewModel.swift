@@ -8,13 +8,13 @@
 import Foundation
 
 final class OrderViewModel {
-    let bookingManager = BookingManager.shared
     
+    let bookingManager = BookingManager.shared
+    var selectedOrderedFood: [OrderedFood] { bookingManager.getSelectedOrderedFood() }
     var movie: Movie? { bookingManager.selectedMovie }
     var selectedDate: Date? { bookingManager.selectedDate }
     var selectedTimeSlot: TimeSlot? { bookingManager.selectedTimeSlot }
     var selectedSeats: [Seat] { bookingManager.getSelectedSeats() }
-    var selectedFood: [Food] { bookingManager.getSelectedFood() }
     var totalPrice: Double { bookingManager.totalPrice }
     
     

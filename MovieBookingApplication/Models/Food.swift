@@ -21,6 +21,12 @@ struct FoodSize {
     let priceModifier: Double
 }
 
+struct OrderedFood {
+    let food: Food
+    let size: FoodSize
+    let quantity: Int
+}
+
 class FoodData {
 
   static func generateFakeData() -> [Food] {

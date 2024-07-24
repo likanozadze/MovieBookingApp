@@ -75,7 +75,7 @@ class SeatTableViewCell: UITableViewCell {
     func configure(with seat: Seat, showTime: ShowTime, ticketPrices: [TicketPrice]) {
         seatLabel.text = "Row \(seat.row), Seat \(seat.seatCode)"
         if let price = ticketPrices.first(where: { $0.priceCategory == getPriceCategory(for: showTime) })?.price {
-            priceLabel.text = String(format: "Price: $%.2f", price)
+            priceLabel.text = String(format: "$%.2f", price)
         } else {
             priceLabel.text = "Price: N/A"
         }
