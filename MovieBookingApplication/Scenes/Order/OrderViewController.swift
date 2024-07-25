@@ -126,14 +126,16 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel])
         stackView.axis = .vertical
         stackView.distribution = .fill
-        stackView.spacing = 2
+        stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     private lazy var movieStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [posterImageView, movieLabelStackView])
         stackView.axis = .horizontal
-        //stackView.distribution = .fill
+        stackView.alignment = .top
+        stackView.distribution = .fill
+        stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -182,7 +184,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         mainStackView.addArrangedSubview(snackStackView)
         mainStackView.addArrangedSubview(totalPriceStackView)
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -197,7 +199,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             
             movieStackView.heightAnchor.constraint(equalToConstant: 120),
-            
+            posterImageView.widthAnchor.constraint(equalToConstant: 80),
+            posterImageView.heightAnchor.constraint(equalToConstant: 120),
             seatsStackView.heightAnchor.constraint(equalToConstant: 150),
             snackStackView.heightAnchor.constraint(equalToConstant: 150),
             
