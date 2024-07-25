@@ -37,6 +37,14 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
         return collectionView
     }()
     
+    private let selectedDateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Selected date"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        return label
+    }()
+    
     private var dateCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -44,6 +52,14 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
+    }()
+    
+    private let selectedTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Selected time"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        return label
     }()
     
     private var timeSlotCollectionView: UICollectionView = {
@@ -56,7 +72,7 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
     }()
     
     private lazy var timeAndDateStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dateCollectionView, timeSlotCollectionView])
+        let stackView = UIStackView(arrangedSubviews: [selectedDateLabel, dateCollectionView,selectedTimeLabel, timeSlotCollectionView])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fill

@@ -35,6 +35,14 @@ final class MovieDetailsViewController: UIViewController {
         return imageView
     }()
     
+    private let selectDateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select date"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        return label
+    }()
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -42,6 +50,14 @@ final class MovieDetailsViewController: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
+    }()
+    
+    private let selectTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select time"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        return label
     }()
     
     private let timePriceCollectionView: UICollectionView = {
@@ -103,8 +119,11 @@ final class MovieDetailsViewController: UIViewController {
         scrollView.addSubview(mainStackView)
         
         mainStackView.addArrangedSubview(movieImageView)
+        mainStackView.addArrangedSubview(selectDateLabel)
         mainStackView.addArrangedSubview(collectionView)
+        mainStackView.addArrangedSubview(selectTimeLabel)
         mainStackView.addArrangedSubview(timePriceCollectionView)
+        selectTimeLabel.isHidden = true
         timePriceCollectionView.isHidden = true
         
     }
@@ -160,11 +179,13 @@ final class MovieDetailsViewController: UIViewController {
     private func toggleTimeSlotCollectionView(for date: Date) {
         if bookingManager.selectedDate == date && !isTimeSlotCollectionViewHidden {
             timePriceCollectionView.isHidden = true
+            selectTimeLabel.isHidden = true
             isTimeSlotCollectionViewHidden = true
             bookingManager.selectedDate = nil
             bookingManager.selectedTimeSlot = nil
             resetTimeSlotSelections()
         } else {
+            selectTimeLabel.isHidden = false
             timePriceCollectionView.isHidden = false
             isTimeSlotCollectionViewHidden = false
             bookingManager.selectedDate = date
@@ -191,9 +212,6 @@ final class MovieDetailsViewController: UIViewController {
 // MARK: - MovieDetailsViewModelDelegate
 extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     func movieDetailsFetched(_ movie: MovieDetails) {
-        Task {
-            navigationItem.title = movie.title
-        }
     }
     
     func showError(_ error: Error) {

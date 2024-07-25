@@ -91,7 +91,6 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         viewModel.filterFoodItems(for: contentSegmentedControl.selectedSegmentIndex)
         tableView.reloadData()
         updateBadge()
-        
     }
     
     // MARK: - Private Methods
@@ -100,6 +99,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         setupSubviews()
         setupTableView()
         setupConstraints()
+        setupCloseButton()
     }
     
     private func setupBackground() {
@@ -155,6 +155,16 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         contentSegmentedControl.setNeedsLayout()
         
     }
+    private func setupCloseButton() {
+        let closeButton = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(closeButtonTapped))
+        closeButton.tintColor = .customAccentColor
+        navigationItem.leftBarButtonItem = closeButton
+    }
+    
+    @objc private func closeButtonTapped() {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 // MARK: - UITableViewDataSource
 extension FoodViewController: UITableViewDataSource {
@@ -202,7 +212,7 @@ extension FoodViewController: FoodCollectionViewCellDelegate {
     }
     
     // MARK: - Actions
-
+    
     @objc private func navigateToOrder() {
         let bookingManager = BookingManager.shared
         bookingManager.calculateTotalPrice()

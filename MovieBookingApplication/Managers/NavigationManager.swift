@@ -25,11 +25,13 @@ class NavigationManager {
         }
     }
     
-    func navigateToFoodViewController(from presentingViewController: UIViewController) {
+    func navigateToFoodViewController(from presenter: UIViewController) {
         let foodViewController = FoodViewController()
-        foodViewController.modalPresentationStyle = .fullScreen
-        presentingViewController.present(foodViewController, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: foodViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        presenter.present(navigationController, animated: true, completion: nil)
     }
+    
     
     func navigateToOrderViewController(from presentingViewController: UIViewController, with orderViewController: OrderViewController) {
         orderViewController.modalPresentationStyle = .fullScreen
