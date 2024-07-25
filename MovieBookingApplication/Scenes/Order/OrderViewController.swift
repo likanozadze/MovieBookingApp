@@ -16,14 +16,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
-    }()
-    
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
     }()
     
     private let seatsLabel: UILabel = {
@@ -35,20 +28,14 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }()
     
     private let seatsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
         tableView.register(SeatTableViewCell.self, forCellReuseIdentifier: "SeatTableViewCell")
         return tableView
     }()
     
-    private lazy var seatsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [seatsLabel, seatsTableView])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    
     
     private let snacksLabel: UILabel = {
         let label = UILabel()
@@ -59,19 +46,11 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }()
     
     private let snacksTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SnackTableViewCell")
+        tableView.register(SnackTableViewCell.self, forCellReuseIdentifier: "SnackTableViewCell")
         return tableView
-    }()
-    
-    private lazy var snackStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [snacksLabel, snacksTableView])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
     }()
     
     private let totalLabel: UILabel = {
@@ -88,15 +67,6 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         label.textColor = .white
         label.textAlignment = .right
         return label
-    }()
-    
-    private lazy var totalPriceStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [totalLabel, priceLabel])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
     }()
     
     private let posterImageView: UIImageView = {
@@ -122,6 +92,12 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return label
     }()
     
+    private let payButton: ReusableButton = {
+        let button = ReusableButton(title: "Pay", hasBackground: false, fontSize: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private lazy var movieLabelStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel])
         stackView.axis = .vertical
@@ -140,12 +116,32 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return stackView
     }()
     
-    private let payButton: ReusableButton = {
-        let button = ReusableButton(title: "Pay", hasBackground: false, fontSize: .medium)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private lazy var seatsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [seatsLabel, seatsTableView])
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
+    
+    private lazy var snackStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [snacksLabel, snacksTableView])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var totalPriceStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalLabel, priceLabel])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     // MARK: - Init
     init(viewModel: OrderViewModel) {
         self.viewModel = viewModel
@@ -165,7 +161,6 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         loadMoviePoster()
         updateMovieInfo()
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -185,8 +180,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func setupSubviews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(mainStackView)
+        view.addSubview(mainStackView)
         mainStackView.addArrangedSubview(movieStackView)
         mainStackView.addArrangedSubview(seatsStackView)
         mainStackView.addArrangedSubview(snackStackView)
@@ -196,32 +190,19 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             
             movieStackView.heightAnchor.constraint(equalToConstant: 120),
             posterImageView.widthAnchor.constraint(equalToConstant: 80),
             posterImageView.heightAnchor.constraint(equalToConstant: 120),
-            seatsStackView.heightAnchor.constraint(equalToConstant: 150),
             snackStackView.heightAnchor.constraint(equalToConstant: 150),
             
-            totalPriceStackView.topAnchor.constraint(equalTo: snackStackView.bottomAnchor, constant: 16),
-            totalPriceStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            totalPriceStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             totalPriceStackView.heightAnchor.constraint(equalToConstant: 30),
             
             payButton.heightAnchor.constraint(equalToConstant: 60),
-            payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            payButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             
         ])
     }
@@ -232,6 +213,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         seatsTableView.delegate = self
         snacksTableView.dataSource = self
         snacksTableView.delegate = self
+        seatsTableView.register(SeatTableViewCell.self, forCellReuseIdentifier: "SeatTableViewCell")
+        snacksTableView.register(SnackTableViewCell.self, forCellReuseIdentifier: "SnackTableViewCell")
     }
     
     private func updateTotalPrice() {
@@ -291,17 +274,17 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @objc private func payButtonTapped() {
-            let paymentOptionsVC = PaymentOptionsViewController()
-            paymentOptionsVC.modalPresentationStyle = .pageSheet
-            
-            if let sheet = paymentOptionsVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.prefersGrabberVisible = true
-            }
-            
-            present(paymentOptionsVC, animated: true, completion: nil)
+        let paymentOptionsVC = PaymentOptionsViewController()
+        paymentOptionsVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = paymentOptionsVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
         }
         
-       
-           
+        present(paymentOptionsVC, animated: true, completion: nil)
     }
+    
+    
+    
+}

@@ -63,10 +63,22 @@ class SnackTableViewCell: UITableViewCell {
     }
     
     private func configureAppearance() {
+        layer.borderColor = UIColor.gray.withAlphaComponent(0.1).cgColor
+        layer.borderWidth = 1.0
+        layer.cornerRadius = 12
+        
+        contentView.layer.cornerRadius = layer.cornerRadius
+        contentView.layer.masksToBounds = true
         contentView.backgroundColor = .clear
         backgroundColor = .clear
+        
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowRadius = 6.0
+        layer.shadowOpacity = 0.1
+        layer.masksToBounds = false
     }
-    
+
 
     func configure(with snack: Food, size: FoodSize, price: Double, quantity: Int) {
         nameLabel.text = "\(snack.name) (\(size.name))"
