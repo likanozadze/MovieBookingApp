@@ -12,7 +12,7 @@ final class BookingManager {
     
     private init() {}
     
-    var selectedMovie: Movie?
+    var selectedMovie: Movie? 
     var selectedDate: Date?
     var selectedTimeSlot: TimeSlot?
     var selectedFood: [Food] = []

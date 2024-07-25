@@ -82,7 +82,7 @@ final class MovieDetailsViewController: UIViewController {
         viewModel.viewDidLoad()
         fetchDates()
         setupButtonAction()
-        bookingManager.resetBooking()
+       // bookingManager.resetBooking()
     }
     
     // MARK: - Private Methods
@@ -302,7 +302,9 @@ extension MovieDetailsViewController: TimeSlotCollectionViewCellDelegate {
     }
     
     @objc func handleSelectSeats() {
-        guard let selectedDate = bookingManager.selectedDate, let selectedTimeSlot = bookingManager.selectedTimeSlot else {
+        guard let selectedDate = bookingManager.selectedDate, 
+                let selectedTimeSlot = bookingManager.selectedTimeSlot,
+        let _ = bookingManager.selectedMovie else {
             AlertManager.shared.showAlert(from: self, type: .selectionIncomplete)
             print("Selection incomplete: Date or Time Slot not selected")
             return

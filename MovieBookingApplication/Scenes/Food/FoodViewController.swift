@@ -202,7 +202,11 @@ extension FoodViewController: FoodCollectionViewCellDelegate {
     }
     
     // MARK: - Actions
+
     @objc private func navigateToOrder() {
+        let bookingManager = BookingManager.shared
+        bookingManager.calculateTotalPrice()
+        
         let orderViewModel = OrderViewModel()
         let orderViewController = OrderViewController(viewModel: orderViewModel)
         NavigationManager.shared.navigateToOrderViewController(from: self, with: orderViewController)

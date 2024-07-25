@@ -99,6 +99,45 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return stackView
     }()
     
+    private let posterImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let movieTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let movieGenreLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var movieLabelStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 2
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    private lazy var movieStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [posterImageView, movieLabelStackView])
+        stackView.axis = .horizontal
+        //stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     // MARK: - Init
     init(viewModel: OrderViewModel) {
         self.viewModel = viewModel
@@ -115,6 +154,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         setup()
         setupTableView()
         updateTotalPrice()
+        loadMoviePoster()
+        updateMovieInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,11 +177,12 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     private func setupSubviews() {
         view.addSubview(scrollView)
         scrollView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(movieStackView)
         mainStackView.addArrangedSubview(seatsStackView)
         mainStackView.addArrangedSubview(snackStackView)
         mainStackView.addArrangedSubview(totalPriceStackView)
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -154,6 +196,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             
+            movieStackView.heightAnchor.constraint(equalToConstant: 120),
+            
             seatsStackView.heightAnchor.constraint(equalToConstant: 150),
             snackStackView.heightAnchor.constraint(equalToConstant: 150),
             
@@ -163,6 +207,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             totalPriceStackView.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
+    
     
     private func setupTableView() {
         seatsTableView.dataSource = self
@@ -176,7 +221,26 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         let totalPrice = viewModel.totalPrice
         priceLabel.text = "$\(String(format: "%.2f", totalPrice))"
     }
-    
+    private func loadMoviePoster() {
+        guard let movie = viewModel.selectedMovie else {
+            self.posterImageView.image = UIImage(named: "placeholder")
+            return
+        }
+        let posterPath = movie.posterPath
+        ImageLoader.loadImage(from: posterPath) { [weak self] image in
+            DispatchQueue.main.async {
+                if let image = image {
+                    self?.posterImageView.image = image
+                } else {
+                    self?.posterImageView.image = UIImage(named: "placeholder")
+                }
+            }
+        }
+    }
+    private func updateMovieInfo() {
+        movieTitleLabel.text = viewModel.movieTitle
+        movieGenreLabel.text = viewModel.movieGenres
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == seatsTableView {
             return viewModel.selectedSeats.count
