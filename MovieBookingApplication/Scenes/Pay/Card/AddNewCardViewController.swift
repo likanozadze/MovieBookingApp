@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol AddNewCardViewControllerDelegate: AnyObject {
+    func didAddNewCard()
+}
+
+
 final class AddNewCardViewController: UIViewController {
     // MARK: - Properties
- 
+    weak var delegate: AddNewCardViewControllerDelegate?
     private let mainStackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -65,9 +70,10 @@ final class AddNewCardViewController: UIViewController {
     private let addCardButton: ReusableButton = {
         let button = ReusableButton(title: "Add card", hasBackground: false, fontSize: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(addCardButtonTapped), for: .touchUpInside)
         return button
     }()
-
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +88,7 @@ final class AddNewCardViewController: UIViewController {
         setupConstraints()
         setupTapGestureRecogniser()
         updateAddCardButtonState()
+        //saveCard()
     }
     
     private func setupTextFieldDelegates() {
@@ -121,9 +128,9 @@ final class AddNewCardViewController: UIViewController {
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             nameTextField.heightAnchor.constraint(equalToConstant: 48),
-                            cardNumberTextField.heightAnchor.constraint(equalToConstant: 48),
-                            expiryDateTextField.heightAnchor.constraint(equalToConstant: 48),
-                            cvcTextField.heightAnchor.constraint(equalToConstant: 48),
+            cardNumberTextField.heightAnchor.constraint(equalToConstant: 48),
+            expiryDateTextField.heightAnchor.constraint(equalToConstant: 48),
+            cvcTextField.heightAnchor.constraint(equalToConstant: 48),
             addCardButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
@@ -132,20 +139,54 @@ final class AddNewCardViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleEndEditing))
         view.addGestureRecognizer(tap)
     }
-
+    
     
     private func updateAddCardButtonState() {
         addCardButton.isEnabled = allFieldsAreValid()
         addCardButton.alpha = allFieldsAreValid() ? 1.0 : 0.5
     }
     
+    private func saveCard() {
+        guard let name = nameTextField.text,
+              let cardNumber = cardNumberTextField.text,
+              let expiryDate = expiryDateTextField.text,
+              let cvc = cvcTextField.text else {
+            return
+        }
+        
+        let card = Card(id: UUID().uuidString,
+                        cardholderName: name,
+                        cardNumber: cardNumber,
+                        expirationDate: expiryDate,
+                        cvc: cvc,
+                        brand: .visa) 
+        
+        PaymentManager.shared.addCard(card)
+        delegate?.didAddNewCard()
+        dismiss(animated: true, completion: nil)
+    }
+    
     @objc private func handleEndEditing() {
         view.endEditing(true)
     }
-
+    
     
     @objc private func textFieldDidChange() {
         updateAddCardButtonState()
+    }
+    
+    @objc private func addCardButtonTapped() {
+        if allFieldsAreValid() {
+            saveCard()
+        } else {
+            showAlert(title: "Invalid Input", message: "Please fill in all fields correctly.")
+        }
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 

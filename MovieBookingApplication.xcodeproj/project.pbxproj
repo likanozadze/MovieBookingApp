@@ -39,6 +39,9 @@
 		98850A442C5298C600B5B453 /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A432C5298C600B5B453 /* AddNewCardViewController.swift */; };
 		98850A462C529E0D00B5B453 /* PaymentOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */; };
 		98850A482C529E2900B5B453 /* PaymentOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A472C529E2900B5B453 /* PaymentOptionView.swift */; };
+		98850A4A2C52A9BC00B5B453 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A492C52A9BC00B5B453 /* Card.swift */; };
+		98850A4C2C52A9D500B5B453 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A4B2C52A9D500B5B453 /* PaymentManager.swift */; };
+		98850A4E2C52BECE00B5B453 /* PaymentOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A4D2C52BECE00B5B453 /* PaymentOptionsViewModel.swift */; };
 		9886BC642C510873000A95BC /* BookingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC632C510873000A95BC /* BookingManager.swift */; };
 		9886BC662C510D5B000A95BC /* FoodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC652C510D5B000A95BC /* FoodManager.swift */; };
 		9886BC692C511506000A95BC /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC682C511506000A95BC /* OrderViewController.swift */; };
@@ -94,6 +97,9 @@
 		98850A432C5298C600B5B453 /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
 		98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOptionsViewController.swift; sourceTree = "<group>"; };
 		98850A472C529E2900B5B453 /* PaymentOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOptionView.swift; sourceTree = "<group>"; };
+		98850A492C52A9BC00B5B453 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		98850A4B2C52A9D500B5B453 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManager.swift; sourceTree = "<group>"; };
+		98850A4D2C52BECE00B5B453 /* PaymentOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOptionsViewModel.swift; sourceTree = "<group>"; };
 		9886BC632C510873000A95BC /* BookingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingManager.swift; sourceTree = "<group>"; };
 		9886BC652C510D5B000A95BC /* FoodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodManager.swift; sourceTree = "<group>"; };
 		9886BC682C511506000A95BC /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 				9886BC632C510873000A95BC /* BookingManager.swift */,
 				9886BC652C510D5B000A95BC /* FoodManager.swift */,
 				98850A302C5250C400B5B453 /* ImageLoader.swift */,
+				98850A4B2C52A9D500B5B453 /* PaymentManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -263,6 +270,7 @@
 				9883BA352C41AC89009D8996 /* Seat.swift */,
 				987C6E172C4290E800816B14 /* TimeSlot.swift */,
 				988DC1182C4C14D2005EE898 /* Food.swift */,
+				98850A492C52A9BC00B5B453 /* Card.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -297,11 +305,28 @@
 		98850A322C52758500B5B453 /* Pay */ = {
 			isa = PBXGroup;
 			children = (
-				98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */,
-				98850A472C529E2900B5B453 /* PaymentOptionView.swift */,
-				98850A432C5298C600B5B453 /* AddNewCardViewController.swift */,
+				98850A4F2C52C27B00B5B453 /* Payment */,
+				98850A502C52C28E00B5B453 /* Card */,
 			);
 			path = Pay;
+			sourceTree = "<group>";
+		};
+		98850A4F2C52C27B00B5B453 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */,
+				98850A4D2C52BECE00B5B453 /* PaymentOptionsViewModel.swift */,
+				98850A472C529E2900B5B453 /* PaymentOptionView.swift */,
+			);
+			path = Payment;
+			sourceTree = "<group>";
+		};
+		98850A502C52C28E00B5B453 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				98850A432C5298C600B5B453 /* AddNewCardViewController.swift */,
+			);
+			path = Card;
 			sourceTree = "<group>";
 		};
 		9886BC672C5114EF000A95BC /* Order */ = {
@@ -435,6 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98850A4A2C52A9BC00B5B453 /* Card.swift in Sources */,
 				980849DE2C45BC0F00F5924B /* SeatManager.swift in Sources */,
 				98D323B42C4D2BBD008DF8CF /* LottieView.swift in Sources */,
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
@@ -458,6 +484,7 @@
 				980849D92C4560FD00F5924B /* DateManager.swift in Sources */,
 				98034B4C2C46AA75002FB7B8 /* SeatCell.swift in Sources */,
 				987C6E182C4290E800816B14 /* TimeSlot.swift in Sources */,
+				98850A4C2C52A9D500B5B453 /* PaymentManager.swift in Sources */,
 				9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */,
 				9883BA2F2C417929009D8996 /* NetworkManager.swift in Sources */,
 				9883BA0B2C414FB6009D8996 /* HomeViewController.swift in Sources */,
@@ -480,6 +507,7 @@
 				988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */,
 				9886BC6B2C511597000A95BC /* OrderViewModel.swift in Sources */,
 				980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */,
+				98850A4E2C52BECE00B5B453 /* PaymentOptionsViewModel.swift in Sources */,
 				9883BA1C2C4152C8009D8996 /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
