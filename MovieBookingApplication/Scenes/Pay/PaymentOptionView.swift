@@ -7,7 +7,9 @@
 
 import UIKit
 
-class PaymentOptionView: UIView {
+final class PaymentOptionView: UIView {
+    
+    // MARK: - Properties
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -43,6 +45,7 @@ class PaymentOptionView: UIView {
         }
     }
     
+    // MARK: - Init
     init(icon: UIImage?, title: String, subtitle: String?) {
         super.init(frame: .zero)
         
@@ -56,6 +59,8 @@ class PaymentOptionView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - UI Setup
     
     private func setupUI() {
         let labelStackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])

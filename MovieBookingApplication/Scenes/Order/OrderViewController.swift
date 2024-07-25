@@ -165,8 +165,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         loadMoviePoster()
         updateMovieInfo()
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-    
-       //  payButton.addTarget(self, action: #selector(presentPaymentMethods), for: .touchUpInside)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -5,10 +5,11 @@
 //  Created by Lika Nozadze on 7/25/24.
 //
 
-import Foundation
 import UIKit
 
-class PaymentOptionsViewController: UIViewController {
+final class PaymentOptionsViewController: UIViewController {
+    
+    // MARK: - Properties
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -60,22 +61,23 @@ class PaymentOptionsViewController: UIViewController {
         return button
     }()
     
-    //    private let totalLabel: UILabel = {
-    //        let label = UILabel()
-    //        label.text = "Items: 7 | Total: 85 BYN"
-    //        label.textColor = .white
-    //        label.textAlignment = .center
-    //        return label
-    //    }()
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setup()
     }
     
-    private func setupUI() {
-        view.backgroundColor = .black
-        
+    private func setup() {
+        setupBackground()
+        setupSubviews()
+        setupConstraints()
+    }
+    private func setupBackground() {
+        view.backgroundColor = .customBackgroundColor
+    }
+    
+    private func setupSubviews() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(creditCardOption)
@@ -83,7 +85,9 @@ class PaymentOptionsViewController: UIViewController {
         stackView.addArrangedSubview(googlePayOption)
         stackView.addArrangedSubview(addNewCardButton)
         stackView.addArrangedSubview(payButton)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
