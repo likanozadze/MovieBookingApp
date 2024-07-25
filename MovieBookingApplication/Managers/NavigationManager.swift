@@ -13,6 +13,18 @@ class NavigationManager {
     
     private init() {}
     
+    func navigateToMovieDetails(from presentingViewController: UIViewController, movieId: Int) {
+        let movieDetailsViewController = MovieDetailsViewController(movieId: movieId)
+        
+        if let navigationController = presentingViewController.navigationController {
+            navigationController.pushViewController(movieDetailsViewController, animated: true)
+        } else {
+            
+            movieDetailsViewController.modalPresentationStyle = .fullScreen
+            presentingViewController.present(movieDetailsViewController, animated: true, completion: nil)
+        }
+    }
+    
     func navigateToFoodViewController(from presentingViewController: UIViewController) {
         let foodViewController = FoodViewController()
         foodViewController.modalPresentationStyle = .fullScreen
@@ -20,8 +32,8 @@ class NavigationManager {
     }
     
     func navigateToOrderViewController(from presentingViewController: UIViewController, with orderViewController: OrderViewController) {
-          orderViewController.modalPresentationStyle = .fullScreen
-          presentingViewController.present(orderViewController, animated: true, completion: nil)
-      }
-  
+        orderViewController.modalPresentationStyle = .fullScreen
+        presentingViewController.present(orderViewController, animated: true, completion: nil)
+    }
+    
 }

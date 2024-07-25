@@ -168,10 +168,9 @@ extension HomeViewController: MoviesListViewModelDelegate {
     }
     
     func navigateToMovieDetails(with movieId: Int) {
-            if let selectedMovie = movies.first(where: { $0.id == movieId }) {
-                BookingManager.shared.selectedMovie = selectedMovie
-            }
-            let viewController = MovieDetailsViewController(movieId: movieId)
-            navigationController?.pushViewController(viewController, animated: true)
+        if let selectedMovie = movies.first(where: { $0.id == movieId }) {
+            BookingManager.shared.selectedMovie = selectedMovie
         }
+        NavigationManager.shared.navigateToMovieDetails(from: self, movieId: movieId)
     }
+}
