@@ -35,6 +35,10 @@
 		9883BA3E2C41BEA6009D8996 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3D2C41BEA6009D8996 /* MovieDetailsViewController.swift */; };
 		9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */; };
 		98850A312C5250C400B5B453 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A302C5250C400B5B453 /* ImageLoader.swift */; };
+		98850A3A2C527F5600B5B453 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A392C527F5600B5B453 /* CustomTextField.swift */; };
+		98850A442C5298C600B5B453 /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A432C5298C600B5B453 /* AddNewCardViewController.swift */; };
+		98850A462C529E0D00B5B453 /* PaymentOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */; };
+		98850A482C529E2900B5B453 /* PaymentOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98850A472C529E2900B5B453 /* PaymentOptionView.swift */; };
 		9886BC642C510873000A95BC /* BookingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC632C510873000A95BC /* BookingManager.swift */; };
 		9886BC662C510D5B000A95BC /* FoodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC652C510D5B000A95BC /* FoodManager.swift */; };
 		9886BC692C511506000A95BC /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886BC682C511506000A95BC /* OrderViewController.swift */; };
@@ -86,6 +90,10 @@
 		9883BA3D2C41BEA6009D8996 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		98850A302C5250C400B5B453 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		98850A392C527F5600B5B453 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomTextField.swift; path = ../Scenes/Pay/CustomTextField.swift; sourceTree = "<group>"; };
+		98850A432C5298C600B5B453 /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
+		98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOptionsViewController.swift; sourceTree = "<group>"; };
+		98850A472C529E2900B5B453 /* PaymentOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOptionView.swift; sourceTree = "<group>"; };
 		9886BC632C510873000A95BC /* BookingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingManager.swift; sourceTree = "<group>"; };
 		9886BC652C510D5B000A95BC /* FoodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodManager.swift; sourceTree = "<group>"; };
 		9886BC682C511506000A95BC /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +131,7 @@
 				980849DB2C457B9E00F5924B /* PrimaryButton.swift */,
 				98D323B32C4D2BBD008DF8CF /* LottieView.swift */,
 				988DC1142C4BF4C8005EE898 /* ArcView.swift */,
+				98850A392C527F5600B5B453 /* CustomTextField.swift */,
 			);
 			path = ReusableComponents;
 			sourceTree = "<group>";
@@ -208,6 +217,7 @@
 		9883BA1E2C416646009D8996 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				98850A322C52758500B5B453 /* Pay */,
 				9886BC672C5114EF000A95BC /* Order */,
 				988DC11C2C4C1910005EE898 /* Food */,
 				980849DF2C45BD3E00F5924B /* Seats */,
@@ -282,6 +292,16 @@
 				9883BA3F2C41BECF009D8996 /* MovieDetailsViewModel.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		98850A322C52758500B5B453 /* Pay */ = {
+			isa = PBXGroup;
+			children = (
+				98850A452C529E0D00B5B453 /* PaymentOptionsViewController.swift */,
+				98850A472C529E2900B5B453 /* PaymentOptionView.swift */,
+				98850A432C5298C600B5B453 /* AddNewCardViewController.swift */,
+			);
+			path = Pay;
 			sourceTree = "<group>";
 		};
 		9886BC672C5114EF000A95BC /* Order */ = {
@@ -419,6 +439,8 @@
 				98D323B42C4D2BBD008DF8CF /* LottieView.swift in Sources */,
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
 				9883BA342C41AAF0009D8996 /* CalendarViewController.swift in Sources */,
+				98850A462C529E0D00B5B453 /* PaymentOptionsViewController.swift in Sources */,
+				98850A3A2C527F5600B5B453 /* CustomTextField.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
 				988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */,
 				988DC1152C4BF4C8005EE898 /* ArcView.swift in Sources */,
@@ -430,6 +452,7 @@
 				988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */,
 				9886BC642C510873000A95BC /* BookingManager.swift in Sources */,
 				98850A312C5250C400B5B453 /* ImageLoader.swift in Sources */,
+				98850A482C529E2900B5B453 /* PaymentOptionView.swift in Sources */,
 				98D323B82C4D31B6008DF8CF /* NavigationManager.swift in Sources */,
 				9883BA3B2C41AF31009D8996 /* DateCollectionViewCell.swift in Sources */,
 				980849D92C4560FD00F5924B /* DateManager.swift in Sources */,
@@ -451,6 +474,7 @@
 				9883BA202C416680009D8996 /* TabBarController.swift in Sources */,
 				980849E12C45BD4F00F5924B /* SeatsViewController.swift in Sources */,
 				9883BA252C41673A009D8996 /* FoodViewController.swift in Sources */,
+				98850A442C5298C600B5B453 /* AddNewCardViewController.swift in Sources */,
 				9883BA2B2C417890009D8996 /* Movie.swift in Sources */,
 				9886BC662C510D5B000A95BC /* FoodManager.swift in Sources */,
 				988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */,
