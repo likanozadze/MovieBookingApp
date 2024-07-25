@@ -10,32 +10,29 @@ import SwiftUI
 
 class NavigationManager {
     static let shared = NavigationManager()
-    
+
     private init() {}
-    
+
     func navigateToMovieDetails(from presentingViewController: UIViewController, movieId: Int) {
         let movieDetailsViewController = MovieDetailsViewController(movieId: movieId)
-        
-        if let navigationController = presentingViewController.navigationController {
-            navigationController.pushViewController(movieDetailsViewController, animated: true)
-        } else {
-            
-            movieDetailsViewController.modalPresentationStyle = .fullScreen
-            presentingViewController.present(movieDetailsViewController, animated: true, completion: nil)
-        }
+        pushOrPresent(viewController: movieDetailsViewController, from: presentingViewController)
     }
     
     func navigateToFoodViewController(from presenter: UIViewController) {
         let foodViewController = FoodViewController()
-        let navigationController = UINavigationController(rootViewController: foodViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        presenter.present(navigationController, animated: true, completion: nil)
+        pushOrPresent(viewController: foodViewController, from: presenter)
     }
-    
-    
+
     func navigateToOrderViewController(from presentingViewController: UIViewController, with orderViewController: OrderViewController) {
-        orderViewController.modalPresentationStyle = .fullScreen
-        presentingViewController.present(orderViewController, animated: true, completion: nil)
+        pushOrPresent(viewController: orderViewController, from: presentingViewController)
     }
-    
+
+    private func pushOrPresent(viewController: UIViewController, from presenter: UIViewController) {
+        if let navigationController = presenter.navigationController {
+            navigationController.pushViewController(viewController, animated: true)
+        } else {
+            viewController.modalPresentationStyle = .fullScreen
+            presenter.present(viewController, animated: true, completion: nil)
+        }
+    }
 }

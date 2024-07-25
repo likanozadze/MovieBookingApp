@@ -99,7 +99,6 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         setupSubviews()
         setupTableView()
         setupConstraints()
-        setupCloseButton()
     }
     
     private func setupBackground() {
@@ -155,16 +154,6 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         contentSegmentedControl.setNeedsLayout()
         
     }
-    private func setupCloseButton() {
-        let closeButton = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(closeButtonTapped))
-        closeButton.tintColor = .customAccentColor
-        navigationItem.leftBarButtonItem = closeButton
-    }
-    
-    @objc private func closeButtonTapped() {
-        dismiss(animated: true, completion: nil)
-    }
-    
 }
 // MARK: - UITableViewDataSource
 extension FoodViewController: UITableViewDataSource {
