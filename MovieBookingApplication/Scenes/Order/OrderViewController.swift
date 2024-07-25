@@ -35,8 +35,6 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return tableView
     }()
     
-    
-    
     private let snacksLabel: UILabel = {
         let label = UILabel()
         label.text = "Snacks"
