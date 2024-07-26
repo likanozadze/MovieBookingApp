@@ -34,7 +34,7 @@ final class MovieDetailsViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
+
     private let selectDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Select date"
@@ -62,7 +62,7 @@ final class MovieDetailsViewController: UIViewController {
     
     private let timePriceCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
@@ -98,7 +98,6 @@ final class MovieDetailsViewController: UIViewController {
         viewModel.viewDidLoad()
         fetchDates()
         setupButtonAction()
-       // bookingManager.resetBooking()
     }
     
     // MARK: - Private Methods
@@ -167,7 +166,7 @@ final class MovieDetailsViewController: UIViewController {
             movieImageView.heightAnchor.constraint(equalToConstant: 240),
             
             collectionView.heightAnchor.constraint(equalToConstant: 60),
-            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            timePriceCollectionView.heightAnchor.constraint(equalToConstant: 100),
             
             selectSeatsButton.heightAnchor.constraint(equalToConstant: 60),
             selectSeatsButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
@@ -212,8 +211,10 @@ final class MovieDetailsViewController: UIViewController {
 // MARK: - MovieDetailsViewModelDelegate
 extension MovieDetailsViewController: MovieDetailsViewModelDelegate {
     func movieDetailsFetched(_ movie: MovieDetails) {
+        Task {
+            
+        }
     }
-    
     func showError(_ error: Error) {
         print("Error")
     }

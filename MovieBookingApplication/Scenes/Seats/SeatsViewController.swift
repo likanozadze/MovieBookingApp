@@ -30,7 +30,7 @@ final class SeatsViewController: UIViewController, UIViewControllerTransitioning
     }()
     
     private var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = SeatCollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
@@ -288,8 +288,6 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             guard let cell = collectionView.cellForItem(at: indexPath) as? SeatCell else { return }
             cell.handleTap()
             collectionView.reloadItems(at: [indexPath])
-            
-            
         }
     }
 }
@@ -303,7 +301,9 @@ extension SeatsViewController: UICollectionViewDelegateFlowLayout {
         case timeSlotCollectionView:
             return CGSize(width: 80, height: 100)
         default:
-            return CGSize(width: 40, height: 40)
+            let availableWidth = collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right)
+            let cellWidth = availableWidth / 10
+            return CGSize(width: cellWidth, height: 40)
         }
     }
     
