@@ -44,7 +44,7 @@ final class HomeViewController: UIViewController {
     
     private var movies = [Movie]()
     private let viewModel = HomeViewModel()
-    
+    private var selectedDate: Date?
     
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
@@ -170,6 +170,7 @@ extension HomeViewController: MoviesListViewModelDelegate {
     func navigateToMovieDetails(with movieId: Int) {
         if let selectedMovie = movies.first(where: { $0.id == movieId }) {
             BookingManager.shared.selectedMovie = selectedMovie
+            BookingManager.shared.selectedDate = selectedDate
         }
         NavigationManager.shared.navigateToMovieDetails(from: self, movieId: movieId)
     }

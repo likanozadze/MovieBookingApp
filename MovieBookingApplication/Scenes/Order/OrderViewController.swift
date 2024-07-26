@@ -90,6 +90,13 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         return label
     }()
     
+    private let selectedDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
+        return label
+    }()
+    
     private let payButton: ReusableButton = {
         let button = ReusableButton(title: "Pay", hasBackground: false, fontSize: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +104,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }()
     
     private lazy var movieLabelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel])
+        let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel, selectedDateLabel])
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.spacing = 8
@@ -163,6 +170,9 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if let selectedDate = BookingManager.shared.selectedDate {
+            selectedDateLabel.text = DateManager.shared.formatDate(selectedDate, format: "MMMM dd, yyyy")
+        }
         updateTotalPrice()
         seatsTableView.reloadData()
         snacksTableView.reloadData()
