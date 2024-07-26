@@ -5,178 +5,6 @@
 //  Created by Lika Nozadze on 7/25/24.
 //
 //
-//import UIKit
-//
-//final class PaymentOptionsViewController: UIViewController {
-//    
-//    // MARK: - Properties
-//    private let stackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .vertical
-//        stackView.spacing = 16
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        return stackView
-//    }()
-//    
-//    private let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Payment method"
-//        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        label.textColor = .white
-//        return label
-//    }()
-//    
-//    
-//    private let applePayOption: PaymentOptionView = {
-//        let view = PaymentOptionView(icon: UIImage(named: "apple_pay_icon"), title: "Apple Pay", subtitle: nil)
-//        return view
-//    }()
-//    
-//    private let googlePayOption: PaymentOptionView = {
-//        let view = PaymentOptionView(icon: UIImage(named: "google_pay_icon"), title: "Google Pay", subtitle: nil)
-//        return view
-//    }()
-//    
-//    private let addNewCardButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Add new card", for: .normal)
-//        button.setTitleColor(.systemBlue, for: .normal)
-//        button.contentHorizontalAlignment = .left
-//        button.addTarget(self, action: #selector(addNewCardTapped), for: .touchUpInside)
-//        return button
-//    }()
-//    
-//    private let payButton: ReusableButton = {
-//        let button = ReusableButton(title: "Pay", hasBackground: false, fontSize: .medium)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-//        return button
-//    }()
-//    
-//    private var savedCards: [Card] = []
-//    private var cardOptionViews: [PaymentOptionView] = []
-//    
-//    // MARK: - View Life Cycle
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setup()
-//        loadSavedCards()
-//    }
-//    
-//    private func setup() {
-//        setupBackground()
-//        setupSubviews()
-//        setupConstraints()
-//    }
-//    private func setupBackground() {
-//        view.backgroundColor = .customBackgroundColor
-//    }
-//    
-//    private func setupSubviews() {
-//        view.addSubview(stackView)
-//        stackView.addArrangedSubview(titleLabel)
-//        stackView.addArrangedSubview(applePayOption)
-//        stackView.addArrangedSubview(googlePayOption)
-//        stackView.addArrangedSubview(addNewCardButton)
-//        stackView.addArrangedSubview(payButton)
-//    }
-//    
-//    private func setupConstraints() {
-//        NSLayoutConstraint.activate([
-//            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            payButton.heightAnchor.constraint(equalToConstant: 50)
-//        ])
-//        
-//    }
-//    
-//    private func loadSavedCards() {
-//        savedCards = PaymentManager.shared.getSavedCards()
-//        updateCardOptionsUI()
-//        if let firstCard = cardOptionViews.first {
-//            selectCard(firstCard)
-//        }
-//    }
-//    
-//    private func updateCardOptionsUI() {
-//        cardOptionViews.forEach { $0.removeFromSuperview() }
-//        cardOptionViews.removeAll()
-//        
-//        for (index, card) in savedCards.enumerated() {
-//            let cardOptionView = PaymentOptionView(icon: UIImage(named: card.brand.rawValue + "_icon"),
-//                                                   title: "\(card.brand.rawValue.capitalized) Card",
-//                                                   subtitle: "**** **** **** \(card.cardNumber.suffix(4))")
-//            cardOptionView.tag = index
-//            cardOptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cardOptionTapped(_:))))
-//            
-//            cardOptionViews.append(cardOptionView)
-//            stackView.insertArrangedSubview(cardOptionView, at: index + 1)
-//        }
-//        
-//        if let firstCard = cardOptionViews.first {
-//            selectCard(firstCard)
-//        }
-//    }
-//    
-//    private func selectCard(_ cardView: PaymentOptionView) {
-//        cardOptionViews.forEach { $0.isSelected = false }
-//        cardView.isSelected = true
-//    }
-//    
-//
-//    @objc private func cardOptionTapped(_ gesture: UITapGestureRecognizer) {
-//        guard let selectedView = gesture.view as? PaymentOptionView else { return }
-//        selectCard(selectedView)
-//    }
-//    @objc private func addNewCardTapped() {
-//        let addNewCardVC = AddNewCardViewController()
-//        addNewCardVC.delegate = self
-//        let navController = UINavigationController(rootViewController: addNewCardVC)
-//        navController.modalPresentationStyle = .fullScreen
-//        present(navController, animated: true, completion: nil)
-//    }
-//    
-//    @objc private func payButtonTapped() {
-//        guard let selectedCard = getSelectedCard() else {
-//            showAlert(title: "Error", message: "Please select a payment method")
-//            return
-//        }
-//        
-//        let amount = BookingManager.shared.totalPrice
-//        PaymentManager.shared.processPayment(amount: amount, card: selectedCard) { [weak self] success, message in
-//            if success {
-//                self?.showAlert(title: "Success", message: "Payment processed successfully") {
-//                    BookingManager.shared.resetBooking()
-//                    self?.navigationController?.popToRootViewController(animated: true)
-//                }
-//            } else {
-//                self?.showAlert(title: "Error", message: message ?? "Payment failed")
-//            }
-//        }
-//    }
-//    
-//    private func getSelectedCard() -> Card? {
-//        guard let selectedIndex = cardOptionViews.firstIndex(where: { $0.isSelected }) else {
-//            return nil
-//        }
-//        return savedCards[selectedIndex]
-//    }
-//    
-//    private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
-//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-//            completion?()
-//        })
-//        present(alert, animated: true, completion: nil)
-//    }
-//}
-//
-//extension PaymentOptionsViewController: AddNewCardViewControllerDelegate {
-//    func didAddNewCard() {
-//        loadSavedCards()
-//    }
-//}
 import UIKit
 
 final class PaymentOptionsViewController: UIViewController {
@@ -314,15 +142,16 @@ extension PaymentOptionsViewController: PaymentOptionsViewModelDelegate {
     
     func didProcessPayment(success: Bool, message: String) {
             if success {
-                AlertManager.shared.showAlert(from: self, type: .paymentSuccessful) {
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
+                let successVC = SuccessViewController()
+                successVC.modalPresentationStyle = .fullScreen
+                self.present(successVC, animated: true, completion: nil)
             } else {
-                AlertManager.shared.showAlert(from: self, type: .paymentFailed(message: message))
+                let failureVC = FailureViewController()
+                failureVC.modalPresentationStyle = .fullScreen
+                self.present(failureVC, animated: true, completion: nil)
             }
         }
     }
-
 extension PaymentOptionsViewController: AddNewCardViewControllerDelegate {
     func didAddNewCard() {
         viewModel.loadSavedCards()
