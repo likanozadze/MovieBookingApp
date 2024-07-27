@@ -20,6 +20,7 @@ final class AlertManager {
         case selectSeats
         case paymentSuccessful
         case paymentFailed(message: String)
+        case invalidInput
        
     }
     // MARK: - Methods
@@ -36,6 +37,9 @@ final class AlertManager {
             alert = createAlert(title: "Payment Successful", message: "Your payment has been processed successfully.")
         case .paymentFailed(let message):
             alert = createAlert(title: "Payment Failed", message: message)
+        case .invalidInput:
+            alert = createAlert(title: "Invalid Input", message: "Please fill in all fields correctly.")
+            
         }
         
         viewController.present(alert, animated: true)

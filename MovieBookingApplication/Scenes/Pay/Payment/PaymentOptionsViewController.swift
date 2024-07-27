@@ -141,7 +141,7 @@ final class PaymentOptionsViewController: UIViewController {
     
     @objc private func payButtonTapped() {
         print("Debug - Before payment processing:")
-            print(BookingManager.shared.getBookingSummary())
+        print(BookingManager.shared.getBookingSummary())
         viewModel.processPayment()
     }
 }
@@ -152,17 +152,17 @@ extension PaymentOptionsViewController: PaymentOptionsViewModelDelegate {
     }
     
     func didProcessPayment(success: Bool, message: String) {
-            if success {
-                let successVC = SuccessViewController()
-                successVC.modalPresentationStyle = .fullScreen
-                self.present(successVC, animated: true, completion: nil)
-            } else {
-                let failureVC = FailureViewController()
-                failureVC.modalPresentationStyle = .fullScreen
-                self.present(failureVC, animated: true, completion: nil)
-            }
+        if success {
+            let successVC = SuccessViewController()
+            successVC.modalPresentationStyle = .fullScreen
+            self.present(successVC, animated: true, completion: nil)
+        } else {
+            let failureVC = FailureViewController()
+            failureVC.modalPresentationStyle = .fullScreen
+            self.present(failureVC, animated: true, completion: nil)
         }
     }
+}
 extension PaymentOptionsViewController: AddNewCardViewControllerDelegate {
     func didAddNewCard() {
         viewModel.loadSavedCards()

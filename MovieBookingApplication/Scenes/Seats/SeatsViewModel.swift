@@ -9,12 +9,14 @@ import UIKit
 
 final class SeatsViewModel {
     // MARK: - Properties
+    
     let dates: [Date]
     let timeSlots: [TimeSlot]
     private(set) var selectedDateIndex: Int?
     private(set) var selectedTimeSlotIndex: Int?
     let seatManager = SeatManager.shared
     let rowsPerSection = [8, 8, 8, 8]
+    
     // MARK: - Init
     init(selectedDate: Date, selectedTimeSlot: TimeSlot, dates: [Date], timeSlots: [TimeSlot]) {
         self.dates = dates

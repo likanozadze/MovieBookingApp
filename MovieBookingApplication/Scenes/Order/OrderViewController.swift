@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class OrderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class OrderViewController: UIViewController, UITableViewDelegate {
     // MARK: - Properties
     private let viewModel: OrderViewModel
     
@@ -168,15 +168,15 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let selectedDate = BookingManager.shared.selectedDate {
-            selectedDateLabel.text = DateManager.shared.formatDate(selectedDate, format: "MMMM dd, yyyy")
-        }
-        updateTotalPrice()
-        seatsTableView.reloadData()
-        snacksTableView.reloadData()
-    }
+    //    override func viewWillAppear(_ animated: Bool) {
+    //        super.viewWillAppear(animated)
+    //        if let selectedDate = BookingManager.shared.selectedDate {
+    //            selectedDateLabel.text = DateManager.shared.formatDate(selectedDate, format: "MMMM dd, yyyy")
+    //        }
+    //        updateTotalPrice()
+    //        seatsTableView.reloadData()
+    //        snacksTableView.reloadData()
+    //    }
     
     private func setup() {
         setupBackground()
@@ -250,6 +250,9 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         movieTitleLabel.text = viewModel.movieTitle
         movieGenreLabel.text = viewModel.movieGenres
     }
+}
+    // MARK: - UITableViewDataSource
+extension OrderViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == seatsTableView {
             return viewModel.selectedSeats.count
@@ -258,7 +261,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         }
         return 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == seatsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SeatTableViewCell", for: indexPath) as? SeatTableViewCell ?? SeatTableViewCell(style: .default, reuseIdentifier: "SeatTableViewCell")
@@ -280,6 +283,8 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         }
         return UITableViewCell()
     }
+    
+    // MARK: - Actions
     
     @objc private func payButtonTapped() {
         let bookingManager = BookingManager.shared

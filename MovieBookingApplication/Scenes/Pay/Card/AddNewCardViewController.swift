@@ -11,9 +11,9 @@ protocol AddNewCardViewControllerDelegate: AnyObject {
     func didAddNewCard()
 }
 
-
 final class AddNewCardViewController: UIViewController {
     // MARK: - Properties
+    
     weak var delegate: AddNewCardViewControllerDelegate?
     private let mainStackView: UIStackView = {
         let view = UIStackView()
@@ -82,31 +82,15 @@ final class AddNewCardViewController: UIViewController {
     
     // MARK: - Methods
     private func setup() {
-        setupTextFieldDelegates()
         setupBackground()
         setupSubviews()
         setupConstraints()
+        setupTextFieldDelegates()
         setupTapGestureRecogniser()
         updateAddCardButtonState()
         setupButtonAction()
     }
     
-    private func setupTextFieldDelegates() {
-        [nameTextField, cardNumberTextField, expiryDateTextField, cvcTextField].forEach {
-            $0.delegate = self
-            $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        }
-    }
-    
-    private func allFieldsAreValid() -> Bool {
-        let nameIsValid = nameTextField.text?.contains(" ") ?? false && !nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        let cardNumberIsValid = cardNumberTextField.text?.isEmpty == false && cardNumberTextField.text?.replacingOccurrences(of: " ", with: "").count == 16
-        let expiryDateIsValid = expiryDateTextField.text?.isEmpty == false && expiryDateTextField.text?.replacingOccurrences(of: "/", with: "").count == 4
-        let cvcIsValid = cvcTextField.text?.isEmpty == false &&
-        cvcTextField.text!.count == 3
-        
-        return nameIsValid && cardNumberIsValid && expiryDateIsValid && cvcIsValid
-    }
     
     private func setupBackground() {
         view.backgroundColor = .customBackgroundColor
@@ -135,11 +119,23 @@ final class AddNewCardViewController: UIViewController {
         ])
     }
     
-    
-    private func setupButtonAction() {
-        addCardButton.addTarget(self, action: #selector(addCardButtonTapped), for: .touchUpInside)
+    private func setupTextFieldDelegates() {
+        [nameTextField, cardNumberTextField, expiryDateTextField, cvcTextField].forEach {
+            $0.delegate = self
+            $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        }
     }
     
+    private func allFieldsAreValid() -> Bool {
+        let nameIsValid = nameTextField.text?.contains(" ") ?? false && !nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let cardNumberIsValid = cardNumberTextField.text?.isEmpty == false && cardNumberTextField.text?.replacingOccurrences(of: " ", with: "").count == 16
+        let expiryDateIsValid = expiryDateTextField.text?.isEmpty == false && expiryDateTextField.text?.replacingOccurrences(of: "/", with: "").count == 4
+        let cvcIsValid = cvcTextField.text?.isEmpty == false &&
+        cvcTextField.text!.count == 3
+        
+        return nameIsValid && cardNumberIsValid && expiryDateIsValid && cvcIsValid
+    }
+
     
     private func setupTapGestureRecogniser() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleEndEditing))
@@ -150,26 +146,6 @@ final class AddNewCardViewController: UIViewController {
     private func updateAddCardButtonState() {
         addCardButton.isEnabled = allFieldsAreValid()
         addCardButton.alpha = allFieldsAreValid() ? 1.0 : 0.5
-    }
-    
-    private func saveCard() {
-        guard let name = nameTextField.text,
-              let cardNumber = cardNumberTextField.text,
-              let expiryDate = expiryDateTextField.text,
-              let cvc = cvcTextField.text else {
-            return
-        }
-        
-        let card = Card(id: UUID().uuidString,
-                        cardholderName: name,
-                        cardNumber: cardNumber,
-                        expirationDate: expiryDate,
-                        cvc: cvc,
-                        brand: .visa) 
-        
-        PaymentManager.shared.addCard(card)
-        delegate?.didAddNewCard()
-        dismiss(animated: true, completion: nil)
     }
     
     @objc private func handleEndEditing() {
@@ -185,15 +161,34 @@ final class AddNewCardViewController: UIViewController {
         if allFieldsAreValid() {
             saveCard()
         } else {
-            showAlert(title: "Invalid Input", message: "Please fill in all fields correctly.")
+            AlertManager.shared.showAlert(from: self, type: .invalidInput)
         }
     }
     
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+    private func saveCard() {
+        guard let name = nameTextField.text,
+              let cardNumber = cardNumberTextField.text,
+              let expiryDate = expiryDateTextField.text,
+              let cvc = cvcTextField.text else {
+            return
+        }
+        
+        let card = Card(id: UUID().uuidString,
+                        cardholderName: name,
+                        cardNumber: cardNumber,
+                        expirationDate: expiryDate,
+                        cvc: cvc,
+                        brand: .visa)
+        
+        PaymentManager.shared.addCard(card)
+        delegate?.didAddNewCard()
+        dismiss(animated: true, completion: nil)
     }
+    
+     private func setupButtonAction() {
+         addCardButton.addTarget(self, action: #selector(addCardButtonTapped), for: .touchUpInside)
+     }
+     
 }
 
 // MARK: - TextFieldTypes

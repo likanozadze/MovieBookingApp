@@ -53,6 +53,7 @@
 		988DC1192C4C14D2005EE898 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC1182C4C14D2005EE898 /* Food.swift */; };
 		988DC11B2C4C1820005EE898 /* FoodItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC11A2C4C1820005EE898 /* FoodItemCell.swift */; };
 		988DC11F2C4C406F005EE898 /* FoodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DC11E2C4C406F005EE898 /* FoodViewModel.swift */; };
+		98975A522C559B1E00C1DE26 /* AddNewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98975A512C559B1E00C1DE26 /* AddNewCardViewModel.swift */; };
 		98B045102C53FA9600F82A56 /* SeatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B0450F2C53FA9600F82A56 /* SeatCollectionViewFlowLayout.swift */; };
 		98B045132C53FE3300F82A56 /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B045122C53FE3300F82A56 /* SuccessViewController.swift */; };
 		98B045152C53FF4700F82A56 /* FailureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B045142C53FF4700F82A56 /* FailureViewController.swift */; };
@@ -114,6 +115,7 @@
 		988DC1182C4C14D2005EE898 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		988DC11A2C4C1820005EE898 /* FoodItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemCell.swift; sourceTree = "<group>"; };
 		988DC11E2C4C406F005EE898 /* FoodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodViewModel.swift; sourceTree = "<group>"; };
+		98975A512C559B1E00C1DE26 /* AddNewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewModel.swift; sourceTree = "<group>"; };
 		98B0450F2C53FA9600F82A56 /* SeatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		98B045122C53FE3300F82A56 /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		98B045142C53FF4700F82A56 /* FailureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureViewController.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				98850A432C5298C600B5B453 /* AddNewCardViewController.swift */,
+				98975A512C559B1E00C1DE26 /* AddNewCardViewModel.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				988DC1192C4C14D2005EE898 /* Food.swift in Sources */,
 				980849DC2C457B9E00F5924B /* PrimaryButton.swift in Sources */,
 				9883BA402C41BECF009D8996 /* MovieDetailsViewModel.swift in Sources */,
+				98975A522C559B1E00C1DE26 /* AddNewCardViewModel.swift in Sources */,
 				988DC11F2C4C406F005EE898 /* FoodViewModel.swift in Sources */,
 				9883BA072C414FB6009D8996 /* AppDelegate.swift in Sources */,
 				98D323BA2C4D34D3008DF8CF /* SeatsViewModel.swift in Sources */,
