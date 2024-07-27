@@ -8,19 +8,24 @@
 import Foundation
 
 final class BookingManager {
+    
+    // MARK: - Shared Instance
     static let shared = BookingManager()
     
+    // MARK: - Private Init
     private init() {}
     
+    // MARK: - Properties
     var selectedMovie: Movie?
     var selectedDate: Date?
     var selectedTimeSlot: TimeSlot?
     var selectedFood: [Food] = []
     var totalPrice: Double = 0.0
-    
     private let seatManager = SeatManager.shared
     private let foodManager = FoodManager.shared
     
+    
+    // MARK: - Methods
     func resetBooking() {
         selectedMovie = nil
         selectedDate = nil

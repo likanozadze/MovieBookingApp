@@ -8,13 +8,17 @@
 import Foundation
 
 
-class DateManager {
+final class DateManager {
+    // MARK: - Shared Instance
     static let shared = DateManager()
     
     private let calendar = Calendar.current
     
+    // MARK: - Private Init
     private init() {}
     
+    
+    // MARK: - Methods
     func fetchDates(numberOfDays: Int) -> [Date] {
         let today = Date()
         return (0..<numberOfDays).compactMap { day in

@@ -9,10 +9,14 @@ import UIKit
 import SwiftUI
 
 class NavigationManager {
+    // MARK: - Shared Instance
     static let shared = NavigationManager()
 
+    // MARK: - Private Init
     private init() {}
 
+    
+    // MARK: - Methods
     func navigateToMovieDetails(from presentingViewController: UIViewController, movieId: Int) {
         let movieDetailsViewController = MovieDetailsViewController(movieId: movieId)
         pushOrPresent(viewController: movieDetailsViewController, from: presentingViewController)

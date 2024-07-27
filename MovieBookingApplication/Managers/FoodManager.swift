@@ -8,13 +8,21 @@
 import Foundation
 
 final class FoodManager {
+    
+    // MARK: - Shared Instance
     static let shared = FoodManager()
     
+    
+    // MARK: - Private Init
     private init() {}
     
+    
+    // MARK: - Properties
     private(set) var allFoodItems: [Food] = FoodData.generateFakeData()
     private(set) var filteredFoodSections: [(food: Food, sizes: [FoodSize])] = []
     
+    
+    // MARK: - Methods
     func filterFoodItems(for segmentIndex: Int) {
         switch segmentIndex {
         case 0:

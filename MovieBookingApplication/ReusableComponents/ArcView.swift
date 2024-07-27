@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ArcView: UIView {
+final class ArcView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
