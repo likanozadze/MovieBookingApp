@@ -7,7 +7,9 @@
 
 import UIKit
 
-class SuccessViewController: UIViewController {
+final class SuccessViewController: UIViewController {
+    
+    // MARK: - Properties
     
     private let successImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
@@ -48,19 +50,30 @@ class SuccessViewController: UIViewController {
         return button
     }()
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setup()
     }
     
-    private func setupUI() {
+    private func setup() {
+        setupBackground()
+        setupSubviews()
+        setupConstraints()
+    }
+    
+    private func setupBackground() {
         view.backgroundColor = .black
-        
+    }
+    
+    private func setupSubviews() {
         view.addSubview(successImageView)
         view.addSubview(titleLabel)
         view.addSubview(messageLabel)
         view.addSubview(goToTicketsButton)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             successImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             successImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
@@ -85,7 +98,7 @@ class SuccessViewController: UIViewController {
     }
     
     @objc private func goToTicketsTapped() {
-        // Implement navigation to tickets screen
-        dismiss(animated: true, completion: nil)
+        let TicketViewController = TicketViewController()
+        NavigationManager.shared.navigateToTicketViewController(from: self)
     }
 }

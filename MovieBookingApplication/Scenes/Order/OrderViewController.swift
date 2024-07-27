@@ -215,7 +215,6 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         ])
     }
     
-    
     private func setupTableView() {
         seatsTableView.dataSource = self
         seatsTableView.delegate = self
@@ -246,6 +245,7 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
     }
+    
     private func updateMovieInfo() {
         movieTitleLabel.text = viewModel.movieTitle
         movieGenreLabel.text = viewModel.movieGenres
@@ -282,8 +282,12 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @objc private func payButtonTapped() {
+        let bookingManager = BookingManager.shared
+        bookingManager.calculateTotalPrice()
+        
         let paymentOptionsVC = PaymentOptionsViewController()
         paymentOptionsVC.modalPresentationStyle = .pageSheet
+
         
         if let sheet = paymentOptionsVC.sheetPresentationController {
             sheet.detents = [.medium()]
@@ -292,7 +296,4 @@ final class OrderViewController: UIViewController, UITableViewDataSource, UITabl
         
         present(paymentOptionsVC, animated: true, completion: nil)
     }
-    
-    
-    
 }

@@ -3,8 +3,7 @@
 //  MovieBookingApplication
 //
 //  Created by Lika Nozadze on 7/25/24.
-//
-//
+
 import UIKit
 
 final class PaymentOptionsViewController: UIViewController {
@@ -42,18 +41,18 @@ final class PaymentOptionsViewController: UIViewController {
         button.setTitle("Add new card", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(addNewCardTapped), for: .touchUpInside)
         return button
     }()
     
     private let payButton: ReusableButton = {
         let button = ReusableButton(title: "Pay", hasBackground: false, fontSize: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private var cardOptionViews: [PaymentOptionView] = []
+    
+    weak var delegate: PaymentOptionsViewModelDelegate?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -67,6 +66,8 @@ final class PaymentOptionsViewController: UIViewController {
         setupBackground()
         setupSubviews()
         setupConstraints()
+        setupButtonAction()
+        setupPayButtonAction()
     }
     
     private func setupBackground() {
@@ -89,6 +90,14 @@ final class PaymentOptionsViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             payButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    private func setupButtonAction() {
+        addNewCardButton.addTarget(self, action: #selector(addNewCardTapped), for: .touchUpInside)
+    }
+    
+    private func setupPayButtonAction() {
+        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
     }
     
     private func updateCardOptionsUI() {
@@ -131,6 +140,8 @@ final class PaymentOptionsViewController: UIViewController {
     }
     
     @objc private func payButtonTapped() {
+        print("Debug - Before payment processing:")
+            print(BookingManager.shared.getBookingSummary())
         viewModel.processPayment()
     }
 }

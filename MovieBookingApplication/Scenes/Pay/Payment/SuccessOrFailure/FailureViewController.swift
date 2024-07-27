@@ -7,8 +7,9 @@
 
 import UIKit
 
-class FailureViewController: UIViewController {
+final class FailureViewController: UIViewController {
     
+    // MARK: - Properties
     private let failureImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "xmark.circle.fill"))
         imageView.tintColor = .systemRed
@@ -48,19 +49,29 @@ class FailureViewController: UIViewController {
         return button
     }()
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setup()
+    }
+    private func setup() {
+        setupBackground()
+        setupSubviews()
+        setupConstraints()
     }
     
-    private func setupUI() {
+    private func setupBackground() {
         view.backgroundColor = .black
-        
+    }
+    
+    private func setupSubviews() {
         view.addSubview(failureImageView)
         view.addSubview(titleLabel)
         view.addSubview(messageLabel)
         view.addSubview(backToCheckoutButton)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             failureImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             failureImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),

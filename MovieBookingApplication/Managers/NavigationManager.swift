@@ -27,6 +27,11 @@ class NavigationManager {
         pushOrPresent(viewController: orderViewController, from: presentingViewController)
     }
 
+    func navigateToTicketViewController(from presentingViewController: UIViewController) {
+           let ticketViewController = TicketViewController()
+           pushOrPresent(viewController: ticketViewController, from: presentingViewController)
+       }
+    
     private func pushOrPresent(viewController: UIViewController, from presenter: UIViewController) {
         if let navigationController = presenter.navigationController {
             navigationController.pushViewController(viewController, animated: true)

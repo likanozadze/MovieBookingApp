@@ -66,11 +66,11 @@ final class AddNewCardViewController: UIViewController {
         textField.tag = TextFieldType.cvc.rawValue
         return textField
     }()
+
     
     private let addCardButton: ReusableButton = {
         let button = ReusableButton(title: "Add card", hasBackground: false, fontSize: .medium)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(addCardButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -88,7 +88,7 @@ final class AddNewCardViewController: UIViewController {
         setupConstraints()
         setupTapGestureRecogniser()
         updateAddCardButtonState()
-        //saveCard()
+        setupButtonAction()
     }
     
     private func setupTextFieldDelegates() {
@@ -134,6 +134,12 @@ final class AddNewCardViewController: UIViewController {
             addCardButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
+    
+    private func setupButtonAction() {
+        addCardButton.addTarget(self, action: #selector(addCardButtonTapped), for: .touchUpInside)
+    }
+    
     
     private func setupTapGestureRecogniser() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleEndEditing))

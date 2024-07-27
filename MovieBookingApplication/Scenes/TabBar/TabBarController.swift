@@ -23,14 +23,14 @@ final class TabBarController: UITabBarController {
       viewController: HomeViewController()
     )
 
-    let ticketViewController = TicketViewController()
-      
-    let ticket = createNavigationController(
-      title: "Ticket", image: UIImage(systemName: "ticket"),
-      viewController: ticketViewController
-    )
+//    let ticketViewController = TicketViewController()
+//      
+//    let ticket = createNavigationController(
+//      title: "Ticket", image: UIImage(systemName: "ticket"),
+//      viewController: ticketViewController
+//    )
  
-    setViewControllers([home, ticket], animated: true)
+    setViewControllers([home], animated: true)
   }
 
   // MARK: - NavigationController

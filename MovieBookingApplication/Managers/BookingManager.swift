@@ -12,7 +12,7 @@ final class BookingManager {
     
     private init() {}
     
-    var selectedMovie: Movie? 
+    var selectedMovie: Movie?
     var selectedDate: Date?
     var selectedTimeSlot: TimeSlot?
     var selectedFood: [Food] = []
@@ -33,14 +33,14 @@ final class BookingManager {
     
     func calculateTotalPrice() {
         let ticketPrice = Double(getSelectedSeats().count) * (selectedTimeSlot?.ticketPrices.first?.price ?? 0)
-           let foodPrice = foodManager.allFoodItems.reduce(0) { total, food in
-               total + food.sizes.reduce(0) { sizeTotal, size in
-                   sizeTotal + Double(food.quantityPerSize[size.name, default: 0]) * (food.price + size.priceModifier)
-               }
-           }
-           totalPrice = ticketPrice + foodPrice
-       }
-
+        let foodPrice = foodManager.allFoodItems.reduce(0) { total, food in
+            total + food.sizes.reduce(0) { sizeTotal, size in
+                sizeTotal + Double(food.quantityPerSize[size.name, default: 0]) * (food.price + size.priceModifier)
+            }
+        }
+        totalPrice = ticketPrice + foodPrice
+    }
+    
     func getSelectedOrderedFood() -> [OrderedFood] {
         return FoodManager.shared.allFoodItems.flatMap { food in
             food.sizes.compactMap { size in
@@ -49,7 +49,7 @@ final class BookingManager {
             }
         }
     }
-
+    
     func setSeats(for sections: Int, rowsPerSection: [Int]) {
         seatManager.setSeats(for: sections, rowsPerSection: rowsPerSection)
     }
@@ -76,5 +76,16 @@ final class BookingManager {
     
     func getSelectedSeats() -> [Seat] {
         return seatManager.getSelectedSeats()
+    }
+
+    func getBookingSummary() -> (movie: Movie?, seats: [Seat], date: Date?, timeSlot: TimeSlot?) {
+        let selectedSeats = getSelectedSeats()
+        print("Debug - BookingManager state:")
+        print("Selected Movie: \(selectedMovie?.title ?? "nil")")
+        print("Selected Date: \(selectedDate?.description ?? "nil")")
+        print("Selected Time Slot: \(selectedTimeSlot?.startTime.description ?? "nil")")
+        print("Selected Seats: \(selectedSeats.map { $0.seatCode }.joined(separator: ", "))")
+        print("Selected Food: \(getSelectedOrderedFood().map { "\($0.quantity)x \($0.food.name)" }.joined(separator: ", "))")
+        return (selectedMovie, selectedSeats, selectedDate, selectedTimeSlot)
     }
 }
