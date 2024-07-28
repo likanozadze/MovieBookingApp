@@ -69,6 +69,7 @@
 		98D323BA2C4D34D3008DF8CF /* SeatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323B92C4D34D3008DF8CF /* SeatsViewModel.swift */; };
 		98EEAF862C56BF05007D3C8F /* Tickets.json in Resources */ = {isa = PBXBuildFile; fileRef = 98EEAF852C56BF05007D3C8F /* Tickets.json */; };
 		98EEAF882C56C020007D3C8F /* EmptyStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */; };
+		98EEAF8A2C56C97D007D3C8F /* TicketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EEAF892C56C97D007D3C8F /* TicketViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +135,7 @@
 		98D323B92C4D34D3008DF8CF /* SeatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatsViewModel.swift; sourceTree = "<group>"; };
 		98EEAF852C56BF05007D3C8F /* Tickets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tickets.json; sourceTree = "<group>"; };
 		98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewController.swift; sourceTree = "<group>"; };
+		98EEAF892C56C97D007D3C8F /* TicketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				98B045162C5402FA00F82A56 /* TicketViewController.swift */,
+				98EEAF892C56C97D007D3C8F /* TicketViewModel.swift */,
 				98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */,
 			);
 			path = Ticket;
@@ -513,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98850A4A2C52A9BC00B5B453 /* Card.swift in Sources */,
+				98EEAF8A2C56C97D007D3C8F /* TicketViewModel.swift in Sources */,
 				980849DE2C45BC0F00F5924B /* SeatManager.swift in Sources */,
 				98D323B42C4D2BBD008DF8CF /* LottieView.swift in Sources */,
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,

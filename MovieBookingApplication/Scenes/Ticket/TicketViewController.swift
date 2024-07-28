@@ -13,6 +13,9 @@ final class TicketViewController: UIViewController {
     // MARK: - Properties
     private let bookingManager = BookingManager.shared
     
+    private let viewModel = TicketViewModel()
+      
+    
     private let ticketView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
@@ -181,7 +184,7 @@ final class TicketViewController: UIViewController {
     
     func updateViewState() {
         print("updateViewState called")
-        if hasTickets() {
+        if viewModel.hasTickets {
             print("Has tickets, configuring ticket view")
             hideEmptyState()
             configureTicket()
@@ -215,55 +218,30 @@ final class TicketViewController: UIViewController {
             emptyStateViewController.removeFromParent()
         }
     }
-    
     private func configureTicket() {
-        guard let movie = BookingManager.shared.selectedMovie,
-              let date = BookingManager.shared.selectedDate,
-              let timeSlot = BookingManager.shared.selectedTimeSlot else {
-            print("Error: Missing booking details")
+            viewModel.loadImage { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.posterImageView.image = image
+                }
+            }
             
-            return
-        }
-        
-        ImageLoader.loadImage(from: movie.posterPath) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = image ?? UIImage(named: "placeholder")
+            titleLabel.text = viewModel.movieTitle
+            dateLabel.text = viewModel.formattedDate
+            timeLabel.text = viewModel.formattedTime
+            seatsLabel.text = viewModel.seatInfo
+            rowLabel.text = viewModel.rowInfo
+            snacksLabel.text = viewModel.snackInfo
+            totalPriceLabel.text = viewModel.totalPrice
+            
+            if let barcodeImage = UIImage(named: "barcode") {
+                barcodeImageView.image = barcodeImage
+            } else {
+                print("Error: Could not find barcode image named 'barcode'")
             }
         }
         
-        titleLabel.text = movie.title
-        
-        dateLabel.text = "Date: \(DateManager.shared.formatDate(date, format: "MMMM dd"))"
-        if let formattedTime = DateManager.shared.formatTime(String(timeSlot.showTime.rawValue)) {
-            timeLabel.text = "Time: \(formattedTime)"
-        } else {
-            timeLabel.text = "Time: \(timeSlot.showTime.rawValue)"
-        }
-        
-        let selectedSeats = BookingManager.shared.getSelectedSeats()
-        let seatNumbers = selectedSeats.map { $0.seatCode }.joined(separator: ", ")
-        seatsLabel.text = "Seats: \(seatNumbers)"
-        
-        
-        let orderedFood = BookingManager.shared.getSelectedOrderedFood()
-        let snackDetails = orderedFood.map { "\($0.food.name) (\($0.size.name)) x \($0.quantity)" }.joined(separator: ", ")
-        snacksLabel.text = "Snacks: \(snackDetails)"
-        totalPriceLabel.text = String(format: "$%.2f", BookingManager.shared.totalPrice)
-        
-        if let firstSeat = selectedSeats.first {
-            rowLabel.text = "Row: \(["A", "B", "C", "D", "E", "F", "G", "H", "J"][firstSeat.row])"
-        }
-        
-        if let barcodeImage = UIImage(named: "barcode") {
-            barcodeImageView.image = barcodeImage
-        } else {
-            print("Error: Could not find barcode image named 'barcode'")
+        func updateBadge() {
+            let ticketCount = viewModel.ticketCount
+            self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
         }
     }
-    
-    func updateBadge() {
-        let ticketCount = BookingManager.shared.numberOfTickets
-        self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
-    }
-    
-}
