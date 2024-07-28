@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 final class TicketViewController: UIViewController {
     
@@ -90,7 +91,7 @@ final class TicketViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .black
-        label.numberOfLines = 0 
+        label.numberOfLines = 0
         return label
     }()
     
@@ -110,19 +111,31 @@ final class TicketViewController: UIViewController {
         return label
     }()
     
+    private let animationView = LottieAnimationView()
     
+    let emptyStateViewController = EmptyStateViewController(
+        title: "Your tickets will appear here", description: "You haven't booked any movies yet", animationName: "Tickets")
     
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        
+        updateViewState()
+        BookingManager.shared.ticketViewController = self
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        animationView.play()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        animationView.stop()
+    }
     // MARK: - Private Methods
     private func setup() {
         setupBackground()
-        configureTicket()
         setupSubviews()
         setupConstraints()
         
@@ -135,7 +148,7 @@ final class TicketViewController: UIViewController {
     private func setupSubviews(){
         view.addSubview(ticketView)
         ticketView.addSubview(contentStackView)
-        
+        view.addSubview(animationView)
         contentStackView.addArrangedSubview(posterImageView)
         contentStackView.addArrangedSubview(titleLabel)
         contentStackView.addArrangedSubview(dateTimeStackView)
@@ -165,11 +178,50 @@ final class TicketViewController: UIViewController {
         ])
     }
     
+    
+    func updateViewState() {
+        print("updateViewState called")
+        if hasTickets() {
+            print("Has tickets, configuring ticket view")
+            hideEmptyState()
+            configureTicket()
+            ticketView.isHidden = false
+        } else {
+            print("No tickets, showing empty state")
+            showEmptyState()
+            ticketView.isHidden = true
+        }
+    }
+    
+    
+    private func hasTickets() -> Bool {
+        return BookingManager.shared.numberOfTickets > 0
+    }
+    
+    private func showEmptyState() {
+        if children.contains(emptyStateViewController) { return }
+        
+        addChild(emptyStateViewController)
+        view.addSubview(emptyStateViewController.view)
+        emptyStateViewController.view.frame = view.bounds
+        emptyStateViewController.didMove(toParent: self)
+        
+    }
+    
+    private func hideEmptyState() {
+        if children.contains(emptyStateViewController) {
+            emptyStateViewController.willMove(toParent: nil)
+            emptyStateViewController.view.removeFromSuperview()
+            emptyStateViewController.removeFromParent()
+        }
+    }
+    
     private func configureTicket() {
         guard let movie = BookingManager.shared.selectedMovie,
               let date = BookingManager.shared.selectedDate,
               let timeSlot = BookingManager.shared.selectedTimeSlot else {
             print("Error: Missing booking details")
+            
             return
         }
         
@@ -187,7 +239,7 @@ final class TicketViewController: UIViewController {
         } else {
             timeLabel.text = "Time: \(timeSlot.showTime.rawValue)"
         }
-
+        
         let selectedSeats = BookingManager.shared.getSelectedSeats()
         let seatNumbers = selectedSeats.map { $0.seatCode }.joined(separator: ", ")
         seatsLabel.text = "Seats: \(seatNumbers)"
@@ -203,15 +255,15 @@ final class TicketViewController: UIViewController {
         }
         
         if let barcodeImage = UIImage(named: "barcode") {
-                    barcodeImageView.image = barcodeImage
-                } else {
-                    print("Error: Could not find barcode image named 'barcode'")
-                }
+            barcodeImageView.image = barcodeImage
+        } else {
+            print("Error: Could not find barcode image named 'barcode'")
+        }
     }
     
     func updateBadge() {
-            let ticketCount = BookingManager.shared.numberOfTickets
-            self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
-        }
+        let ticketCount = BookingManager.shared.numberOfTickets
+        self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
+    }
     
 }

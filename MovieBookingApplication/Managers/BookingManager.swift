@@ -101,7 +101,13 @@ final class BookingManager {
     func completeBooking() {
         numberOfTickets += 1
         updateBadgeCounts()
+        updateTicketViewController()
     }
+    private func updateTicketViewController() {
+            DispatchQueue.main.async { [weak self] in
+                self?.ticketViewController?.updateViewState()
+            }
+        }
     
     func cancelTicket() {
         numberOfTickets = max(0, numberOfTickets - 1)

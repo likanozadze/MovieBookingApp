@@ -67,6 +67,8 @@
 		98D323B62C4D2BFC008DF8CF /* popCorn.json in Resources */ = {isa = PBXBuildFile; fileRef = 98D323B52C4D2BFC008DF8CF /* popCorn.json */; };
 		98D323B82C4D31B6008DF8CF /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323B72C4D31B6008DF8CF /* NavigationManager.swift */; };
 		98D323BA2C4D34D3008DF8CF /* SeatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323B92C4D34D3008DF8CF /* SeatsViewModel.swift */; };
+		98EEAF862C56BF05007D3C8F /* Tickets.json in Resources */ = {isa = PBXBuildFile; fileRef = 98EEAF852C56BF05007D3C8F /* Tickets.json */; };
+		98EEAF882C56C020007D3C8F /* EmptyStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +132,8 @@
 		98D323B52C4D2BFC008DF8CF /* popCorn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popCorn.json; sourceTree = "<group>"; };
 		98D323B72C4D31B6008DF8CF /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		98D323B92C4D34D3008DF8CF /* SeatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatsViewModel.swift; sourceTree = "<group>"; };
+		98EEAF852C56BF05007D3C8F /* Tickets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tickets.json; sourceTree = "<group>"; };
+		98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +230,7 @@
 				987C6E212C4446F600816B14 /* Managers */,
 				980849DA2C457B6E00F5924B /* ReusableComponents */,
 				98D323B52C4D2BFC008DF8CF /* popCorn.json */,
+				98EEAF852C56BF05007D3C8F /* Tickets.json */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
@@ -311,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				98B045162C5402FA00F82A56 /* TicketViewController.swift */,
+				98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */,
 			);
 			path = Ticket;
 			sourceTree = "<group>";
@@ -495,6 +501,7 @@
 				98D323B62C4D2BFC008DF8CF /* popCorn.json in Resources */,
 				9883BA132C414FB8009D8996 /* LaunchScreen.storyboard in Resources */,
 				9883BA102C414FB8009D8996 /* Assets.xcassets in Resources */,
+				98EEAF862C56BF05007D3C8F /* Tickets.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +528,7 @@
 				9886BC6D2C511861000A95BC /* SeatTableViewCell.swift in Sources */,
 				988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */,
 				9886BC642C510873000A95BC /* BookingManager.swift in Sources */,
+				98EEAF882C56C020007D3C8F /* EmptyStateViewController.swift in Sources */,
 				98850A312C5250C400B5B453 /* ImageLoader.swift in Sources */,
 				98850A482C529E2900B5B453 /* PaymentOptionView.swift in Sources */,
 				98D323B82C4D31B6008DF8CF /* NavigationManager.swift in Sources */,
