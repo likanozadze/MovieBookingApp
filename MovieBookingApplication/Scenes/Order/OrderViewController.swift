@@ -168,15 +168,6 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
     }
     
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        super.viewWillAppear(animated)
-    //        if let selectedDate = BookingManager.shared.selectedDate {
-    //            selectedDateLabel.text = DateManager.shared.formatDate(selectedDate, format: "MMMM dd, yyyy")
-    //        }
-    //        updateTotalPrice()
-    //        seatsTableView.reloadData()
-    //        snacksTableView.reloadData()
-    //    }
     
     private func setup() {
         setupBackground()

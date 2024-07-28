@@ -61,6 +61,14 @@ final class TicketViewController: UIViewController {
         return label
     }()
     
+    private lazy var dateTimeStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [dateLabel, timeLabel])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let rowLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
@@ -82,8 +90,18 @@ final class TicketViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .black
+        label.numberOfLines = 0 
         return label
     }()
+    
+    private lazy var snackStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [snacksLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let totalPriceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
@@ -91,6 +109,8 @@ final class TicketViewController: UIViewController {
         label.textAlignment = .right
         return label
     }()
+    
+    
     
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
@@ -118,11 +138,10 @@ final class TicketViewController: UIViewController {
         
         contentStackView.addArrangedSubview(posterImageView)
         contentStackView.addArrangedSubview(titleLabel)
-        contentStackView.addArrangedSubview(dateLabel)
-        contentStackView.addArrangedSubview(timeLabel)
+        contentStackView.addArrangedSubview(dateTimeStackView)
         contentStackView.addArrangedSubview(rowLabel)
         contentStackView.addArrangedSubview(seatsLabel)
-        contentStackView.addArrangedSubview(snacksLabel)
+        contentStackView.addArrangedSubview(snackStackView)
         contentStackView.addArrangedSubview(totalPriceLabel)
         contentStackView.addArrangedSubview(barcodeImageView)
     }
@@ -141,8 +160,8 @@ final class TicketViewController: UIViewController {
             contentStackView.trailingAnchor.constraint(equalTo: ticketView.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: ticketView.bottomAnchor),
             
-            posterImageView.heightAnchor.constraint(equalToConstant: 200),
-            barcodeImageView.heightAnchor.constraint(equalToConstant: 50)
+            posterImageView.heightAnchor.constraint(equalToConstant: 180),
+            barcodeImageView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
     
@@ -163,8 +182,12 @@ final class TicketViewController: UIViewController {
         titleLabel.text = movie.title
         
         dateLabel.text = "Date: \(DateManager.shared.formatDate(date, format: "MMMM dd"))"
-        timeLabel.text = "Time: \(timeSlot.showTime.rawValue)"
-        
+        if let formattedTime = DateManager.shared.formatTime(String(timeSlot.showTime.rawValue)) {
+            timeLabel.text = "Time: \(formattedTime)"
+        } else {
+            timeLabel.text = "Time: \(timeSlot.showTime.rawValue)"
+        }
+
         let selectedSeats = BookingManager.shared.getSelectedSeats()
         let seatNumbers = selectedSeats.map { $0.seatCode }.joined(separator: ", ")
         seatsLabel.text = "Seats: \(seatNumbers)"
@@ -179,6 +202,11 @@ final class TicketViewController: UIViewController {
             rowLabel.text = "Row: \(["A", "B", "C", "D", "E", "F", "G", "H", "J"][firstSeat.row])"
         }
         
+        if let barcodeImage = UIImage(named: "barcode") {
+                    barcodeImageView.image = barcodeImage
+                } else {
+                    print("Error: Could not find barcode image named 'barcode'")
+                }
     }
     
     func updateBadge() {

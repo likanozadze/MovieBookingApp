@@ -41,4 +41,16 @@ final class DateManager {
     func dayOfMonth(from date: Date) -> Int {
         return calendar.component(.day, from: date)
     }
+    
+    func formatTime(_ time: String) -> String? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HHmm"
+        
+        if let date = formatter.date(from: time) {
+            formatter.dateFormat = "HH:mm"
+            return formatter.string(from: date)
+        }
+        
+        return nil
+    }
 }
