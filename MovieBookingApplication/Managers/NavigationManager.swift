@@ -37,7 +37,7 @@ class NavigationManager {
     }
     
     func navigateToUpcomingMovieDetails(from viewController: UIViewController, movie: Movie) {
-        let upcomingDetailsVC = UpcomingMoviesDetailsViewController(movieId: movie.id) 
+        let upcomingDetailsVC = UpcomingMoviesDetailsViewController(movieId: movie.id)
         viewController.navigationController?.pushViewController(upcomingDetailsVC, animated: true)
     }
     

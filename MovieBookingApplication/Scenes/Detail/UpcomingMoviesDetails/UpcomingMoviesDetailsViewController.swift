@@ -11,12 +11,8 @@ class UpcomingMoviesDetailsViewController: UIViewController {
     
     // MARK: - Properties
     private var movies = [Movie]()
-    private var dates: [Date] = []
     private let dateManager = DateManager.shared
     private var viewModel: MovieDetailsViewModel
-    private var timeSlots: [TimeSlot] = []
-    private var isTimeSlotCollectionViewHidden = true
-    private let bookingManager = BookingManager.shared
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -35,7 +31,51 @@ class UpcomingMoviesDetailsViewController: UIViewController {
         return imageView
     }()
     
+    private let movieLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .white
+        return label
+    }()
     
+    private let releaseLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        return label
+    }()
+
+    private let movieDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Description"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        return label
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .lightGray
+        return label
+    }()
+    
+    
+    private lazy var movieDescriptionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [movieDescriptionLabel, descriptionLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let remindMeButton: ReusableButton = {
+        let button = ReusableButton(title: "Remind me", hasBackground: false, fontSize: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -76,6 +116,10 @@ class UpcomingMoviesDetailsViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(movieImageView)
+        mainStackView.addArrangedSubview(movieLabel)
+        mainStackView.addArrangedSubview(releaseLabel)
+        mainStackView.addArrangedSubview(remindMeButton)
+        mainStackView.addArrangedSubview(movieDescriptionStackView)
 
     }
  
@@ -98,16 +142,18 @@ class UpcomingMoviesDetailsViewController: UIViewController {
             
             movieImageView.heightAnchor.constraint(equalToConstant: 240),
             
-            
+            remindMeButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
 }
     // MARK: - MovieDetailsViewModelDelegate
     extension UpcomingMoviesDetailsViewController: MovieDetailsViewModelDelegate {
         func movieDetailsFetched(_ movie: MovieDetails) {
             Task {
-                
+                movieLabel.text = movie.title
+                releaseLabel.text = "Release date: \(movie.releaseDate)"
+
+                descriptionLabel.text = movie.overview
             }
         }
         func showError(_ error: Error) {
@@ -120,7 +166,7 @@ class UpcomingMoviesDetailsViewController: UIViewController {
             }
         }
         func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
-            self.timeSlots = timeSlots
+          
             DispatchQueue.main.async {
     
             }
