@@ -42,14 +42,14 @@ final class SuccessViewController: UIViewController {
     
     private let goToTicketsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Go to my tickets", for: .normal)
+        button.setTitle("Check your tickets", for: .normal)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,7 +98,7 @@ final class SuccessViewController: UIViewController {
     }
     
     @objc private func goToTicketsTapped() {
-        let TicketViewController = TicketViewController()
-        NavigationManager.shared.navigateToTicketViewController(from: self)
+        dismiss(animated: true) {
+        }
     }
 }

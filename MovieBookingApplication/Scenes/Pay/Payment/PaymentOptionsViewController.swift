@@ -150,19 +150,23 @@ extension PaymentOptionsViewController: PaymentOptionsViewModelDelegate {
     func didUpdateCardOptions() {
         updateCardOptionsUI()
     }
-    
     func didProcessPayment(success: Bool, message: String) {
-        if success {
-            let successVC = SuccessViewController()
-            successVC.modalPresentationStyle = .fullScreen
-            self.present(successVC, animated: true, completion: nil)
-        } else {
-            let failureVC = FailureViewController()
-            failureVC.modalPresentationStyle = .fullScreen
-            self.present(failureVC, animated: true, completion: nil)
+            if success {
+                let successVC = SuccessViewController()
+                BookingManager.shared.completeBooking()
+                successVC.modalPresentationStyle = .fullScreen
+                self.dismiss(animated: true) {
+                    if let topController = UIApplication.shared.keyWindow?.rootViewController {
+                        topController.present(successVC, animated: true, completion: nil)
+                    }
+                }
+            } else {
+                let failureVC = FailureViewController()
+                failureVC.modalPresentationStyle = .fullScreen
+                self.present(failureVC, animated: true, completion: nil)
+            }
         }
     }
-}
 extension PaymentOptionsViewController: AddNewCardViewControllerDelegate {
     func didAddNewCard() {
         viewModel.loadSavedCards()

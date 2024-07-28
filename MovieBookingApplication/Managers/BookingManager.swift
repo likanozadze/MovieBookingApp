@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class BookingManager {
     
@@ -23,8 +24,9 @@ final class BookingManager {
     var totalPrice: Double = 0.0
     private let seatManager = SeatManager.shared
     private let foodManager = FoodManager.shared
-    
-    
+    private(set) var numberOfTickets: Int = 0
+    weak var ticketViewController: TicketViewController?
+    weak var tabBarController: TabBarController?
     // MARK: - Methods
     func resetBooking() {
         selectedMovie = nil
@@ -34,6 +36,8 @@ final class BookingManager {
         totalPrice = 0.0
         seatManager.setSeats(for: 0, rowsPerSection: [])
         foodManager.resetQuantities()
+        numberOfTickets = 0
+        updateBadgeCounts()
     }
     
     func calculateTotalPrice() {
@@ -82,7 +86,7 @@ final class BookingManager {
     func getSelectedSeats() -> [Seat] {
         return seatManager.getSelectedSeats()
     }
-
+    
     func getBookingSummary() -> (movie: Movie?, seats: [Seat], date: Date?, timeSlot: TimeSlot?) {
         let selectedSeats = getSelectedSeats()
         print("Debug - BookingManager state:")
@@ -93,4 +97,27 @@ final class BookingManager {
         print("Selected Food: \(getSelectedOrderedFood().map { "\($0.quantity)x \($0.food.name)" }.joined(separator: ", "))")
         return (selectedMovie, selectedSeats, selectedDate, selectedTimeSlot)
     }
-}
+    
+    func completeBooking() {
+        numberOfTickets += 1
+        updateBadgeCounts()
+    }
+    
+    func cancelTicket() {
+        numberOfTickets = max(0, numberOfTickets - 1)
+        updateBadgeCounts()
+    }
+    
+    // MARK: - Update Badge Count
+
+    func updateBadgeCounts() {
+           DispatchQueue.main.async { [weak self] in
+               guard let self = self else { return }
+               if let tabBarController = self.tabBarController {
+                   tabBarController.updateBadgeCounts()
+               } else {
+                   print("Debug - TabBarController reference is nil")
+               }
+           }
+       }
+   }

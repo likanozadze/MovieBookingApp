@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		98007CB52C566577009B5A1C /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 98007CB42C566577009B5A1C /* Lottie */; };
 		98034B4C2C46AA75002FB7B8 /* SeatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98034B4B2C46AA75002FB7B8 /* SeatCell.swift */; };
 		980849D72C45505600F5924B /* DateFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849D62C45505600F5924B /* DateFormatter+Extension.swift */; };
 		980849D92C4560FD00F5924B /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980849D82C4560FD00F5924B /* DateManager.swift */; };
@@ -133,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98D323B22C4D2B8C008DF8CF /* Lottie in Frameworks */,
+				98007CB52C566577009B5A1C /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +423,7 @@
 			name = MovieBookingApplication;
 			packageProductDependencies = (
 				98D323B12C4D2B8C008DF8CF /* Lottie */,
+				98007CB42C566577009B5A1C /* Lottie */,
 			);
 			productName = MovieBookingApplication;
 			productReference = 9883BA032C414FB6009D8996 /* MovieBookingApplication.app */;
@@ -758,6 +761,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		98007CB42C566577009B5A1C /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98D323B02C4D2B8C008DF8CF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		98D323B12C4D2B8C008DF8CF /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 98D323B02C4D2B8C008DF8CF /* XCRemoteSwiftPackageReference "lottie-ios" */;

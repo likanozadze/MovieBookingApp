@@ -96,6 +96,7 @@ final class TicketViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        
     }
     
     // MARK: - Private Methods
@@ -104,6 +105,7 @@ final class TicketViewController: UIViewController {
         configureTicket()
         setupSubviews()
         setupConstraints()
+        
     }
     
     private func setupBackground() {
@@ -160,7 +162,7 @@ final class TicketViewController: UIViewController {
         
         titleLabel.text = movie.title
         
-        dateLabel.text = "Date: \(DateManager.shared.formatDate(date, format: "MMMM dd, yyyy"))"
+        dateLabel.text = "Date: \(DateManager.shared.formatDate(date, format: "MMMM dd"))"
         timeLabel.text = "Time: \(timeSlot.showTime.rawValue)"
         
         let selectedSeats = BookingManager.shared.getSelectedSeats()
@@ -178,4 +180,10 @@ final class TicketViewController: UIViewController {
         }
         
     }
+    
+    func updateBadge() {
+            let ticketCount = BookingManager.shared.numberOfTickets
+            self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
+        }
+    
 }
