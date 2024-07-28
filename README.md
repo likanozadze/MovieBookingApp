@@ -17,11 +17,14 @@ Each movie listing provides detailed information including duration, and user ra
 ### Choose Date and Time for Showtimes
 An interactive calendar allows users to select the preferred date for their movie. The calendar displays available dates and showtimes in an intuitive manner.
 Once a date is selected, users can choose from various available time slots. Each time slot shows the start time of the movie.
+![Simulator Screen Recording - iPhone 15 - 2024-07-28 at 23 17 36](https://github.com/user-attachments/assets/86c8d587-fcc4-4e98-b04b-7a31b3c1a9d0)
 
 
 ### Add Snacks to Your Order
 Users can choose from a variety of snacks including popcorn, nachos, drinks, and candy. The snack menu is regularly updated to include new items.
 Users can specify the quantity and, for some items, select size or flavor options. This ensures that they get exactly what they want.
+![Simulator Screen Recording - iPhone 15 - 2024-07-28 at 23 18 11](https://github.com/user-attachments/assets/efa90758-3418-403f-82fa-b10de845aa4c)
+
 
 ### Save and View Booked Tickets
 After selecting a movie, date, time, and snacks, users can review their entire order. They can make changes before confirming the booking.
