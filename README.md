@@ -1,6 +1,7 @@
 # Movie Booking App
 
 Welcome to the Movie Booking App! This iOS application allows users to book movie tickets, select showtimes, add snacks, and save tickets for later. The app is built using UIKit.
+![iPhone 15 Pro](https://github.com/user-attachments/assets/4010cf19-8a76-4b53-9de0-b8175296d0cb)
 
 ## Features
 
