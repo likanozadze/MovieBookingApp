@@ -8,9 +8,8 @@ Welcome to the Movie Booking App! This iOS application allows users to book movi
 - Choose date and time for showtimes
 - Add snacks to your order
 - Save and view booked tickets
-- User-friendly interface
 
-- ### Browse and Select Movies
+### Browse and Select Movies
 Users can browse through a wide range of movies available for booking. The catalog includes various genres such as action, drama, comedy, thriller, and more.
 Each movie listing provides detailed information including duration, and user ratings. This helps users make an informed decision.
 
