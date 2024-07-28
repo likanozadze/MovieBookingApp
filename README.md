@@ -30,7 +30,9 @@ Users can specify the quantity and, for some items, select size or flavor option
 After selecting a movie, date, time, and snacks, users can review their entire order. They can make changes before confirming the booking.
 Once confirmed, tickets are saved digitally within the app. Users can view their booked tickets anytime from the 'My Tickets' section.
 Each booked ticket includes a QR code that can be scanned at the theater for quick entry. This eliminates the need for physical tickets.
-![Simulator Screen Recording - iPhone 15 - 2024-07-28 at 23 20 37](https://github.com/user-attachments/assets/894b5dbc-758c-43f3-bc46-e0b3219d3516)
+![Simulator Screen Recording - iPhone 15 - 2024-07-28 at 23 23 03](https://github.com/user-attachments/assets/d07c39ed-eec0-4e9f-afec-414a73b5f535)
+
+
 
 
 
