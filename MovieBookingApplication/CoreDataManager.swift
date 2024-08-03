@@ -67,4 +67,16 @@ class CoreDataManager {
             return []
         }
     }
+    
+    func deleteTicket(_ ticket: Ticket) {
+        let context = persistentContainer.viewContext
+        context.delete(ticket)
+        
+        do {
+            try context.save()
+            print("Debug - Ticket deleted from Core Data: \(ticket.movieTitle ?? "")")
+        } catch {
+            print("Debug - Failed to delete ticket: \(error)")
+        }
+    }
 }

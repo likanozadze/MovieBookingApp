@@ -12,9 +12,7 @@ final class TicketViewController: UIViewController {
     
     // MARK: - Properties
     private let bookingManager = BookingManager.shared
-    
     private let viewModel = TicketViewModel()
-    
     private let animationView = LottieAnimationView()
     
     let emptyStateViewController = EmptyStateViewController(
@@ -32,9 +30,7 @@ final class TicketViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
-    
-    
+
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,6 +127,13 @@ final class TicketViewController: UIViewController {
         let ticketCount = viewModel.ticketCount
         self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
     }
+    
+    func deleteTicket(at indexPath: IndexPath) {
+        let ticket = viewModel.tickets[indexPath.item]
+        CoreDataManager.shared.deleteTicket(ticket)
+        viewModel.loadTickets()
+        updateViewState()
+    }
 }
 extension TicketViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -147,5 +150,15 @@ extension TicketViewController: UICollectionViewDataSource, UICollectionViewDele
         print("Configuring cell for ticket: \(ticket.movieTitle ?? "Unknown"), Poster Path: \(ticket.posterPath ?? "None")")
         cell.configure(with: ticket)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
+                self?.deleteTicket(at: indexPath)
+            }
+            return UIMenu(title: "", children: [delete])
+        }
+        return config
     }
 }

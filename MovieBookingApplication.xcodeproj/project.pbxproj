@@ -195,6 +195,14 @@
 			path = Seats;
 			sourceTree = "<group>";
 		};
+		980E2A582C5E454000D04800 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				980E2A562C5E324800D04800 /* TicketCollectionViewCell.swift */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
 		987C6E212C4446F600816B14 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,8 +334,8 @@
 		9883BA322C41AAD5009D8996 /* Ticket */ = {
 			isa = PBXGroup;
 			children = (
+				980E2A582C5E454000D04800 /* CollectionViewCell */,
 				98B045162C5402FA00F82A56 /* TicketViewController.swift */,
-				980E2A562C5E324800D04800 /* TicketCollectionViewCell.swift */,
 				98EEAF892C56C97D007D3C8F /* TicketViewModel.swift */,
 				98EEAF872C56C020007D3C8F /* EmptyStateViewController.swift */,
 			);

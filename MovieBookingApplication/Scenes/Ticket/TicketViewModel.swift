@@ -18,7 +18,7 @@ class TicketViewModel {
     }
     
     func loadTickets() {
-        tickets = CoreDataManager.shared.fetchTickets()
+        tickets = CoreDataManager.shared.fetchTickets().reversed()
         print("Debug - Fetched \(tickets.count) tickets from Core Data")
     }
     
