@@ -135,7 +135,11 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
             genreLabel.text = "No Genre"
           }
           
-        setImage(from: movie.posterPath)
+        if let posterPath = movie.posterPath {
+               setImage(from: posterPath)
+        } else {
+            movieImageView.image = UIImage(named: "placeholder")
+        }
         let formattedVoteAverage = String(format: "%.1f", movie.voteAverage)
         voteLabel.text = formattedVoteAverage
         

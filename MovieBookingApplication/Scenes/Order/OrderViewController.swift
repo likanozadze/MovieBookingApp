@@ -220,20 +220,25 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
         let totalPrice = viewModel.totalPrice
         priceLabel.text = "$\(String(format: "%.2f", totalPrice))"
     }
+
     private func loadMoviePoster() {
         guard let movie = viewModel.selectedMovie else {
             self.posterImageView.image = UIImage(named: "placeholder")
             return
         }
-        let posterPath = movie.posterPath
-        ImageLoader.loadImage(from: posterPath) { [weak self] image in
-            DispatchQueue.main.async {
-                if let image = image {
-                    self?.posterImageView.image = image
-                } else {
-                    self?.posterImageView.image = UIImage(named: "placeholder")
+        
+        if let posterPath = movie.posterPath {
+            NetworkManager.shared.downloadImage(from: posterPath) { [weak self] image in
+                DispatchQueue.main.async {
+                    if let image = image {
+                        self?.posterImageView.image = image
+                    } else {
+                        self?.posterImageView.image = UIImage(named: "placeholder")
+                    }
                 }
             }
+        } else {
+            self.posterImageView.image = UIImage(named: "placeholder")
         }
     }
     

@@ -14,7 +14,7 @@ struct MoviesResponse: Decodable {
 struct Movie: Decodable {
     let id: Int
     let title: String
-    let posterPath: String
+    let posterPath: String?
     let voteAverage: Double
     let genres: [Genre]
     var showtimes: [String: [TimeSlot]] = [:]

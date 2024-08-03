@@ -131,15 +131,17 @@ final class UpcomingCollectionViewCell: UICollectionViewCell {
         titleLabel.text = movie.title
         if let firstGenre = movie.genres.first {
             genreLabel.text = firstGenre.name
-          } else {
+        } else {
             genreLabel.text = "No Genre"
-          }
-          
-        setImage(from: movie.posterPath)
+        }
+        
+        if let posterPath = movie.posterPath {
+            setImage(from: posterPath)
+        } else {
+            movieImageView.image = UIImage(named: "placeholder")
+        }
         let formattedVoteAverage = String(format: "%.1f", movie.voteAverage)
         voteLabel.text = formattedVoteAverage
-        
-        
     }
     
     private func setImage(from url: String) {

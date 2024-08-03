@@ -89,25 +89,34 @@ final class BookingManager {
     
     func getBookingSummary() -> (movie: Movie?, seats: [Seat], date: Date?, timeSlot: TimeSlot?) {
         let selectedSeats = getSelectedSeats()
-        print("Debug - BookingManager state:")
-        print("Selected Movie: \(selectedMovie?.title ?? "nil")")
-        print("Selected Date: \(selectedDate?.description ?? "nil")")
-        print("Selected Time Slot: \(selectedTimeSlot?.startTime.description ?? "nil")")
-        print("Selected Seats: \(selectedSeats.map { $0.seatCode }.joined(separator: ", "))")
-        print("Selected Food: \(getSelectedOrderedFood().map { "\($0.quantity)x \($0.food.name)" }.joined(separator: ", "))")
         return (selectedMovie, selectedSeats, selectedDate, selectedTimeSlot)
     }
     
     func completeBooking() {
+        let (movie, seats, date, timeSlot) = getBookingSummary()
+        if let movie = movie, let date = date, let timeSlot = timeSlot {
+            CoreDataManager.shared.createTicket(
+                movieTitle: movie.title,
+                date: date,
+                timeSlot: timeSlot,
+                seats: seats,
+                snacks: getSelectedOrderedFood(),
+                totalPrice: totalPrice,
+                posterPath: movie.posterPath  
+            )
+            print("Debug - Ticket created in Core Data")
+        } else {
+            print("Debug - Failed to create ticket: missing required data")
+        }
         numberOfTickets += 1
         updateBadgeCounts()
         updateTicketViewController()
     }
     private func updateTicketViewController() {
-            DispatchQueue.main.async { [weak self] in
-                self?.ticketViewController?.updateViewState()
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.ticketViewController?.updateViewState()
         }
+    }
     
     func cancelTicket() {
         numberOfTickets = max(0, numberOfTickets - 1)
@@ -115,15 +124,15 @@ final class BookingManager {
     }
     
     // MARK: - Update Badge Count
-
+    
     func updateBadgeCounts() {
-           DispatchQueue.main.async { [weak self] in
-               guard let self = self else { return }
-               if let tabBarController = self.tabBarController {
-                   tabBarController.updateBadgeCounts()
-               } else {
-                   print("Debug - TabBarController reference is nil")
-               }
-           }
-       }
-   }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if let tabBarController = self.tabBarController {
+                tabBarController.updateBadgeCounts()
+            } else {
+                print("Debug - TabBarController reference is nil")
+            }
+        }
+    }
+}
