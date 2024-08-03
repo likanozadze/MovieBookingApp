@@ -87,7 +87,6 @@ class EmptyStateViewController: UIViewController {
         view.addSubview(emptyStateStackView)
         emptyStateStackView.addArrangedSubview(emptyStateTitleLabel)
         emptyStateStackView.addArrangedSubview(emptyStateDescriptionLabel)
-        print("Stack view is being added: \(emptyStateStackView)")
     }
     
     private func setupEmptyHistoryAnimationView(_ animationName: String) {
@@ -95,7 +94,7 @@ class EmptyStateViewController: UIViewController {
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
         animationView.animationSpeed = 0.5
-        animationView.translatesAutoresizingMaskIntoConstraints = false // Important!
+        animationView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(animationView)
         animationView.play()
     }
