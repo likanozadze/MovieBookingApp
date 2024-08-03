@@ -21,31 +21,8 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         return stackView
     }()
     
-    private lazy var contentSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Drinks", "Popcorn", "Food"])
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.tintColor = .customSecondaryColor
-        segmentedControl.selectedSegmentTintColor = .customAccentColor
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-        
-        let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white.withAlphaComponent(0.8),
-            .font: UIFont.systemFont(ofSize: 14)
-        ]
-        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont.boldSystemFont(ofSize: 14)
-        ]
-        
-        segmentedControl.setTitleTextAttributes(normalTextAttributes, for: .normal)
-        segmentedControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        return segmentedControl
-    }()
+    private let segmentedControl = SegmentedControlComponent()
     
-    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        viewModel.filterFoodItems(for: sender.selectedSegmentIndex)
-        tableView.reloadData()
-    }
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +65,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        viewModel.filterFoodItems(for: contentSegmentedControl.selectedSegmentIndex)
+        viewModel.filterFoodItems(for: segmentedControl.selectedSegmentIndex)
         tableView.reloadData()
         updateBadge()
     }
@@ -99,6 +76,16 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         setupSubviews()
         setupTableView()
         setupConstraints()
+        setupSegmentedControl()
+    }
+    
+    private func setupSegmentedControl() {
+        segmentedControl.segmentTitles = ["Drinks", "Popcorn", "Food"]
+        segmentedControl.onSegmentChanged = { [weak self] selectedIndex in
+            
+            self?.viewModel.filterFoodItems(for: selectedIndex)
+            self?.tableView.reloadData()
+        }
     }
     
     private func setupBackground() {
@@ -107,7 +94,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
     
     private func setupSubviews() {
         view.addSubview(mainStackView)
-        mainStackView.addArrangedSubview(contentSegmentedControl)
+        mainStackView.addArrangedSubview(segmentedControl)
         mainStackView.addArrangedSubview(tableView)
         mainStackView.addArrangedSubview(chooseSnacksButton)
         view.addSubview(badgeLabel)
@@ -125,7 +112,7 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            contentSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
+            segmentedControl.heightAnchor.constraint(equalToConstant: 44),
             
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
             
@@ -134,8 +121,8 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
             chooseSnacksButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             chooseSnacksButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             
-            badgeLabel.topAnchor.constraint(equalTo: contentSegmentedControl.topAnchor, constant: -5),
-            badgeLabel.trailingAnchor.constraint(equalTo: contentSegmentedControl.trailingAnchor, constant: 5),
+            badgeLabel.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -5),
+            badgeLabel.trailingAnchor.constraint(equalTo: segmentedControl.trailingAnchor, constant: 5),
             badgeLabel.widthAnchor.constraint(equalToConstant: 20),
             badgeLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
@@ -147,11 +134,11 @@ final class FoodViewController: UIViewController, UITableViewDelegate {
         badgeLabel.text = "\(count)"
         
         if count > 0 {
-            contentSegmentedControl.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
+            segmentedControl.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 25)
         } else {
-            contentSegmentedControl.layoutMargins = .zero
+            segmentedControl.layoutMargins = .zero
         }
-        contentSegmentedControl.setNeedsLayout()
+        segmentedControl.setNeedsLayout()
         
     }
 }

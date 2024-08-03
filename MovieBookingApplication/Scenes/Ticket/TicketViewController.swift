@@ -31,13 +31,7 @@ final class TicketViewController: UIViewController {
         return collectionView
     }()
     
-    private let segmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Upcoming", "Expired"])
-        control.selectedSegmentIndex = 0
-        control.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
-        return control
-    }()
-    
+    private let segmentedControl = SegmentedControlComponent()
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,9 +62,18 @@ final class TicketViewController: UIViewController {
         setupSubviews()
         setupConstraints()
         setupCollectionView()
-        
+        setupSegmentedControl()
     }
     
+    private func setupSegmentedControl() {
+            segmentedControl.segmentTitles = ["Upcoming", "Expired"]
+            segmentedControl.onSegmentChanged = { [weak self] selectedIndex in
+                self?.viewModel.filterTickets(by: selectedIndex == 0 ? .upcoming : .expired)
+                self?.updateViewState()
+            }
+            
+            view.addSubview(segmentedControl)
+        }
     private func setupBackground() {
         view.backgroundColor = .customBackgroundColor
         
@@ -102,13 +105,7 @@ final class TicketViewController: UIViewController {
         ticketCollectionView.register(TicketCollectionViewCell.self, forCellWithReuseIdentifier: "TicketCell")
     }
     
-    @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
-        updateViewState()
-    }
-    
     func updateViewState() {
-        viewModel.loadTickets()
-        viewModel.filterTickets(by: segmentedControl.selectedSegmentIndex == 0 ? .upcoming : .expired)
         if viewModel.hasTickets {
             hideEmptyState()
             ticketCollectionView.reloadData()

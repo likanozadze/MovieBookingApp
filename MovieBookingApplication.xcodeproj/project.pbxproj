@@ -21,6 +21,7 @@
 		980E2A512C5CF1BA00D04800 /* Ticket+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980E2A4F2C5CF1BA00D04800 /* Ticket+CoreDataProperties.swift */; };
 		980E2A532C5CF1D700D04800 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980E2A522C5CF1D700D04800 /* CoreDataManager.swift */; };
 		980E2A572C5E324800D04800 /* TicketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980E2A562C5E324800D04800 /* TicketCollectionViewCell.swift */; };
+		980E2A5C2C5E655D00D04800 /* SegmentedControlComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980E2A5B2C5E655D00D04800 /* SegmentedControlComponent.swift */; };
 		987C6E162C428E9C00816B14 /* TimeSlotCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */; };
 		987C6E182C4290E800816B14 /* TimeSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E172C4290E800816B14 /* TimeSlot.swift */; };
 		987C6E232C44470E00816B14 /* MovieShowtimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */; };
@@ -89,6 +90,7 @@
 		980E2A4F2C5CF1BA00D04800 /* Ticket+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ticket+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		980E2A522C5CF1D700D04800 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		980E2A562C5E324800D04800 /* TicketCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketCollectionViewCell.swift; sourceTree = "<group>"; };
+		980E2A5B2C5E655D00D04800 /* SegmentedControlComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlComponent.swift; sourceTree = "<group>"; };
 		987C6E152C428E9C00816B14 /* TimeSlotCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotCollectionViewCell.swift; sourceTree = "<group>"; };
 		987C6E172C4290E800816B14 /* TimeSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlot.swift; sourceTree = "<group>"; };
 		987C6E222C44470E00816B14 /* MovieShowtimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieShowtimeManager.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				980849DB2C457B9E00F5924B /* PrimaryButton.swift */,
+				980E2A5B2C5E655D00D04800 /* SegmentedControlComponent.swift */,
 				98D323B32C4D2BBD008DF8CF /* LottieView.swift */,
 				988DC1142C4BF4C8005EE898 /* ArcView.swift */,
 				98850A392C527F5600B5B453 /* CustomTextField.swift */,
@@ -539,6 +542,7 @@
 				9883BA362C41AC89009D8996 /* Seat.swift in Sources */,
 				98850A462C529E0D00B5B453 /* PaymentOptionsViewController.swift in Sources */,
 				98850A3A2C527F5600B5B453 /* CustomTextField.swift in Sources */,
+				980E2A5C2C5E655D00D04800 /* SegmentedControlComponent.swift in Sources */,
 				980E2A502C5CF1BA00D04800 /* Ticket+CoreDataClass.swift in Sources */,
 				9883BA282C416CC5009D8996 /* NowInCinemasCollectionViewCell.swift in Sources */,
 				988DC1112C4AA859005EE898 /* formatPrice+Extension.swift in Sources */,
