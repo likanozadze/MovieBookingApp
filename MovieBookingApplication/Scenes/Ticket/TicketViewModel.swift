@@ -10,8 +10,14 @@ import UIKit
 
 class TicketViewModel {
     
+    enum TicketFilter {
+        case upcoming, expired
+    }
+    
     private let bookingManager = BookingManager.shared
     private(set) var tickets: [Ticket] = []
+    var filteredTickets: [Ticket] = []
+    
     
     var hasTickets: Bool {
         return !tickets.isEmpty
@@ -22,8 +28,17 @@ class TicketViewModel {
         print("Debug - Fetched \(tickets.count) tickets from Core Data")
     }
     
+    func filterTickets(by filter: TicketFilter) {
+        switch filter {
+        case .upcoming:
+            filteredTickets = tickets.filter { $0.date! >= Date() }
+        case .expired:
+            filteredTickets = tickets.filter { $0.date! < Date() }
+        }
+    }
+
     var currentTicket: Ticket? {
-        return tickets.last
+         return tickets.last
     }
     
     var movieTitle: String? {
@@ -58,7 +73,7 @@ class TicketViewModel {
     }
     
     var ticketCount: Int {
-        return tickets.count
+        return filteredTickets.count
     }
     
     func loadImage(completion: @escaping (UIImage?) -> Void) {

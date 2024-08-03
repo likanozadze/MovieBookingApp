@@ -30,12 +30,21 @@ final class TicketViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-
+    
+    private let segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["Upcoming", "Expired"])
+        control.selectedSegmentIndex = 0
+        control.addTarget(self, action: #selector(segmentedControlChanged(_:)), for: .valueChanged)
+        return control
+    }()
+    
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         BookingManager.shared.ticketViewController = self
+        viewModel.loadTickets()
+        updateViewState()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -67,17 +76,23 @@ final class TicketViewController: UIViewController {
         
     }
     private func setupSubviews(){
+        view.addSubview(segmentedControl)
         view.addSubview(ticketCollectionView)
         view.addSubview(animationView)
     }
     
     
     private func setupConstraints() {
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            ticketCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            ticketCollectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
             ticketCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             ticketCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ticketCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ticketCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -87,9 +102,13 @@ final class TicketViewController: UIViewController {
         ticketCollectionView.register(TicketCollectionViewCell.self, forCellWithReuseIdentifier: "TicketCell")
     }
     
+    @objc func segmentedControlChanged(_ sender: UISegmentedControl) {
+        updateViewState()
+    }
     
     func updateViewState() {
         viewModel.loadTickets()
+        viewModel.filterTickets(by: segmentedControl.selectedSegmentIndex == 0 ? .upcoming : .expired)
         if viewModel.hasTickets {
             hideEmptyState()
             ticketCollectionView.reloadData()
@@ -137,7 +156,7 @@ final class TicketViewController: UIViewController {
 }
 extension TicketViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tickets.count
+        return viewModel.filteredTickets.count
     }
     
     
@@ -146,7 +165,7 @@ extension TicketViewController: UICollectionViewDataSource, UICollectionViewDele
             fatalError("Unable to dequeue TicketCollectionViewCell")
         }
         
-        let ticket = viewModel.tickets[indexPath.item]
+        let ticket = viewModel.filteredTickets[indexPath.item]
         print("Configuring cell for ticket: \(ticket.movieTitle ?? "Unknown"), Poster Path: \(ticket.posterPath ?? "None")")
         cell.configure(with: ticket)
         return cell

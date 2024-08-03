@@ -146,7 +146,7 @@ class TicketCollectionViewCell: UICollectionViewCell {
             contentStackView.bottomAnchor.constraint(equalTo: ticketView.bottomAnchor),
             
             posterImageView.heightAnchor.constraint(equalToConstant: 180),
-            barcodeImageView.heightAnchor.constraint(equalToConstant: 80)
+            barcodeImageView.heightAnchor.constraint(equalToConstant: 70)
         ])
     }
 
