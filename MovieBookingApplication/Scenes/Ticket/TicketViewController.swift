@@ -66,14 +66,13 @@ final class TicketViewController: UIViewController {
     }
     
     private func setupSegmentedControl() {
-            segmentedControl.segmentTitles = ["Upcoming", "Expired"]
-            segmentedControl.onSegmentChanged = { [weak self] selectedIndex in
-                self?.viewModel.filterTickets(by: selectedIndex == 0 ? .upcoming : .expired)
-                self?.updateViewState()
-            }
-            
-            view.addSubview(segmentedControl)
+        segmentedControl.segmentTitles = ["Upcoming", "Expired"]
+        segmentedControl.onSegmentChanged = { [weak self] selectedIndex in
+            self?.viewModel.filterTickets(by: selectedIndex == 0 ? .upcoming : .expired)
+            self?.updateViewState()
         }
+    }
+    
     private func setupBackground() {
         view.backgroundColor = .customBackgroundColor
         
@@ -105,6 +104,8 @@ final class TicketViewController: UIViewController {
         ticketCollectionView.register(TicketCollectionViewCell.self, forCellWithReuseIdentifier: "TicketCell")
     }
     
+    // MARK: - Update Methods
+    
     func updateViewState() {
         if viewModel.hasTickets {
             hideEmptyState()
@@ -117,9 +118,7 @@ final class TicketViewController: UIViewController {
         updateBadge()
     }
     
-    private func hasTickets() -> Bool {
-        return BookingManager.shared.numberOfTickets > 0
-    }
+    // MARK: - Empty State Methods
     
     private func showEmptyState() {
         if children.contains(emptyStateViewController) { return }
@@ -144,6 +143,7 @@ final class TicketViewController: UIViewController {
         self.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
     }
     
+    // MARK: - Ticket Management
     func deleteTicket(at indexPath: IndexPath) {
         let ticket = viewModel.tickets[indexPath.item]
         CoreDataManager.shared.deleteTicket(ticket)
@@ -151,7 +151,9 @@ final class TicketViewController: UIViewController {
         updateViewState()
     }
 }
-extension TicketViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+extension TicketViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.filteredTickets.count
     }
@@ -167,7 +169,9 @@ extension TicketViewController: UICollectionViewDataSource, UICollectionViewDele
         cell.configure(with: ticket)
         return cell
     }
-    
+}
+
+extension TicketViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in

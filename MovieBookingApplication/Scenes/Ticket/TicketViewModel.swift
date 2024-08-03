@@ -10,6 +10,8 @@ import UIKit
 
 class TicketViewModel {
     
+    // MARK: - Properties
+    
     enum TicketFilter {
         case upcoming, expired
     }
@@ -18,11 +20,12 @@ class TicketViewModel {
     private(set) var tickets: [Ticket] = []
     var filteredTickets: [Ticket] = []
     
-    
+    // MARK: - Public Computed Properties
     var hasTickets: Bool {
         return !tickets.isEmpty
     }
     
+    // MARK: - Data Loading
     func loadTickets() {
         tickets = CoreDataManager.shared.fetchTickets().reversed()
         filterTickets(by: .upcoming) 
@@ -38,6 +41,7 @@ class TicketViewModel {
         }
     }
 
+    // MARK: - Ticket Details
     var currentTicket: Ticket? {
          return tickets.last
     }
@@ -76,6 +80,8 @@ class TicketViewModel {
     var ticketCount: Int {
         return filteredTickets.count
     }
+    
+    // MARK: - Image Loading
     
     func loadImage(completion: @escaping (UIImage?) -> Void) {
         guard let posterPath = currentTicket?.posterPath else {
