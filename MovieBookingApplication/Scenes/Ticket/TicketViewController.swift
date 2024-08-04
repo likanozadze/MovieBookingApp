@@ -92,7 +92,7 @@ final class TicketViewController: UIViewController {
             segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             ticketCollectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 20),
-            ticketCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            ticketCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             ticketCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ticketCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
