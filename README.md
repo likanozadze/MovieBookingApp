@@ -30,8 +30,8 @@ Users can specify the quantity and, for some items, select size or flavor option
 ### Save and View Booked Tickets
 After selecting a movie, date and snacks, users can review their entire order and make changes before confirming the booking. Once confirmed, tickets are saved digitally within the app using Core Data. Users can view their booked tickets anytime from the 'My Tickets' section, where they have the option to see tickets for upcoming sessions and expired sessions. Each booked ticket includes a QR code that can be scanned at the theater for quick entry, eliminating the need for physical tickets.
 
-![Simulator Screen Recording - iPhone 15 - 2024-08-04 at 15 59 20](https://github.com/user-attachments/assets/3767a662-e22c-417b-a975-dfc72c579283)
 
+![Simulator Screen Recording - iPhone 15 - 2024-08-04 at 16 06 07](https://github.com/user-attachments/assets/e3556c40-98ac-4e02-98eb-030fc0dbdc20)
 
 
 ![Simulator Screen Recording - iPhone 15 - 2024-07-28 at 23 23 03](https://github.com/user-attachments/assets/d07c39ed-eec0-4e9f-afec-414a73b5f535)
