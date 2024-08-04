@@ -162,8 +162,7 @@ class TicketCollectionViewCell: UICollectionViewCell {
         
         snacksLabel.text = "Snacks: \(ticket.snacks ?? "")"
         totalPriceLabel.text = String(format: "$%.2f", ticket.totalPrice)
-        posterImageView.image = UIImage(named: "coca")
-
+    
         if let posterPath = ticket.posterPath {
             print("Debug - Loading image for ticket: \(ticket.movieTitle ?? "Unknown"), Poster Path: \(posterPath)")
             NetworkManager.shared.downloadImage(from: posterPath) { [weak self] image in
