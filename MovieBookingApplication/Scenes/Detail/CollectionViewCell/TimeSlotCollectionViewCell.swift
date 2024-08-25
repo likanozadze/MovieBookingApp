@@ -12,7 +12,7 @@ protocol TimeSlotCollectionViewCellDelegate: AnyObject {
 }
 
 final class TimeSlotCollectionViewCell: UICollectionViewCell {
-
+    
     // MARK: - Properties
     weak var delegate: TimeSlotCollectionViewCellDelegate?
     
@@ -23,7 +23,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         view.layer.masksToBounds = true
         return view
     }()
-
+    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-
+    
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,13 +41,13 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-
+    
     override var isSelected: Bool {
         didSet {
             updateAppearance()
         }
     }
-
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,11 +55,11 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         setupConstraints()
         setupGestureRecognizer()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Cell Life Cycle
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -67,47 +67,50 @@ final class TimeSlotCollectionViewCell: UICollectionViewCell {
         priceLabel.text = nil
         isSelected = false
     }
-
+    
     // MARK: - Private Methods
     private func addSubviews() {
         contentView.addSubview(cellView)
         cellView.addSubview(timeLabel)
         cellView.addSubview(priceLabel)
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cellView.centerYAnchor.constraint(equalTo: centerYAnchor),
             cellView.heightAnchor.constraint(equalToConstant: 80),
-
+            
             timeLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
             timeLabel.topAnchor.constraint(equalTo: cellView.topAnchor),
             timeLabel.heightAnchor.constraint(equalToConstant: 40),
-
+            
             priceLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
             priceLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
             priceLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
         ])
     }
-
+    
     private func setupGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
         cellView.addGestureRecognizer(tapGesture)
         cellView.isUserInteractionEnabled = true
     }
-
+    
     // MARK: - Configuration
-    func configure(time: String, price: String, isSelected: Bool = false) {
-        timeLabel.text = time
-        priceLabel.text = price
-        self.isSelected = isSelected
+    func configure(with timeSlot: MockTimeSlot, isSelected: Bool) {
+        let formattedTime = timeSlot.time
+        let priceString = String(format: "$%.2f", timeSlot.price)
+        
+        timeLabel.text = formattedTime
+        priceLabel.text = priceString
+        
         updateAppearance()
     }
-
+    
     private func updateAppearance() {
         UIView.animate(withDuration: 0.2) {
             self.cellView.backgroundColor = self.isSelected ? .customAccentColor : .black

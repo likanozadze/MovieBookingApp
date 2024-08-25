@@ -41,7 +41,7 @@ final class HomeViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
-    
+
     private let upcomingMovieLabel: UILabel = {
         let label = UILabel()
         label.text = "Coming soon"
@@ -60,17 +60,17 @@ final class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    private var movies = [Movie]()
-    private var upcomingMovies = [Movie]()
+    private var movies = [MockMovie]()
+    private var upcomingMovies = [MockMovie]()
     private let viewModel = HomeViewModel()
     private var selectedDate: Date?
     
     // MARK: - ViewLifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
         setupViewModelDelegate()
         viewModel.viewDidLoad()
+        setup()
     }
     
     // MARK: - Private Methods
@@ -92,11 +92,9 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .customBackgroundColor
     }
     
-    
     private func setupScrollView() {
         scrollView.showsVerticalScrollIndicator = false
     }
-    
     
     private func setupSubviews() {
         view.addSubview(scrollView)
@@ -145,12 +143,13 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.collectionView {
             return movies.count
-        } else {
+        } else if collectionView == self.upcomingCollectionView {
             return upcomingMovies.count
         }
+        return 0
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("Configuring cell at index \(indexPath.item)")
         if collectionView == self.collectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NowInCinemasCollectionViewCell", for: indexPath) as? NowInCinemasCollectionViewCell else {
                 return UICollectionViewCell()
@@ -162,7 +161,7 @@ extension HomeViewController: UICollectionViewDataSource {
             else {
                 return UICollectionViewCell()
             }
-            cell.configure(with: upcomingMovies[indexPath.row])
+                cell.configure(with: upcomingMovies[indexPath.row])
             return cell
         }
     }
@@ -196,7 +195,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 // MARK: - MoviesListViewModelDelegate
 extension HomeViewController: MoviesListViewModelDelegate {
-    func moviesFetched(_ movies: [Movie]) {
+    func moviesFetched(_ movies: [MockMovie]) {
         self.movies = movies
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -206,10 +205,10 @@ extension HomeViewController: MoviesListViewModelDelegate {
     func showError(_ error: Error) {
         print("error")
     }
-    
+
     func navigateToMovieDetails(with movieId: Int) {
         if let selectedMovie = movies.first(where: { $0.id == movieId }) {
-            BookingManager.shared.selectedMovie = selectedMovie
+            BookingManager.shared.selectedMockMovie = selectedMovie
             BookingManager.shared.selectedDate = selectedDate
         }
         NavigationManager.shared.navigateToMovieDetails(from: self, movieId: movieId)
@@ -221,7 +220,7 @@ extension HomeViewController: MoviesListViewModelDelegate {
         navigationController?.pushViewController(upcomingDetailsVC, animated: true)
     }
     
-    func upcomingMoviesFetched(_ movies: [Movie]) {
+    func upcomingMoviesFetched(_ movies: [MockMovie]) {
         self.upcomingMovies = movies
         DispatchQueue.main.async {
             self.upcomingCollectionView.reloadData()

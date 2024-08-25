@@ -36,7 +36,7 @@ class NavigationManager {
         pushOrPresent(viewController: ticketViewController, from: presentingViewController)
     }
     
-    func navigateToUpcomingMovieDetails(from viewController: UIViewController, movie: Movie) {
+    func navigateToUpcomingMovieDetails(from viewController: UIViewController, movie: MockMovie) {
         let upcomingDetailsVC = UpcomingMoviesDetailsViewController(movieId: movie.id)
         viewController.navigationController?.pushViewController(upcomingDetailsVC, animated: true)
     }

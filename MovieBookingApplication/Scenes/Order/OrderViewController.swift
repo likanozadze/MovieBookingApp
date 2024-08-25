@@ -104,7 +104,7 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
     }()
     
     private lazy var movieLabelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel, selectedDateLabel])
+        let stackView = UIStackView(arrangedSubviews: [movieTitleLabel, movieGenreLabel, selectedDateLabel, cinemaLabel, cinemaHallLabel])
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.spacing = 8
@@ -147,6 +147,21 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
+    private let cinemaHallLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
+        return label
+    }()
+    
+    private let cinemaLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
+        return label
+    }()
+    
     // MARK: - Init
     init(viewModel: OrderViewModel) {
         self.viewModel = viewModel
@@ -198,9 +213,7 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
             posterImageView.widthAnchor.constraint(equalToConstant: 80),
             posterImageView.heightAnchor.constraint(equalToConstant: 120),
             snackStackView.heightAnchor.constraint(equalToConstant: 150),
-            
             totalPriceStackView.heightAnchor.constraint(equalToConstant: 30),
-            
             payButton.heightAnchor.constraint(equalToConstant: 60),
             
         ])
@@ -220,7 +233,7 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
         let totalPrice = viewModel.totalPrice
         priceLabel.text = "$\(String(format: "%.2f", totalPrice))"
     }
-
+    
     private func loadMoviePoster() {
         guard let movie = viewModel.selectedMovie else {
             self.posterImageView.image = UIImage(named: "placeholder")
@@ -244,10 +257,19 @@ final class OrderViewController: UIViewController, UITableViewDelegate {
     
     private func updateMovieInfo() {
         movieTitleLabel.text = viewModel.movieTitle
-        movieGenreLabel.text = viewModel.movieGenres
+        
+        if let selectedShowtime = viewModel.selectedShowtime {
+            selectedDateLabel.text = selectedShowtime.time
+            cinemaLabel.text = "Cinema \(selectedShowtime.movie.availableCinemas.first?.cinemaName ?? "")"
+            cinemaHallLabel.text = "Hall: \(selectedShowtime.hall)"
+        } else {
+            selectedDateLabel.text = ""
+            cinemaHallLabel.text = ""
+        }
     }
+    
 }
-    // MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension OrderViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == seatsTableView {
@@ -257,17 +279,15 @@ extension OrderViewController: UITableViewDataSource {
         }
         return 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == seatsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SeatTableViewCell", for: indexPath) as? SeatTableViewCell ?? SeatTableViewCell(style: .default, reuseIdentifier: "SeatTableViewCell")
             let seat = viewModel.selectedSeats[indexPath.row]
-            
-            if let showTime = viewModel.selectedTimeSlot?.showTime,
-               let ticketPrices = viewModel.selectedTimeSlot?.ticketPrices {
-                cell.configure(with: seat, showTime: showTime, ticketPrices: ticketPrices)
+            if let price = viewModel.selectedTimeSlot?.price {
+                cell.configure(with: seat, price: price)
             } else {
-                cell.configure(with: seat, showTime: .afternoon1, ticketPrices: [])
+                cell.configure(with: seat, price: 0.0)
             }
             return cell
         } else if tableView == snacksTableView {
@@ -288,7 +308,7 @@ extension OrderViewController: UITableViewDataSource {
         
         let paymentOptionsVC = PaymentOptionsViewController()
         paymentOptionsVC.modalPresentationStyle = .pageSheet
-
+        
         
         if let sheet = paymentOptionsVC.sheetPresentationController {
             sheet.detents = [.medium()]

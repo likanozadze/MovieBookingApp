@@ -8,10 +8,10 @@
 import UIKit
 
 protocol MovieDetailsViewModelDelegate: AnyObject {
-    func movieDetailsFetched(_ movie: MovieDetails)
+    func movieDetailsFetched(_ movie: MockMovie)
     func showError(_ error: Error)
     func movieDetailsImageFetched(_ image: UIImage)
-    func timeSlotsFetched(_ timeSlots: [TimeSlot])
+    func timeSlotsFetched(_ timeSlots: [MockTimeSlot])
 }
 
 protocol MovieDetailsViewModel {
@@ -22,29 +22,38 @@ protocol MovieDetailsViewModel {
 
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     private var movieId: Int
-    private let showtimeManager = MovieShowtimeManager.shared
+    private let networkManager: NetworkManager
+  //  private let showtimeManager = MovieShowtimeManager.shared
     weak var delegate: MovieDetailsViewModelDelegate?
     
-    init(movieId: Int) {
-        self.movieId = movieId
-    }
-    
+    init(movieId: Int, networkManager: NetworkManager = NetworkManager.shared) {
+            self.movieId = movieId
+            self.networkManager = networkManager
+        }
     func viewDidLoad() {
         fetchMovieDetails()
     }
     
+
     private func fetchMovieDetails() {
-        Task {
-            do {
-                let movieDetails = try await NetworkManager.shared.fetchMovieDetails(for: movieId)
-                delegate?.movieDetailsFetched(movieDetails)
-                downloadImage(from: movieDetails.posterPath)
-            } catch let error {
-                delegate?.showError(error)
+            Task {
+                do {
+                    let movies = try await networkManager.fetchFromMockAPI()
+                    if let movie = movies.first(where: { $0.id == movieId }) {
+                        await MainActor.run {
+                            self.delegate?.movieDetailsFetched(movie)
+                        }
+                        downloadImage(from: movie.posterPath ?? "")
+                    } else {
+                        throw NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "Movie not found"])
+                    }
+                } catch let error {
+                    await MainActor.run {
+                        self.delegate?.showError(error)
+                    }
+                }
             }
         }
-    }
-    
     private func downloadImage(from url: String) {
         NetworkManager.shared.downloadImage(from: url) { [weak self] image in
             self?.delegate?.movieDetailsImageFetched(image ?? UIImage())
@@ -52,7 +61,18 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     }
     
     func fetchTimeSlots(for date: Date) {
-        let timeSlots = showtimeManager.fetchTimeSlots(for: date)
-        delegate?.timeSlotsFetched(timeSlots)
+        Task {
+            do {
+                let movies = try await networkManager.fetchFromMockAPI()
+                if let movie = movies.first(where: { $0.id == movieId }) {
+                    let timeSlots = movie.availableCinemas.flatMap { $0.timeSlots }
+                    delegate?.timeSlotsFetched(timeSlots)
+                } else {
+                    throw NSError(domain: "", code: -3, userInfo: [NSLocalizedDescriptionKey: "Movie not found"])
+                }
+            } catch let error {
+                delegate?.showError(error)
+            }
+        }
     }
 }

@@ -10,9 +10,9 @@ import UIKit
 class UpcomingMoviesDetailsViewController: UIViewController {
     
     // MARK: - Properties
-    private var movies = [Movie]()
+    private var movies = [MockMovie]()
     private let dateManager = DateManager.shared
-    private var viewModel: MovieDetailsViewModel
+    private var viewModel: UpcomingMoviesDetailsViewModel
     
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -86,7 +86,7 @@ class UpcomingMoviesDetailsViewController: UIViewController {
     
     // MARK: - Init
     init(movieId: Int) {
-        viewModel = DefaultMovieDetailsViewModel(movieId: movieId)
+        viewModel = DefaultUpcomingMoviesDetailsViewModel(movieId: movieId)
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
     }
@@ -147,30 +147,18 @@ class UpcomingMoviesDetailsViewController: UIViewController {
     }
 }
     // MARK: - MovieDetailsViewModelDelegate
-    extension UpcomingMoviesDetailsViewController: MovieDetailsViewModelDelegate {
-        func movieDetailsFetched(_ movie: MovieDetails) {
-            Task {
-                movieLabel.text = movie.title
-                releaseLabel.text = "Release date: \(movie.releaseDate)"
-
-                descriptionLabel.text = movie.overview
-            }
-        }
-        func showError(_ error: Error) {
-            print("Error")
-        }
-        
-        func movieDetailsImageFetched(_ image: UIImage) {
-            Task {
-                movieImageView.image = image
-            }
-        }
-        func timeSlotsFetched(_ timeSlots: [TimeSlot]) {
-          
-            DispatchQueue.main.async {
-    
-            }
-            
-        }
+extension UpcomingMoviesDetailsViewController: UpcomingMoviesDetailsViewModelDelegate {
+    func moviesDetailsFetched(_ movie: MockMovie) {
+        movieLabel.text = movie.title
+        releaseLabel.text = "Release date: \(movie.releaseDate)"
+        descriptionLabel.text = movie.overview
     }
-
+    
+    func showError(_ error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+    
+    func movieImageFetched(_ image: UIImage) {
+        movieImageView.image = image
+    }
+}

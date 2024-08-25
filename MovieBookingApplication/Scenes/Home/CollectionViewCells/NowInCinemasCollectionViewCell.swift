@@ -24,7 +24,7 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.textColor = .white
         label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
     
@@ -32,7 +32,7 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .gray
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         return label
     }()
     
@@ -61,6 +61,15 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
         stackView.layer.masksToBounds = false
         return stackView
     }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .orange
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -127,30 +136,30 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration
-    func configure(with movie: Movie) {
+    func configure(with movie: MockMovie) {
+        print("Configuring cell for movie: \(movie.title)")
         titleLabel.text = movie.title
-        if let firstGenre = movie.genres.first {
-            genreLabel.text = firstGenre.name
-          } else {
-            genreLabel.text = "No Genre"
-          }
-          
+        
+        let genreNames = movie.genres.map { $0.description }.joined(separator: ", ")
+        genreLabel.text = genreNames
+        
+        voteLabel.text = String(format: "%.1f", movie.voteAverage)
         if let posterPath = movie.posterPath {
-               setImage(from: posterPath)
-        } else {
-            movieImageView.image = UIImage(named: "placeholder")
-        }
-        let formattedVoteAverage = String(format: "%.1f", movie.voteAverage)
-        voteLabel.text = formattedVoteAverage
-        
-        
-    }
-    
-    private func setImage(from url: String) {
-        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.movieImageView.image = image
+            let baseURL = "https://image.tmdb.org/t/p/w500"
+            let fullPosterURL = baseURL + posterPath
+            if let posterURL = URL(string: fullPosterURL) {
+                URLSession.shared.dataTask(with: posterURL) { [weak self] data, _, error in
+                    if let data = data, let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self?.movieImageView.image = image
+                        }
+                    } else if let error = error {
+                        print("Error loading image: \(error.localizedDescription)")
+                    }
+                }.resume()
             }
+        } else {
+            movieImageView.image = UIImage(named: "placeholder_poster")
         }
     }
 }

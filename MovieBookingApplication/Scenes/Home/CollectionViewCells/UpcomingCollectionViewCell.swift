@@ -127,14 +127,8 @@ final class UpcomingCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration
-    func configure(with movie: Movie) {
-        titleLabel.text = movie.title
-        if let firstGenre = movie.genres.first {
-            genreLabel.text = firstGenre.name
-        } else {
-            genreLabel.text = "No Genre"
-        }
-        
+    func configure(with movie: MockMovie) {
+        titleLabel.text = movie.title        
         if let posterPath = movie.posterPath {
             setImage(from: posterPath)
         } else {

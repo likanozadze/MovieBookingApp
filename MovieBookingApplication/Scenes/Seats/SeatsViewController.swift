@@ -257,13 +257,13 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             let date = viewModel.dates[indexPath.item]
             cell.configure(for: date, isSelected: indexPath.item == viewModel.selectedDateIndex)
             return cell
+        
         case timeSlotCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TimeSlotCollectionViewCell", for: indexPath) as! TimeSlotCollectionViewCell
             let timeSlot = viewModel.timeSlots[indexPath.item]
-            let formattedTime = DateFormatter.formattedDate(date: timeSlot.startTime, format: "HH:mm")
-            let priceString = timeSlot.ticketPrices.first?.price.formatPrice(currency: timeSlot.ticketPrices.first?.currency ?? "USD") ?? "N/A"
-            cell.configure(time: formattedTime, price: priceString, isSelected: indexPath.item == viewModel.selectedTimeSlotIndex)
+            cell.configure(with: timeSlot, isSelected: indexPath.item == viewModel.selectedTimeSlotIndex)
             return cell
+
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "seatCell", for: indexPath) as! SeatCell
             if let seat = viewModel.getSeat(for: indexPath) {
@@ -272,7 +272,7 @@ extension SeatsViewController: UICollectionViewDataSource, UICollectionViewDeleg
             return cell
         }
     }
-    
+
     // MARK: - CollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {

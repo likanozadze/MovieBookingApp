@@ -17,15 +17,15 @@ final class OrderViewModel {
         return bookingManager.getSelectedOrderedFood()
     }
     
-    var selectedMovie: Movie? {
-        return bookingManager.selectedMovie
+    var selectedMovie: MockMovie? {
+        return bookingManager.selectedMockMovie
     }
     
     var selectedDate: Date? {
         return bookingManager.selectedDate
     }
     
-    var selectedTimeSlot: TimeSlot? {
+    var selectedTimeSlot: MockTimeSlot? {
         return bookingManager.selectedTimeSlot
     }
     
@@ -41,14 +41,18 @@ final class OrderViewModel {
         return selectedMovie?.title ?? "N/A"
     }
     
-    var movieGenres: String {
-        return selectedMovie?.genres.map { $0.name }.joined(separator: ", ") ?? "N/A"
+    
+ 
+    var selectedShowtime: MovieShowtime? { 
+      guard let movie = selectedMovie,
+            let _ = selectedDate,
+            let timeSlot = selectedTimeSlot else {
+        return nil
+      }
+      
+      return MovieShowtime(time: timeSlot.time, movie: movie, price: timeSlot.price, hall: 1, ageRating: 0)
     }
-    
-    // MARK: - Initialization
-    
-    init() {}
-    
+
     // MARK: - Methods
     
     func recalculateTotalPrice() {

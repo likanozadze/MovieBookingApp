@@ -17,9 +17,9 @@ final class BookingManager {
     private init() {}
     
     // MARK: - Properties
-    var selectedMovie: Movie?
+  
     var selectedDate: Date?
-    var selectedTimeSlot: TimeSlot?
+    var selectedTimeSlot: MockTimeSlot?
     var selectedFood: [Food] = []
     var totalPrice: Double = 0.0
     private let seatManager = SeatManager.shared
@@ -27,9 +27,10 @@ final class BookingManager {
     private(set) var numberOfTickets: Int = 0
     weak var ticketViewController: TicketViewController?
     weak var tabBarController: TabBarController?
+    var selectedMockMovie: MockMovie?
     // MARK: - Methods
     func resetBooking() {
-        selectedMovie = nil
+        selectedMockMovie = nil
         selectedDate = nil
         selectedTimeSlot = nil
         selectedFood.removeAll()
@@ -41,7 +42,7 @@ final class BookingManager {
     }
     
     func calculateTotalPrice() {
-        let ticketPrice = Double(getSelectedSeats().count) * (selectedTimeSlot?.ticketPrices.first?.price ?? 0)
+        let ticketPrice = Double(getSelectedSeats().count) * (selectedTimeSlot?.price ?? 0)
         let foodPrice = foodManager.allFoodItems.reduce(0) { total, food in
             total + food.sizes.reduce(0) { sizeTotal, size in
                 sizeTotal + Double(food.quantityPerSize[size.name, default: 0]) * (food.price + size.priceModifier)
@@ -87,11 +88,11 @@ final class BookingManager {
         return seatManager.getSelectedSeats()
     }
     
-    func getBookingSummary() -> (movie: Movie?, seats: [Seat], date: Date?, timeSlot: TimeSlot?) {
+    func getBookingSummary() -> (movie: MockMovie?, seats: [Seat], date: Date?, timeSlot: MockTimeSlot?) {
         let selectedSeats = getSelectedSeats()
-        return (selectedMovie, selectedSeats, selectedDate, selectedTimeSlot)
+        return (selectedMockMovie, selectedSeats, selectedDate, selectedTimeSlot)
     }
-    
+
     func completeBooking() {
         let (movie, seats, date, timeSlot) = getBookingSummary()
         if let movie = movie, let date = date, let timeSlot = timeSlot {

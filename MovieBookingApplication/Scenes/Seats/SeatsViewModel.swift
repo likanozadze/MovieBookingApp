@@ -11,18 +11,20 @@ final class SeatsViewModel {
     // MARK: - Properties
     
     let dates: [Date]
-    let timeSlots: [TimeSlot]
+    let timeSlots: [MockTimeSlot]
+    let movie: MockMovie
     private(set) var selectedDateIndex: Int?
     private(set) var selectedTimeSlotIndex: Int?
     let seatManager = SeatManager.shared
     let rowsPerSection = [8, 8, 8, 8]
     
     // MARK: - Init
-    init(selectedDate: Date, selectedTimeSlot: TimeSlot, dates: [Date], timeSlots: [TimeSlot]) {
+    init(selectedDate: Date, selectedTimeSlot: MockTimeSlot, dates: [Date], timeSlots: [MockTimeSlot], movie: MockMovie) {
         self.dates = dates
         self.timeSlots = timeSlots
+        self.movie = movie
         self.selectedDateIndex = dates.firstIndex(of: selectedDate)
-        self.selectedTimeSlotIndex = timeSlots.firstIndex(where: { $0.startTime == selectedTimeSlot.startTime })
+    self.selectedTimeSlotIndex = timeSlots.firstIndex(where: { $0.time == selectedTimeSlot.time })
     }
     
     // MARK: - Methods
@@ -50,4 +52,5 @@ final class SeatsViewModel {
     func canProceedToFoodSelection() -> Bool {
         return selectedTimeSlotIndex != nil && !getSelectedSeats().isEmpty
     }
+    
 }

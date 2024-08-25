@@ -87,25 +87,11 @@ class SeatTableViewCell: UITableViewCell {
         layer.shadowOpacity = 0.1
         layer.masksToBounds = false
     }
-
-    // MARK: - Public Methods
-    func configure(with seat: Seat, showTime: ShowTime, ticketPrices: [TicketPrice]) {
-        seatLabel.text = "Row \(seat.row), Seat \(seat.seatCode)"
-        if let price = ticketPrices.first(where: { $0.priceCategory == getPriceCategory(for: showTime) })?.price {
-            priceLabel.text = String(format: "$%.2f", price)
-        } else {
-            priceLabel.text = "Price: N/A"
-        }
-    }
-
     
-     func getPriceCategory(for showTime: ShowTime) -> TicketPriceCategory {
-        switch showTime {
-        case .afternoon1: return .afternoon1
-        case .afternoon2: return .afternoon2
-        case .evening: return .evening
-        case .night1: return .night1
-        case .night2: return .night2
-        }
+    // MARK: - Public Methods   
+    func configure(with seat: Seat, price: Double) {
+        seatLabel.text = "Row \(seat.row), Seat \(seat.seatCode)"
+        priceLabel.text = String(format: "$%.2f", price)
     }
+    
 }

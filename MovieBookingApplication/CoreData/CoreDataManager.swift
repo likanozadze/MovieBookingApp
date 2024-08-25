@@ -35,12 +35,15 @@ class CoreDataManager {
         }
     }
 
-    func createTicket(movieTitle: String, date: Date, timeSlot: TimeSlot, seats: [Seat], snacks: [OrderedFood], totalPrice: Double, posterPath: String?) {
+    func createTicket(movieTitle: String, date: Date, timeSlot: MockTimeSlot, seats: [Seat], snacks: [OrderedFood], totalPrice: Double, posterPath: String?) {
         let context = persistentContainer.viewContext
         let ticket = Ticket(context: context)
         ticket.movieTitle = movieTitle
         ticket.date = date
-        ticket.timeSlot = timeSlot.showTime.formattedTime
+       
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        ticket.timeSlot = timeSlot.time
         ticket.seats = seats.map { $0.seatCode }.joined(separator: ", ")
         ticket.snacks = snacks.map { "\($0.quantity)x \($0.food.name) (\($0.size.name))" }.joined(separator: ", ")
         ticket.totalPrice = totalPrice
@@ -53,7 +56,6 @@ class CoreDataManager {
             print("Debug - Failed to save ticket: \(error)")
         }
     }
-    
     func fetchTickets() -> [Ticket] {
         let context = persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Ticket> = Ticket.fetchRequest()
