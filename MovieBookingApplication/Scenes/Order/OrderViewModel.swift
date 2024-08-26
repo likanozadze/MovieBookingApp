@@ -41,7 +41,9 @@ final class OrderViewModel {
         return selectedMovie?.title ?? "N/A"
     }
     
-    
+    func getFoodImageName(for orderedFood: OrderedFood) -> String {
+           return orderedFood.food.imageName
+       }
  
     var selectedShowtime: MovieShowtime? { 
       guard let movie = selectedMovie,

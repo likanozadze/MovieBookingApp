@@ -69,7 +69,7 @@ final class TabBarController: UITabBarController {
     func updateBadgeCounts() {
         let ticketCount = BookingManager.shared.numberOfTickets
         DispatchQueue.main.async { [weak self] in
-            if let ticketViewController = self?.viewControllers?[1] {
+            if let ticketViewController = self?.viewControllers?[2] {
                 ticketViewController.tabBarItem.badgeValue = ticketCount > 0 ? "\(ticketCount)" : nil
                 print("Debug - Badge value set to: \(ticketViewController.tabBarItem.badgeValue ?? "nil")")
             } else {

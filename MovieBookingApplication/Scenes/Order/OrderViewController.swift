@@ -294,7 +294,9 @@ extension OrderViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SnackTableViewCell", for: indexPath) as? SnackTableViewCell ?? SnackTableViewCell(style: .default, reuseIdentifier: "SnackTableViewCell")
             let orderedFood = viewModel.selectedOrderedFood[indexPath.row]
             let price = orderedFood.food.price + orderedFood.size.priceModifier
-            cell.configure(with: orderedFood.food, size: orderedFood.size, price: price, quantity: orderedFood.quantity)
+            let imageName = viewModel.getFoodImageName(for: orderedFood)
+            cell.configure(with: orderedFood.food, size: orderedFood.size, price: price, quantity: orderedFood.quantity, imageName: imageName)
+                
             return cell
         }
         return UITableViewCell()
