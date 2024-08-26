@@ -67,6 +67,7 @@
 		98B045132C53FE3300F82A56 /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B045122C53FE3300F82A56 /* SuccessViewController.swift */; };
 		98B045152C53FF4700F82A56 /* FailureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B045142C53FF4700F82A56 /* FailureViewController.swift */; };
 		98B045172C5402FA00F82A56 /* TicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B045162C5402FA00F82A56 /* TicketViewController.swift */; };
+		98BA6A1E2C7C9C5E00E66347 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BA6A1D2C7C9C5E00E66347 /* Constants.swift */; };
 		98C5B15D2C7B2D35000C32A7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5B15C2C7B2D35000C32A7 /* CalendarViewModel.swift */; };
 		98C5B15F2C7B9802000C32A7 /* UpcomingMoviesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5B15E2C7B9802000C32A7 /* UpcomingMoviesDetailsViewModel.swift */; };
 		98D323AF2C4D255E008DF8CF /* FoodSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */; };
@@ -142,6 +143,7 @@
 		98B045122C53FE3300F82A56 /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		98B045142C53FF4700F82A56 /* FailureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureViewController.swift; sourceTree = "<group>"; };
 		98B045162C5402FA00F82A56 /* TicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewController.swift; sourceTree = "<group>"; };
+		98BA6A1D2C7C9C5E00E66347 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		98C5B15C2C7B2D35000C32A7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		98C5B15E2C7B9802000C32A7 /* UpcomingMoviesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesDetailsViewModel.swift; sourceTree = "<group>"; };
 		98D323AE2C4D255E008DF8CF /* FoodSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSelectionSheet.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				987C6E212C4446F600816B14 /* Managers */,
 				980849DA2C457B6E00F5924B /* ReusableComponents */,
 				980E2A5D2C5E6AED00D04800 /* CoreData */,
+				98BA6A1F2C7C9F3700E66347 /* Constants */,
 				98D323B52C4D2BFC008DF8CF /* popCorn.json */,
 				98EEAF852C56BF05007D3C8F /* Tickets.json */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
@@ -457,6 +460,14 @@
 			path = SuccessOrFailure;
 			sourceTree = "<group>";
 		};
+		98BA6A1F2C7C9F3700E66347 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				98BA6A1D2C7C9C5E00E66347 /* Constants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		98C5B1602C7B9A67000C32A7 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,6 +605,7 @@
 				988DC1132C4AB507005EE898 /* AlertManager.swift in Sources */,
 				980E2A532C5CF1D700D04800 /* CoreDataManager.swift in Sources */,
 				9886BC642C510873000A95BC /* BookingManager.swift in Sources */,
+				98BA6A1E2C7C9C5E00E66347 /* Constants.swift in Sources */,
 				98EEAF882C56C020007D3C8F /* EmptyStateViewController.swift in Sources */,
 				98850A482C529E2900B5B453 /* PaymentOptionView.swift in Sources */,
 				98D323B82C4D31B6008DF8CF /* NavigationManager.swift in Sources */,

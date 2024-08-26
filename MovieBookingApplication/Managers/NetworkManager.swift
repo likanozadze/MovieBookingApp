@@ -34,37 +34,8 @@ final class NetworkManager {
 // MARK: - Fetch Movie Details
 
 extension NetworkManager {
-    func fetchMovieDetails(for id: Int) async throws -> MovieDetails {
-        let urlStr = "https://mocki.io/v1/8bcef72b-a930-4e29-962c-16686fa3d0a9"
-        
-        guard let url = URL(string: urlStr) else {
-            throw NSError(domain: "com.yourdomain.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            do {
-                
-                let movieDetailsList = try JSONDecoder().decode([MovieDetails].self, from: data)
-                if let movieDetail = movieDetailsList.first(where: { $0.id == id }) {
-                    return movieDetail
-                } else {
-                    throw NSError(domain: "com.yourdomain.app", code: -4, userInfo: [NSLocalizedDescriptionKey: "Movie not found"])
-                }
-            } catch {
-                throw NSError(domain: "com.yourdomain.app", code: -2, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(error.localizedDescription)"])
-            }
-        } catch {
-            throw NSError(domain: "com.yourdomain.app", code: -3, userInfo: [NSLocalizedDescriptionKey: "Network request failed: \(error.localizedDescription)"])
-        }
-    }
-}
-
-// MARK: - Fetch from Mock API
-
-extension NetworkManager {
     func fetchFromMockAPI() async throws -> [MockMovie] {
-        let urlStr = "https://mocki.io/v1/8bcef72b-a930-4e29-962c-16686fa3d0a9"
+        let urlStr = Constants.URLs.moviesListURL
         
         guard let url = URL(string: urlStr) else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
@@ -82,7 +53,7 @@ extension NetworkManager {
 
 extension NetworkManager {
     func fetchUpcomingMoviesFromMockAPI() async throws -> [MockMovie] {
-        let urlStr = "https://mocki.io/v1/e5f56879-fcb6-4eb4-87e1-9a0b81ab284d"
+        let urlStr = Constants.URLs.upcomingMoviesURL
         
         guard let url = URL(string: urlStr) else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
@@ -90,7 +61,6 @@ extension NetworkManager {
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            
             
             let dataString = String(data: data, encoding: .utf8)
             print("Raw Response Data: \(dataString ?? "No Data")")
