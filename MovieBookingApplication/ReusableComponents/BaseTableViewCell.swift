@@ -22,7 +22,6 @@ class BaseTableViewCell: UITableViewCell {
     // MARK: - Private Methods
 
     private func configureAppearance() {
-    //    layer.borderColor = UIColor.gray.withAlphaComponent(0.1).cgColor
         layer.borderWidth = 1.0
         layer.cornerRadius = 12
 
