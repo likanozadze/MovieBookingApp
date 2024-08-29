@@ -46,9 +46,9 @@ class SeatTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = .customBackgroundColor
         addSubviews()
         setupConstraints()
-        configureAppearance()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,24 +70,7 @@ class SeatTableViewCell: UITableViewCell {
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-    
-    private func configureAppearance() {
-        layer.borderColor = UIColor.gray.withAlphaComponent(0.1).cgColor
-        layer.borderWidth = 1.0
-        layer.cornerRadius = 12
-        
-        contentView.layer.cornerRadius = layer.cornerRadius
-        contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 6.0
-        layer.shadowOpacity = 0.1
-        layer.masksToBounds = false
-    }
-    
+
     // MARK: - Public Methods   
     func configure(with seat: Seat, price: Double) {
         seatLabel.text = "Row \(seat.row), Seat \(seat.seatCode)"

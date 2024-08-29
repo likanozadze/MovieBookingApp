@@ -8,7 +8,7 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    
+    let homeViewModel = HomeViewModel()
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +27,17 @@ final class TabBarController: UITabBarController {
             title: "Calendar", image: UIImage(systemName: "calendar"),
             viewController: CalendarViewController()
         )
+        let cinema = createNavigationController(
+            title: "Cinema", image: UIImage(systemName: "movieclapper"),
+            viewController: CinemaViewController(homeViewModel: homeViewModel)
+        )
         
         let ticketViewController = TicketViewController()
         let ticket = createNavigationController(
             title: "Ticket", image: UIImage(systemName: "ticket"),
             viewController: ticketViewController
         )
-        setViewControllers([home, calendar, ticket], animated: true)
+        setViewControllers([home, calendar, cinema, ticket], animated: true)
     }
     
     // MARK: - NavigationController

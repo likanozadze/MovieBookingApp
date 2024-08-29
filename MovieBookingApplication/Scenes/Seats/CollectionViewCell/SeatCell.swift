@@ -70,6 +70,5 @@ final class SeatCell: UICollectionViewCell {
             seatImageView.tintColor = .customAccentColor
             isUserInteractionEnabled = true
         }
-        print("Seat configured: \(seat)")
     }
 }

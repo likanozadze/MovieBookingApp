@@ -63,7 +63,6 @@ extension NetworkManager {
             let (data, _) = try await URLSession.shared.data(from: url)
             
             let dataString = String(data: data, encoding: .utf8)
-            print("Raw Response Data: \(dataString ?? "No Data")")
             let movieResponse = try JSONDecoder().decode(MovieResponse.self, from: data)
             return movieResponse.results
         } catch {

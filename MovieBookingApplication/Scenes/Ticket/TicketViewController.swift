@@ -165,7 +165,7 @@ extension TicketViewController: UICollectionViewDataSource {
         }
         
         let ticket = viewModel.filteredTickets[indexPath.item]
-        print("Configuring cell for ticket: \(ticket.movieTitle ?? "Unknown"), Poster Path: \(ticket.posterPath ?? "None")")
+
         cell.configure(with: ticket)
         return cell
     }

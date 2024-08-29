@@ -72,8 +72,7 @@ class MovieShowtimeCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-      //  selectionStyle = .none
-        configureAppearance()
+        contentView.backgroundColor = .customBackgroundColor
     }
     
     required init?(coder: NSCoder) {
@@ -117,24 +116,7 @@ class MovieShowtimeCell: UITableViewCell {
             ageRatingLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
-    private func configureAppearance() {
-        layer.borderColor = UIColor.gray.withAlphaComponent(0.1).cgColor
-        layer.borderWidth = 1.0
-        layer.cornerRadius = 12
-        
-        contentView.layer.cornerRadius = layer.cornerRadius
-        contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 6.0
-        layer.shadowOpacity = 0.1
-        layer.masksToBounds = false
-    }
-    
+
     func configure(with movieShowtime: MovieShowtime) {
         timeLabel.text = movieShowtime.time
         titleLabel.text = movieShowtime.movie.title

@@ -36,7 +36,6 @@ final class CalendarViewModel {
                     self.movies = fetchedMovies
                     self.groupMoviesByShowtime(fetchedMovies)
                 }
-                print("Fetched movies: \(fetchedMovies)")
             } catch {
                 print("Error fetching movies: \(error)")
             }

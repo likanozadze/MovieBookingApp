@@ -173,7 +173,6 @@ extension FoodViewController: UITableViewDataSource {
 
 extension FoodViewController: FoodCollectionViewCellDelegate {
     func addProduct(for cell: FoodItemCell?) {
-        print("Add product button tapped")
         guard let cell = cell, let indexPath = tableView.indexPath(for: cell) else { return }
         viewModel.increaseQuantity(at: indexPath)
         tableView.reloadData()

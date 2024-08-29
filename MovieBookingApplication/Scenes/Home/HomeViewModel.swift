@@ -17,8 +17,8 @@ protocol MoviesListViewModelDelegate: AnyObject {
 
 final class HomeViewModel {
     
-    private var movies: [MockMovie]?
-    private var upcomingMovies: [MockMovie]?
+    private(set) var allMovies: [MockMovie] = []
+    private var upcomingMovies: [MockMovie] = []
     
     weak var delegate: MoviesListViewModelDelegate?
     
@@ -28,44 +28,53 @@ final class HomeViewModel {
     }
     
     func didSelectMovie(at indexPath: IndexPath) {
-        if let movieId = movies?[indexPath.row].id {
-            delegate?.navigateToMovieDetails(with: movieId)
-        }
+        let movieId = allMovies[indexPath.row].id
+        delegate?.navigateToMovieDetails(with: movieId)
     }
     
     func didSelectUpcomingMovie(at indexPath: IndexPath) {
-        if let selectedMovie = upcomingMovies?[indexPath.row] {
-            delegate?.navigateToUpcomingMovieDetails(with: selectedMovie.id)
-        }
+        let movieId = upcomingMovies[indexPath.row].id
+        delegate?.navigateToUpcomingMovieDetails(with: movieId)
     }
     
     func fetchMovies() {
         Task {
             do {
                 let movies = try await NetworkManager.shared.fetchFromMockAPI()
-                self.movies = movies
+                self.allMovies = movies
                 DispatchQueue.main.async {
                     self.delegate?.moviesFetched(movies)
                 }
-            } catch let error as NSError {
-                if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? Error {
-                }
+            } catch {
                 DispatchQueue.main.async {
                     self.delegate?.showError(error)
                 }
             }
         }
     }
-
+    
     private func fetchUpcomingMovies() {
         Task {
             do {
                 let movies = try await NetworkManager.shared.fetchUpcomingMoviesFromMockAPI()
                 self.upcomingMovies = movies
-                self.delegate?.upcomingMoviesFetched(movies)
+                DispatchQueue.main.async {
+                    self.delegate?.upcomingMoviesFetched(movies)
+                }
             } catch {
-                self.delegate?.showError(error)
+                DispatchQueue.main.async {
+                    self.delegate?.showError(error)
+                }
             }
         }
+    }
+    
+    func getMovies(for cinemaId: String) -> [MockMovie] {
+        let filteredMovies = allMovies.filter { movie in
+            movie.availableCinemas.contains { cinema in
+                cinema.cinemaId == cinemaId
+            }
+        }
+        return filteredMovies
     }
 }

@@ -65,7 +65,7 @@ class SnackTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setupConstraints()
-        configureAppearance()
+        contentView.backgroundColor = .customBackgroundColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,23 +90,7 @@ class SnackTableViewCell: UITableViewCell {
             foodImageView.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
-    private func configureAppearance() {
-        layer.borderColor = UIColor.gray.withAlphaComponent(0.1).cgColor
-        layer.borderWidth = 1.0
-        layer.cornerRadius = 12
-        
-        contentView.layer.cornerRadius = layer.cornerRadius
-        contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-        
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 6.0
-        layer.shadowOpacity = 0.1
-        layer.masksToBounds = false
-    }
-    
+   
     func configure(with snack: Food, size: FoodSize, price: Double, quantity: Int, imageName: String) {
         nameLabel.text = snack.name
         sizeLabel.text = size.name

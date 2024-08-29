@@ -5,7 +5,6 @@
 //  Created by Lika Nozadze on 7/12/24.
 //
 
-
 import Foundation
 
 struct MovieResponse: Decodable {
@@ -56,12 +55,23 @@ struct MockMovie: Decodable {
 struct Cinema: Decodable {
     let cinemaId: String
     let cinemaName: String
+    let address: String?
     let timeSlots: [MockTimeSlot]
     
     enum CodingKeys: String, CodingKey {
         case cinemaId = "cinema_id"
         case cinemaName = "cinema_name"
+        case address
         case timeSlots = "time_slots"
+    }
+}
+extension Cinema: Hashable {
+    static func == (lhs: Cinema, rhs: Cinema) -> Bool {
+        return lhs.cinemaId == rhs.cinemaId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(cinemaId)
     }
 }
 
@@ -82,6 +92,7 @@ enum GenreName: Int, CaseIterable {
         }
     }
 }
+
 struct MovieShowtime {
     let time: String
     let movie: MockMovie

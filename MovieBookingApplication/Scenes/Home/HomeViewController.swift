@@ -149,7 +149,7 @@ extension HomeViewController: UICollectionViewDataSource {
         return 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("Configuring cell at index \(indexPath.item)")
+    //    print("Configuring cell at index \(indexPath.item)")
         if collectionView == self.collectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NowInCinemasCollectionViewCell", for: indexPath) as? NowInCinemasCollectionViewCell else {
                 return UICollectionViewCell()

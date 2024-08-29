@@ -137,7 +137,7 @@ final class NowInCinemasCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Configuration
     func configure(with movie: MockMovie) {
-        print("Configuring cell for movie: \(movie.title)")
+      //  print("Configuring cell for movie: \(movie.title)")
         titleLabel.text = movie.title
         
         let genreNames = movie.genres.map { $0.description }.joined(separator: ", ")
