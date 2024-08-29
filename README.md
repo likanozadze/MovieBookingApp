@@ -7,6 +7,7 @@ Welcome to the Movie Booking App! This iOS application allows users to seamlessl
 
 - Browse and select movies
 - Choose date and time for showtimes
+- Interactive Calendar 
 - Add snacks to your order
 - Save and view booked tickets
 
