@@ -303,7 +303,6 @@
 				98EEAF852C56BF05007D3C8F /* Tickets.json */,
 				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
-				987040482C83142A000968E4 /* ScreenViewController.swift */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
 			);
 			path = MovieBookingApplication;
@@ -491,6 +490,7 @@
 		98BA6A1F2C7C9F3700E66347 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				987040482C83142A000968E4 /* ScreenViewController.swift */,
 				98BA6A1D2C7C9C5E00E66347 /* Constants.swift */,
 			);
 			path = Constants;
