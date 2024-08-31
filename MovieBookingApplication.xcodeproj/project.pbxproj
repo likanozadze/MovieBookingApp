@@ -255,6 +255,24 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
+		9870404A2C832774000968E4 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
+				98EEAF852C56BF05007D3C8F /* Tickets.json */,
+				98D323B52C4D2BFC008DF8CF /* popCorn.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		9870404B2C832785000968E4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9870404A2C832774000968E4 /* Animations */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		987C6E212C4446F600816B14 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,9 +317,7 @@
 				980849DA2C457B6E00F5924B /* ReusableComponents */,
 				980E2A5D2C5E6AED00D04800 /* CoreData */,
 				98BA6A1F2C7C9F3700E66347 /* Constants */,
-				98D323B52C4D2BFC008DF8CF /* popCorn.json */,
-				98EEAF852C56BF05007D3C8F /* Tickets.json */,
-				9883BA0F2C414FB8009D8996 /* Assets.xcassets */,
+				9870404B2C832785000968E4 /* Resources */,
 				9883BA112C414FB8009D8996 /* LaunchScreen.storyboard */,
 				9883BA142C414FB8009D8996 /* Info.plist */,
 			);
