@@ -23,7 +23,6 @@ protocol MovieDetailsViewModel {
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     private var movieId: Int
     private let networkManager: NetworkManager
-  //  private let showtimeManager = MovieShowtimeManager.shared
     weak var delegate: MovieDetailsViewModelDelegate?
     
     init(movieId: Int, networkManager: NetworkManager = NetworkManager.shared) {

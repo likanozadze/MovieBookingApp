@@ -16,9 +16,8 @@ protocol MoviesListViewModelDelegate: AnyObject {
 }
 
 final class HomeViewModel {
-    
     private(set) var allMovies: [MockMovie] = []
-    private var upcomingMovies: [MockMovie] = []
+    private(set) var upcomingMovies: [MockMovie] = []
     
     weak var delegate: MoviesListViewModelDelegate?
     

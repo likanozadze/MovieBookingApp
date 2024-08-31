@@ -12,24 +12,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        let tabBarController = TabBarController()
-        let navigationController = UINavigationController(rootViewController: tabBarController)
+           guard let windowScene = (scene as? UIWindowScene) else { return }
+           
+           window = UIWindow(windowScene: windowScene)
+           
+         
+           let splashViewController = ScreenViewController()
+           window?.rootViewController = splashViewController
+           window?.makeKeyAndVisible()
+           
+          
+           DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+               self.transitionToMainInterface()
+           }
         
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
-        
-        BookingManager.shared.tabBarController = tabBarController
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        CoreDataManager.shared.persistentContainer = appDelegate.persistentContainer
-    }
-    
-    
+           let appDelegate = UIApplication.shared.delegate as! AppDelegate
+           let context = appDelegate.persistentContainer.viewContext
+           CoreDataManager.shared.persistentContainer = appDelegate.persistentContainer
+       }
+       
+       private func transitionToMainInterface() {
+           let tabBarController = TabBarController()
+           let navigationController = UINavigationController(rootViewController: tabBarController)
+           
+           UIView.transition(with: self.window!, duration: 0.3, options: .transitionCrossDissolve, animations: {
+               self.window?.rootViewController = navigationController
+           }, completion: { _ in
+             
+               BookingManager.shared.tabBarController = tabBarController
+           })
+       }
+       
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
